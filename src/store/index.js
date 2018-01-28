@@ -5,6 +5,8 @@ import messageStore from '@/store/messagemodel.js'
 import $ from 'jquery'
 Vue.use(Vuex)
 
+import cfg from '../../cfg'
+
 export default new Vuex.Store({
    modules:{
       user:userStore,
@@ -39,7 +41,7 @@ export default new Vuex.Store({
          document.querySelector('#alertBtn').click();
       },
       isLogin(state,data){
-         $.post('http://localhost:1234/api/user/is_login',data).then((res,textStatus,response)=>{
+         $.post(cfg.api_base_url+'/api/user/is_login',data).then((res,textStatus,response)=>{
 
             let token =response.getResponseHeader('s_token');
             console.log(token);

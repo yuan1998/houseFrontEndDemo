@@ -26,6 +26,7 @@
 </template>
 
 <script>
+
 export default {
    mounted: function() {
       console.log('now page is home');
