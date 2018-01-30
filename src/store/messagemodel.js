@@ -1,4 +1,5 @@
-import $ from 'jquery'
+
+import sender from '@/Sender.js'
 
    export default {
    namespaced: true,
@@ -25,17 +26,17 @@ import $ from 'jquery'
    actions:{
       getUserMessage(state){
 
-         $.post('http://localhost:1234/api/envelope/getUserMessage').then(res=>{
+         sender('/api/envelope/getUserMessage').then(res=>{
             state.commit('userMessage',res.data)
          })
-         $.post('http://localhost:1234/api/adminMessage/userGetMessage').then(res=>{
+         sender('/api/adminMessage/userGetMessage').then(res=>{
             state.commit('webMessage',res.data)
          })
 
-         $.post('http://localhost:1234/api/envelope/getUnreadCount').then(res=>{
+         sender('/api/envelope/getUnreadCount').then(res=>{
             state.commit('saveUserCount',res.data)
          })
-         $.post('http://localhost:1234/api/adminMessage/getUnreadCount').then(res=>{
+         sender('/api/adminMessage/getUnreadCount').then(res=>{
             state.commit('saveWebCount',res.data)
          })
 

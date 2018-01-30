@@ -51,7 +51,8 @@
 </template>
 
 <script>
-import $ from 'jquery'
+import sender from '@/Sender.js'
+
 
 export default{
    mounted:function(){
@@ -65,7 +66,7 @@ export default{
    },
    methods:{
       loginEvent(){
-         $.post('http://localhost:1234/api/user/login',this.loginFormData).then(res=>{
+         sender('/api/user/login',this.loginFormData).then(res=>{
             if(res.success){
                this.$store.dispatch('isLogin',{want:['username','email','tel','id','permission']});
                this.$router.push({path:'/'});

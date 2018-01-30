@@ -142,6 +142,8 @@
 </template>
 
 <script>
+import sender from '@/Sender.js'
+
 import 'amazeui/dist/js/amazeui.js'
 
 export default ({
@@ -153,7 +155,7 @@ export default ({
          $btn.button('loading');
          this.$store.dispatch('progress','start');
          // response
-         $.post('http://localhost:1234/api/commissioned/create',this.row).then(res=>{
+         sender('/api/commissioned/create',this.row).then(res=>{
             this.$store.dispatch('progress','done');
             $btn.button('reset');
             this.$store.dispatch('_alert',{'title':'添加成功～','content':'请耐心等待审核'});

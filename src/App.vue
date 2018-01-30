@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-     <div id="appHome" v-cloak>
+    <div id="appHome" v-cloak>
       <!-- topbar -->
       <div id="head">
          <!-- 导航 -->
@@ -158,12 +158,14 @@
       </div>
       <!-- foolter -->
       <div id="foolter"></div>
-   </div>
+    </div>
   </div>
 </template>
 
 <script>
-import $ from 'jquery'
+
+import sender from '@/Sender.js'
+
 
 export default {
   name: 'App',
@@ -189,7 +191,7 @@ export default {
      },
      logoutEvent()
      {
-        $.post('http://localhost:1234/api/user/logout').then(res=>{
+        sender('/api/user/logout').then(res=>{
            store.dispatch('user/saveUser',null);
            router.push({path:'/'});
         })
@@ -222,7 +224,14 @@ export default {
 [v-cloak]{
    display: none;
 }
-
+img {
+  box-sizing: border-box;
+  /* v2.3 开始移除以下代码，详见 #502 */
+  /* max-width: 100%;
+  height: auto;*/
+  vertical-align: middle;
+  border: 0;
+}
 /*#appHome{
   background-image: url('https://farm4.staticflickr.com/3854/32764887833_7c91946505_k.jpg');
   height: 500px;
@@ -236,11 +245,6 @@ export default {
   position: absolute;
 }
 
-#head .am-topbar{
-  background: rgba(0,0,0,0.1);
-  border-bottom: none;
-  color:#fff;
-}
 
 .mark{
    position:relative;

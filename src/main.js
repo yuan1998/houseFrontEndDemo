@@ -7,6 +7,8 @@ import App from './App'
 import $ from 'jquery'
 import 'amazeui/dist/css/amazeui.css'
 import 'amazeui/dist/js/amazeui.js'
+import sender from './Sender.js'
+
 Vue.config.productionTip = false
 /* eslint-disable no-new */
 window.$ = $;

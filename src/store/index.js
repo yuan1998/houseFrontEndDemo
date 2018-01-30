@@ -5,7 +5,8 @@ import messageStore from '@/store/messagemodel.js'
 import $ from 'jquery'
 Vue.use(Vuex)
 
-import cfg from '../../cfg'
+import sender from '@/Sender.js'
+
 
 export default new Vuex.Store({
    modules:{
@@ -41,7 +42,7 @@ export default new Vuex.Store({
          document.querySelector('#alertBtn').click();
       },
       isLogin(state,data){
-         $.post(cfg.api_base_url+'/api/user/is_login',data).then((res,textStatus,response)=>{
+         sender('/api/user/is_login',data).then((res,textStatus,response)=>{
 
             let token =response.getResponseHeader('s_token');
             console.log(token);
@@ -74,6 +75,15 @@ export default new Vuex.Store({
       },
       add({commit}){
          commit('add');
+      },
+      readerFile(state,{file,arr}){
+         let reader = new FileReader(),result;
+
+         reader.onload = (e) =>{
+            arr.push(e.target.result);
+         }
+
+         reader.readAsDataURL(file);
       }
    },
    getters:{

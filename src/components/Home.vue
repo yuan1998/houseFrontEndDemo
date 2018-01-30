@@ -26,6 +26,7 @@
 </template>
 
 <script>
+import sender from '@/Sender.js'
 
 export default {
    mounted: function() {
@@ -42,7 +43,7 @@ export default {
       search(){
          if(!this.searchValidator())
             return;
-         $.post('/api/house/titleSearch',{keyword:this.keyword}).then(res=>{
+         sender('/api/house/titleSearch',{keyword:this.keyword}).then(res=>{
             this.result = res.data;
          })
       },
@@ -67,6 +68,11 @@ export default {
 </script>
 
 <style>
+#head .am-topbar{
+  background: rgba(0,0,0,0.1);
+  border-bottom: none;
+  color:#fff;
+}
 
 .home-search-bar{
    background-image: url('../../storage/city1.jpg');

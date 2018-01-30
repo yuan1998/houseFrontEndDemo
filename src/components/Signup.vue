@@ -62,7 +62,7 @@
 </template>
 
 <script>
-import $ from 'jquery'
+import sender from '@/Sender.js'
 
 export default {
    mounted: function() {
@@ -85,7 +85,7 @@ export default {
          if(!this.submitValidator())
             return;
 
-         $.post('http://localhost:1234/api/user/signup',this.signupFormData).then(res=>{
+         sender('/api/user/signup',this.signupFormData).then(res=>{
             this.$router.push({path:'/login'});
          })
       },
@@ -142,17 +142,17 @@ export default {
          else this.confirmPassword = false;
       },
       usernameExists(value){
-         $.post('http://localhost:1234/api/user/usernameExists',{username:value}).then(res=>{
+         sender('/api/user/usernameExists',{username:value}).then(res=>{
                this.username = res.data ? '用户名已存在.':false;
          })
       },
       emailExists(value){
-         $.post('http://localhost:1234/api/user/emailExists',{email:value}).then(res=>{
+         sender('/api/user/emailExists',{email:value}).then(res=>{
                this.email = res.data ? '邮箱已注册.':false;
          })
       },
       telExists(value){
-         $.post('http://localhost:1234/api/user/telExists',{tel:value}).then(res=>{
+         sender('/api/user/telExists',{tel:value}).then(res=>{
                this.tel = res.data ? '手机已注册.':false;
          })
       },

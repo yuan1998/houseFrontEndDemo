@@ -1,18 +1,28 @@
 <template>
    <transition >
       <div class="content" v-show="start" style="padding-top: 50px;">
-         <div class="am-progress am-progress-xs">
-            <div class="am-progress-bar" style="width: 20%"></div>
+         <div class="am-progress am-progress-xs" data-am-sticky="{top:60}">
+            <div class="am-progress-bar" :style="{width:Math.ceil((100 / 9) * page) +'%'}"></div>
          </div>
          <div class="am-container">
-            <div class="am-g">
-               <form class="am-form  am-g">
-                  <div class="back-btn" style="height: 60px;">
-                     <div v-show="page >1" style="font-size: 1.5em;cursor:pointer;">
-                        <i class="am-icon-angle-left"></i class="am-icon-angle-left"><a @click="page--" class=" am-link-muted">上一步</a>
+            <div class="">
+               <form class="am-form" style="min-width: 400px;">
+                  <div class="back-btn" v-show="page<9" style="height: 60px;background: #fff;" data-am-sticky>
+                     <div class="am-fl">
+                        <div v-show="page >1">
+                           <button @click="page--" class="am-btn am-btn-link am-link-muted" style="font-size: 1.5em;cursor:pointer;">
+                              <i class="am-icon-angle-left"></i>
+                                 上一步
+                           </button>
+                        </div>
+                     </div>
+                     <div class="am-fr">
+                        <button :disabled="!pageValidate" style="font-size: 1.5em;cursor:pointer;" class="am-btn am-btn-link am-link-muted" v-on="{click:page == 8 ? submitFormData : page++}">
+                           下一步<i class="am-icon-angle-right"></i>
+                        </button>
                      </div>
                   </div>
-                  <div v-show="page == 1" class="page-1 ">
+                  <div v-if="page == 1" class="page-1 ">
                      <div class="content">
                         <div class=' am-u-lg-8 am-u-end'>
                            <div class="header">
@@ -30,347 +40,409 @@
                            </div>
                         </div>
                      </div>
-                     <div class='am-block'>
-                        <button type="button" class="am-btn am-btn-primary" @click="page++">是的</button>
-                     </div>
                   </div>
-                  <div v-show="page == 2" class="page-2">
+                  <div v-else-if="page == 2" class="page-2">
                      <div class="content ">
                         <div class="am-u-lg-8 am-u-end">
                            <div class="header">
                               <h1>补充一些基本资料</h1>
                            </div>
                            <div class="am-g">
-                              <div class="am-form-group">
-                                 <label>面积</label>
-                                 <input type="text" v-model="formData.area">
+                              <div class="am-u-md-6">
+                                 <div class="am-form-group">
+                                    <label>面积</label>
+                                    <input v-model.number="formData.area" type="number" placeholder="房屋的总面积">
+                                 </div>
+                              </div>
+                              <div class="am-u-md-6">
+                                 <div class="am-form-group">
+                                    <label>房屋朝向</label>
+                                    <select v-model="formData.direction">
+                                       <option value="">请选择</option>
+                                       <option value="东">东</option>
+                                       <option value="南">南</option>
+                                       <option value="西">西</option>
+                                       <option value="北">北</option>
+                                       <option value="西南">西南</option>
+                                       <option value="东南">东南</option>
+                                       <option value="西北">西北</option>
+                                       <option value="东北">东北</option>
+                                    </select>
+                                 </div>
                               </div>
                            </div>
                            <div class="am-g">
-                              <div class="am-g">
-                                 <div class="am-u-md-6">
-                                    <div class="am-form-group">
-                                       <label>总楼层</label>
-                                       <input type="text" v-model="formData.floors">
+                              <div class="am-u-md-6">
+                                 <div class="am-form-group">
+                                    <label>总楼层</label>
+                                    <input type="number" v-model.number="formData.floors" placeholder="一共有多少层">
+                                    <div>
+                                       <label>
+                                          <input type="checkbox" v-model="fu.status">
+                                          <small>有地下楼层</small>
+                                       </label>
+
+                                    </div>
+                                 </div>
+                              </div>
+                              <div class="am-u-md-6">
+                                 <div class="am-form-group">
+                                    <label>所在楼层</label>
+                                    <select v-model="formData.floor" >
+                                       <template v-if="formData.floors >0">
+                                          <option value="" selected>请选择楼层</option>
+                                          <option v-for="n in range(fu.status ? -formData.negative_floor : 0,formData.floors)" :value="n">{{n}}</option>
+                                       </template>
+                                       <option v-else selected value="">请先输入总楼层</option>
+                                    </select>
+                                 </div>
+                              </div>
+                           </div>
+                           <div class="am-g">
+                              <div class="am-u-md-6" v-show="fu.status">
+                                 <div class="am-form-group" >
+                                    <label>有几层地下</label>
+                                    <select v-model="formData.negative_floor">
+                                       <template v-if="formData.floors > 0">
+                                          <option value="0" selected>有多少层地下</option>
+                                          <option v-for="n in range(0,formData.floors)" :value="n">{{n}}</option>
+                                       </template>
+                                       <option v-else selected value="0">请先输入总楼层</option>
+                                    </select>
+                                 </div>
+                              </div>
+                              <div class="am-u-md-6 am-u-end">
+                                 <div class="am-form-group">
+                                    <label>电梯</label>
+                                    <select v-model="formData.elevator">
+                                       <option value="">请选择</option>
+                                       <option value="无">无</option>
+                                       <option value="其他">其他</option>
+                                       <option v-for="n in range(1,20)" :value="'一梯'+n+'户'">一梯{{n}}户</option>
+                                    </select>
+                                 </div>
+                              </div>
+                           </div>
+                           <div class="am-g">
+                              <div class="am-u-md-6">
+                                 <div class="am-form-group">
+                                    <label>房屋装修</label>
+                                    <select v-model="formData.Decoration">
+                                       <option value="">请选择</option>
+                                       <option value="精装">精装</option>
+                                       <option value="简装">简装</option>
+                                       <option value="毛胚房">毛胚房</option>
+                                       <option value="其他">其他</option>
+                                    </select>
+                                 </div>
+                              </div>
+                              <div class="am-u-md-6">
+                                 <div class="am-form-group">
+                                    <label>供暖</label>
+                                    <select v-model="formData.supply_heating">
+                                       <option value="">请选择</option>
+                                       <option value="集体供暖">集体供暖</option>
+                                       <option value="个人供暖">个人供暖</option>
+                                       <option value="无供暖">无供暖</option>
+                                       <option value="其他">其他</option>
+                                    </select>
+                                 </div>
+                              </div>
+                           </div>
+                           <div class="am-g">
+                              <div class="am-u-md-6">
+                                 <div class="am-form-group">
+                                    <label>房屋年限</label>
+                                    <input type="number" v-model.number="formData.house_age_limit" placeholder="房屋年限">
+                                 </div>
+                              </div>
+                              <div class="am-u-md-6">
+                                 <div class="am-form-group">
+                                    <label>楼房年龄</label>
+                                    <input type="number" v-model.number="formData.floor_age" placeholder="楼房年龄">
+                                 </div>
+                              </div>
+                           </div>
+                           <div class="am-g">
+                              <div class="am-u-md-6">
+                                 <div class="am-form-group">
+                                    <label>
+                                       户型
+                                    </label>
+                                    <div class="room">
+                                       <div class=" am-g">
+                                          <div class="am-u-sm-6">
+                                             <span class="am-text-default">大厅</span>
+                                          </div>
+                                          <div class="count-bar am-u-sm-6">
+                                             <div class="am-u-sm-4">
+                                                <button class="" :disabled="formData.room_count.hall ===0" @click="formData.room_count.hall--">-</button>
+                                             </div>
+                                             <div class="am-u-sm-4">
+                                                <div class="room_count"> {{formData.room_count.hall}}</div>
+                                             </div>
+                                             <div class="am-u-sm-4">
+                                                <button class="" @click="formData.room_count.hall++">+</button>
+                                             </div>
+                                          </div>
+                                       </div>
+                                       <div class=" am-g">
+                                          <div class="am-u-sm-6">
+                                             <span class="am-text-default">卧室</span>
+                                          </div>
+                                          <div class="count-bar am-u-sm-6">
+                                             <div class="am-u-sm-4">
+                                                <button class="" :disabled="formData.room_count.bedroom <= 1" @click="formData.room_count.bedroom--">-</button>
+                                             </div>
+                                             <div class="am-u-sm-4">
+                                                <div class="room_count"> {{formData.room_count.bedroom}} </div>
+                                             </div>
+                                             <div class="am-u-sm-4">
+                                                <button class="" @click="formData.room_count.bedroom++">+</button>
+                                             </div>
+                                          </div>
+                                       </div>
+                                       <div class=" am-g">
+                                          <div class="am-u-sm-6">
+                                             <span class="am-text-default">卫生间</span>
+                                          </div>
+                                          <div class="count-bar am-u-sm-6">
+                                             <div class="am-u-sm-4">
+                                                <button class="" :disabled="formData.room_count.bathroom ===0" @click="formData.room_count.bathroom -= 0.5">-</button>
+                                             </div>
+                                             <div class="am-u-sm-4">
+                                                <div class="room_count"> {{formData.room_count.bathroom}} </div>
+                                             </div>
+                                             <div class="am-u-sm-4">
+                                                <button class="" @click="formData.room_count.bathroom += 0.5">+</button>
+                                             </div>
+                                          </div>
+                                       </div>
+                                       <div class=" am-g">
+                                          <div class="am-u-sm-6">
+                                             <span class="am-text-default">阳台</span>
+                                          </div>
+                                          <div class="count-bar am-u-sm-6">
+                                             <div class="am-u-sm-4">
+                                                <button class="" :disabled="formData.room_count.balcony ===0" @click="formData.room_count.balcony--">-</button>
+                                             </div>
+                                             <div class="am-u-sm-4">
+                                                <div class="room_count"> {{formData.room_count.balcony}} </div>
+                                             </div>
+                                             <div class="am-u-sm-4">
+                                                <button class="" @click="formData.room_count.balcony++">+</button>
+                                             </div>
+                                          </div>
+                                       </div>
+                                       <div class=" am-g">
+                                          <div class="am-u-sm-6">
+                                             <span class="am-text-default">厨房</span>
+                                          </div>
+                                          <div class="count-bar am-u-sm-6">
+                                             <div class="am-u-sm-4">
+                                                <button class="" :disabled="formData.room_count.kitchen ===0" @click="formData.room_count.kitchen--">-</button>
+                                             </div>
+                                             <div class="am-u-sm-4">
+                                                <div class="room_count"> {{formData.room_count.kitchen}} </div>
+                                             </div>
+                                             <div class="am-u-sm-4">
+                                                <button class="" @click="formData.room_count.kitchen++">+</button>
+                                             </div>
+                                          </div>
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  <div v-else-if="page == 3" class="page-3">
+                     <div class="content am-cf">
+                           <div class="am-u-lg-8 am-u-end">
+                                 <div class="header">
+                                    <div>
+                                       <h1>再补充一些资料</h1>
+                                    </div>
+                                 </div>
+                                 <div class="am-g">
+                                    <div class="am-text-center am-text-xl">
+                                       随便描述下房间的大小
+                                    </div>
+                                 </div>
+                                 <div class="am-g" v-show="formData.room_count.hall > 0">
+                                    <div class="am-form-group am-cf" v-for="n in range(1,formData.room_count.hall)">
+                                       <label>大厅{{n}}</label>
                                        <div>
-                                          <label>
-                                             <input type="checkbox" v-model="fu.status">
-                                             <span>有地下楼层</span>
-                                          </label>
-                                       </div>
-                                    </div>
-                                 </div>
-                                 <div class="am-u-md-6">
-                                    <div class="am-form-group">
-                                       <label>所在楼层</label>
-                                       <select v-model="formData.floor" >
-                                          <template v-if="formData.floors >0">
-                                             <option value="" selected>请选择楼层</option>
-                                             <option v-for="n in range(fu.num,formData.floors)" :value="n">{{n}}</option>
-                                          </template>
-                                          <option v-else selected value="">请先输入总楼层</option>
-                                       </select>
-                                    </div>
-                                 </div>
-                              </div>
-                              <div class="am-g" v-show="fu.status">
-                                 <div class="am-u-md-6">
-                                    <div class="am-form-group" >
-                                       <label>有几层地下</label>
-                                       <select v-model="fu.num">
-                                          <template v-if="formData.floors > 0">
-                                             <option value="0" selected>请选择楼层</option>
-                                             <option v-for="n in range(0,formData.floors)" :value="-n">{{-n}}</option>
-                                          </template>
-                                          <option v-else selected value="0">请先输入总楼层</option>
-                                       </select>
-                                    </div>
-                                 </div>
-                              </div>
-                           </div>
-                           <div class="am-g">
-                              <div class="am-g">
-                                 <div class="am-u-md-6">
-                                    <div>
-                                       <h3>户型</h3>
-                                    </div>
-                                    <div>
-                                       <div class=" am-g">
-                                          <div class="am-u-sm-6">
-                                             <span>大厅</span>
-                                          </div>
-                                          <div class="am-u-sm-6">
-                                             <div class="am-u-sm-4">
-                                                <button class="" :disabled="formData.room_count.hall ===0" @click="formData.room_count.hall--"><span>-</span></button>
+                                          <div >
+                                             <div class="am-u-md-6">
+                                                <div class="am-form-group">
+                                                   <div class="am-input-group">
+                                                      <input class="am-form-field" :placeholder="'大厅'+n+'的面积'" type="number" v-model.number="formData.huxing_map_info.hall['hall_'+n]['arae']">
+                                                      <span style="background: rgba(0,0,0,0);" class="am-input-group-label">m²</span>
+                                                   </div>
+                                                </div>
                                              </div>
-                                             <div class="am-u-sm-4">
-                                                <div>{{formData.room_count.hall}}</div>
-                                             </div>
-                                             <div class="am-u-sm-4">
-                                                <button class="" @click="formData.room_count.hall++"><span>+</span></button>
-                                             </div>
-                                          </div>
-                                       </div>
-                                       <div class=" am-g">
-                                          <div class="am-u-sm-6">
-                                             <span>卧室</span>
-                                          </div>
-                                          <div class="am-u-sm-6">
-                                             <div class="am-u-sm-4">
-                                                <button class="" :disabled="formData.room_count.bedroom ===0" @click="formData.room_count.bedroom--"><span>-</span></button>
-                                             </div>
-                                             <div class="am-u-sm-4">
-                                                <div> {{formData.room_count.bedroom}} </div>
-                                             </div>
-                                             <div class="am-u-sm-4">
-                                                <button class="" @click="formData.room_count.bedroom++"><span>+</span></button>
-                                             </div>
-                                          </div>
-                                       </div>
-                                       <div class=" am-g">
-                                          <div class="am-u-sm-6">
-                                             <span>卫生间</span>
-                                          </div>
-                                          <div class="am-u-sm-6">
-                                             <div class="am-u-sm-4">
-                                                <button class="" :disabled="formData.room_count.bathroom ===0" @click="formData.room_count.bathroom -= 0.5"><span>-</span></button>
-                                             </div>
-                                             <div class="am-u-sm-4">
-                                                <div> {{formData.room_count.bathroom}} </div>
-                                             </div>
-                                             <div class="am-u-sm-4">
-                                                <button class="" @click="formData.room_count.bathroom += 0.5"><span>+</span></button>
-                                             </div>
-                                          </div>
-                                       </div>
-                                       <div class=" am-g">
-                                          <div class="am-u-sm-6">
-                                             <span>阳台</span>
-                                          </div>
-                                          <div class="am-u-sm-6">
-                                             <div class="am-u-sm-4">
-                                                <button class="" :disabled="formData.room_count.balcony ===0" @click="formData.room_count.balcony--"><span>-</span></button>
-                                             </div>
-                                             <div class="am-u-sm-4">
-                                                <div> {{formData.room_count.balcony}} </div>
-                                             </div>
-                                             <div class="am-u-sm-4">
-                                                <button class="" @click="formData.room_count.balcony++"><span>+</span></button>
-                                             </div>
-                                          </div>
-                                       </div>
-                                       <div class=" am-g">
-                                          <div class="am-u-sm-6">
-                                             <span>厨房</span>
-                                          </div>
-                                          <div class="am-u-sm-6">
-                                             <div class="am-u-sm-4">
-                                                <button class="" :disabled="formData.room_count.kitchen ===0" @click="formData.room_count.kitchen--"><span>-</span></button>
-                                             </div>
-                                             <div class="am-u-sm-4">
-                                                <div> {{formData.room_count.kitchen}} </div>
-                                             </div>
-                                             <div class="am-u-sm-4">
-                                                <button class="" @click="formData.room_count.kitchen++"><span>+</span></button>
-                                             </div>
-                                          </div>
-                                       </div>
-                                    </div>
-                                 </div>
-                                 <div class="am-u-md-6"></div>
-                              </div>
-                           </div>
-                        </div>
-                     </div>
-                     <div>
-                        <button type="button" class="am-btn am-btn-primary" @click="page++">Next</button>
-                     </div>
-                  </div>
-                  <div v-show="page == 3" class="page-3">
-                     <div class="content am-cf">
-                        <div class="am-cf">
-                           <div class="am-u-md-8 am-u-end">
-                              <div class="am-g">
-                                 <div class="header">
-                                    <div>
-                                       <h1>再补充一些资料</h1>
-                                    </div>
-                                 </div>
-                                 <div class="">
-                                    <div class='am-cf'>
-                                       <div class="am-g">
-                                          <div class="am-u-md-6 scroll">
-                                             <div class="am-form-group am-cf" v-for="n in range(1,formData.room_count.hall)">
-                                                <label class="am-u-md-3 am-g">大厅{{n}}</label>
-                                                <div class="am-input-group am-u-md-9">
-                                                   <input class="am-form-field" type="text" v-model="formData.huxing_map_info.hall[n]">
-                                                   <span class="am-input-group-label">m²</span>
+                                             <div class="am-u-md-6">
+                                                <div class="am-form-group">
+                                                   <select v-model="formData.huxing_map_info.hall['hall_'+n]['direction']">
+                                                      <option value="">请选择房间朝向</option>
+                                                      <option value="东">东</option>
+                                                      <option value="南">南</option>
+                                                      <option value="西">西</option>
+                                                      <option value="北">北</option>
+                                                      <option value="西南">西南</option>
+                                                      <option value="东南">东南</option>
+                                                      <option value="西北">西北</option>
+                                                      <option value="东北">东北</option>
+                                                      <option value="无">无</option>
+                                                   </select>
                                                 </div>
                                              </div>
                                           </div>
-                                          <div class="am-u-md-6">
-                                             随便描述下房间的大小
-                                          </div>
                                        </div>
                                     </div>
                                  </div>
-                              </div>
-                           </div>
-                        </div>
-                     </div>
-                     <div class="am-cf am-block">
-                        <button type="button" class="am-btn am-btn-primary" @click="page++">Next</button>
-                     </div>
-                  </div>
-                  <div v-show="page == 4" class="page-4">
-                     <div class="content am-cf">
-                        <div class="am-cf">
-                           <div class="am-u-md-8 am-u-end">
-                              <div class="am-g">
-                                 <div class="header">
-                                    <div>
-                                       <h1>再补充一些资料</h1>
-                                    </div>
-                                 </div>
-                                 <div class="">
-                                    <div class='am-cf'>
-                                       <div class="am-g">
-                                          <div class="am-u-md-6 scroll">
-                                             <div class="am-form-group am-cf" v-for="n in range(1,formData.room_count.bedroom)">
-                                                <label class="am-u-md-3 am-g">卧室{{n}}</label>
-                                                <div class="am-input-group am-u-md-9">
-                                                   <input class="am-form-field" type="text" v-model="formData.huxing_map_info.bedroom[n]">
-                                                   <span class="am-input-group-label">m²</span>
+                                 <div class="am-g" v-show="formData.room_count.bedroom > 0">
+                                    <div class="am-form-group am-cf" v-for="n in range(1,formData.room_count.bedroom)">
+                                       <label>卧室{{n}}</label>
+                                       <div>
+                                          <div >
+                                             <div class="am-u-md-6">
+                                                <div class="am-form-group">
+                                                   <div class="am-input-group">
+                                                      <input class="am-form-field" :placeholder="'卧室'+n+'的面积'" type="number" v-model.number="formData.huxing_map_info.bedroom['bedroom_'+n]['arae']">
+                                                      <span style="background: rgba(0,0,0,0);" class="am-input-group-label">m²</span>
+                                                   </div>
+                                                </div>
+                                             </div>
+                                             <div class="am-u-md-6">
+                                                <div class="am-form-group">
+                                                   <select v-model="formData.huxing_map_info.bedroom['bedroom_'+n]['direction']">
+                                                      <option value="">请选择房间朝向</option>
+                                                      <option value="东">东</option>
+                                                      <option value="南">南</option>
+                                                      <option value="西">西</option>
+                                                      <option value="北">北</option>
+                                                      <option value="西南">西南</option>
+                                                      <option value="东南">东南</option>
+                                                      <option value="西北">西北</option>
+                                                      <option value="东北">东北</option>
+                                                      <option value="无">无</option>
+                                                   </select>
                                                 </div>
                                              </div>
                                           </div>
-                                          <div class="am-u-md-6">
-                                             随便描述下房间的大小
-                                          </div>
                                        </div>
                                     </div>
                                  </div>
-                              </div>
-                           </div>
-                        </div>
-                     </div>
-                     <div class="am-cf am-block">
-                        <button type="button" class="am-btn am-btn-primary" @click="page++">Next</button>
-                     </div>
-                  </div>
-                  <div v-show="page == 5" class="page-5">
-                     <div class="content am-cf">
-                        <div class="am-cf">
-                           <div class="am-u-md-8 am-u-end">
-                              <div class="am-g">
-                                 <div class="header">
-                                    <div>
-                                       <h1>再补充一些资料</h1>
-                                    </div>
-                                 </div>
-                                 <div class="">
-                                    <div class='am-cf'>
-                                       <div class="am-g">
-                                          <div class="am-u-md-6 scroll">
-                                             <div class="am-form-group am-cf" v-for="n in range(1,formData.room_count.bathroom)">
-                                                <label class="am-u-md-3 am-g">卫生间{{n}}</label>
-                                                <div class="am-input-group am-u-md-9">
-                                                   <input class="am-form-field" type="text" v-model="formData.huxing_map_info.bathroom[n]">
-                                                   <span class="am-input-group-label">m²</span>
+                                 <div class="am-g" v-show="formData.room_count.bathroom > 0">
+                                    <div class="am-form-group am-cf" v-for="n in range(1,formData.room_count.bathroom)">
+                                       <label>卫生间{{n}}</label>
+                                       <div>
+                                          <div >
+                                             <div class="am-u-md-6">
+                                                <div class="am-form-group">
+                                                   <div class="am-input-group">
+                                                      <input class="am-form-field" :placeholder="'卫生间'+n+'的面积'" type="number" v-model.number="formData.huxing_map_info.bathroom['bathroom_'+n]['arae']">
+                                                      <span style="background: rgba(0,0,0,0);" class="am-input-group-label">m²</span>
+                                                   </div>
+                                                </div>
+                                             </div>
+                                             <div class="am-u-md-6">
+                                                <div class="am-form-group">
+                                                   <select v-model="formData.huxing_map_info.bathroom['bathroom_'+n]['direction']">
+                                                      <option value="">请选择房间朝向</option>
+                                                      <option value="东">东</option>
+                                                      <option value="南">南</option>
+                                                      <option value="西">西</option>
+                                                      <option value="北">北</option>
+                                                      <option value="西南">西南</option>
+                                                      <option value="东南">东南</option>
+                                                      <option value="西北">西北</option>
+                                                      <option value="东北">东北</option>
+                                                      <option value="无">无</option>
+                                                   </select>
                                                 </div>
                                              </div>
                                           </div>
-                                          <div class="am-u-md-6">
-                                             随便描述下房间的大小
-                                          </div>
                                        </div>
                                     </div>
                                  </div>
-                              </div>
-                           </div>
-                        </div>
-                     </div>
-                     <div class="am-cf am-block">
-                        <button type="button" class="am-btn am-btn-primary" @click="page++">Next</button>
-                     </div>
-                  </div>
-                  <div v-show="page == 6" class="page-6">
-                     <div class="content am-cf">
-                        <div class="am-cf">
-                           <div class="am-u-md-8 am-u-end">
-                              <div class="am-g">
-                                 <div class="header">
-                                    <div>
-                                       <h1>再补充一些资料</h1>
-                                    </div>
-                                 </div>
-                                 <div class="">
-                                    <div class='am-cf'>
-                                       <div class="am-g">
-                                          <div class="am-u-md-6 scroll">
-                                             <div class="am-form-group am-cf" v-for="n in range(1,formData.room_count.balcony)">
-                                                <label class="am-u-md-3 am-g">阳台{{n}}</label>
-                                                <div class="am-input-group am-u-md-9">
-                                                   <input class="am-form-field" type="text" v-model="formData.huxing_map_info.balcony[n]">
-                                                   <span class="am-input-group-label">m²</span>
+                                 <div class="am-g" v-show="formData.room_count.balcony > 0">
+                                    <div class="am-form-group am-cf" v-for="n in range(1,formData.room_count.balcony)">
+                                       <label>阳台{{n}}</label>
+                                       <div>
+                                          <div >
+                                             <div class="am-u-md-6">
+                                                <div class="am-form-group">
+                                                   <div class="am-input-group">
+                                                      <input class="am-form-field" :placeholder="'阳台'+n+'的面积'" type="number" v-model.number="formData.huxing_map_info.balcony['balcony_'+n]['arae']">
+                                                      <span style="background: rgba(0,0,0,0);" class="am-input-group-label">m²</span>
+                                                   </div>
+                                                </div>
+                                             </div>
+                                             <div class="am-u-md-6">
+                                                <div class="am-form-group">
+                                                   <select v-model="formData.huxing_map_info.balcony['balcony_'+n]['direction']">
+                                                      <option value="">请选择房间朝向</option>
+                                                      <option value="东">东</option>
+                                                      <option value="南">南</option>
+                                                      <option value="西">西</option>
+                                                      <option value="北">北</option>
+                                                      <option value="西南">西南</option>
+                                                      <option value="东南">东南</option>
+                                                      <option value="西北">西北</option>
+                                                      <option value="东北">东北</option>
+                                                      <option value="无">无</option>
+                                                   </select>
                                                 </div>
                                              </div>
                                           </div>
-                                          <div class="am-u-md-6">
-                                             随便描述下房间的大小
-                                          </div>
                                        </div>
                                     </div>
                                  </div>
-                              </div>
-                           </div>
-                        </div>
-                     </div>
-                     <div class="am-cf am-block">
-                        <button type="button" class="am-btn am-btn-primary" @click="page++">Next</button>
-                     </div>
-                  </div>
-                  <div v-show="page == 7" class="page-7">
-                     <div class="content am-cf">
-                        <div class="am-cf">
-                           <div class="am-u-md-8 am-u-end">
-                              <div class="am-g">
-                                 <div class="header">
-                                    <div>
-                                       <h1>再补充一些资料</h1>
-                                    </div>
-                                 </div>
-                                 <div class="">
-                                    <div class='am-cf'>
-                                       <div class="am-g">
-                                          <div class="am-u-md-6 scroll">
-                                             <div class="am-form-group am-cf" v-for="n in range(1,formData.room_count.kitchen)">
-                                                <label class="am-u-md-3 am-g">厨房{{n}}</label>
-                                                <div class="am-input-group am-u-md-9">
-                                                   <input class="am-form-field" type="text" v-model="formData.huxing_map_info.kitchen[n]">
-                                                   <span class="am-input-group-label">m²</span>
+                                 <div class="am-g" v-show="formData.room_count.kitchen > 0">
+                                    <div class="am-form-group am-cf" v-for="n in range(1,formData.room_count.kitchen)">
+                                       <label>厨房{{n}}</label>
+                                       <div>
+                                          <div >
+                                             <div class="am-u-md-6">
+                                                <div class="am-form-group">
+                                                   <div class="am-input-group">
+                                                      <input class="am-form-field" :placeholder="'厨房'+n+'的面积'" type="number" v-model.number="formData.huxing_map_info.kitchen['kitchen_'+n]['arae']">
+                                                      <span style="background: rgba(0,0,0,0);" class="am-input-group-label">m²</span>
+                                                   </div>
+                                                </div>
+                                             </div>
+                                             <div class="am-u-md-6">
+                                                <div class="am-form-group">
+                                                   <select v-model="formData.huxing_map_info.kitchen['kitchen_'+n]['direction']">
+                                                      <option value="">请选择房间朝向</option>
+                                                      <option value="东">东</option>
+                                                      <option value="南">南</option>
+                                                      <option value="西">西</option>
+                                                      <option value="北">北</option>
+                                                      <option value="西南">西南</option>
+                                                      <option value="东南">东南</option>
+                                                      <option value="西北">西北</option>
+                                                      <option value="东北">东北</option>
+                                                      <option value="无">无</option>
+                                                   </select>
                                                 </div>
                                              </div>
                                           </div>
-                                          <div class="am-u-md-6">
-                                             随便描述下房间的大小
-                                          </div>
                                        </div>
                                     </div>
                                  </div>
-                              </div>
                            </div>
-                        </div>
-                     </div>
-                     <div class="am-cf am-block">
-                        <button type="button" class="am-btn am-btn-primary" @click="page++">Next</button>
                      </div>
                   </div>
-                  <div v-show="page == 8" class="page-8">
+                  <div v-else-if="page == 4" class="page-4">
                      <div class="content">
                         <div class="am-cf">
-                           <div class="am-u-md-8 am-u-end">
-                              <div class="am-g">
+                           <div class="am-u-md-12 am-u-end">
+                              <div class="">
                                  <div class="header">
                                     <div>
                                        <h1>上传一些图片</h1>
@@ -379,13 +451,389 @@
                                  <div class="body">
                                     <div class="am-u-md-12">
                                        <div class="am-g">
-                                          <div></div>
+                                          <div>
+                                             <div class="am-text-center">
+                                                <span class="am-text-xl am-block">选择一张你房子的美照作为封面</span>
+                                             </div>
+                                          </div>
+                                          <div>
+                                             <div class="am-u-md-11 am-u-lg-10 am-u-sm-centered">
+                                                <div class="am-panel am-g">
+                                                   <div class="am-panel-bd am-text-center am-g thumbnail-bar am-cf cover-bar" v-if="formData.house_img.cover != false">
+                                                      <div class="am-g " style="max-height: 500px;position:relative;display:inline-block" @mouseenter="closeBtnOn" @mouseleave="closeBtnOff">
+                                                         <img class="am-radius am-img-responsive" style="" :src="formData.house_img.cover[0]">
+                                                         <span class="close">
+                                                            <button @click="removeIndex(formData.house_img.cover,0)" type="button" class="am-btn">删除图片</button>
+                                                         </span>
+                                                      </div>
+                                                   </div>
+                                                   <div v-else @dragenter="dragenter" @dragover="dragover" @drop="upload($event,formData.house_img.cover)" class="am-panel-bd upload-bar">
+                                                      <div class="am-text-center">
+                                                         <div class="">
+                                                            <label for="upload-file">
+                                                               <div class="am-text-center upload-ct">
+                                                                  <div><i class="am-icon-plus am-icon-lg"></i></div>
+                                                                  <div class="">点击上传</div>
+                                                                  <small>或者将文件拖拽至框内</small>
+                                                               </div>
+                                                               <input id="upload-file" @change="upload($event,formData.house_img.cover)" accept="image/*" type="file" multiple style="display:  none;">
+                                                            </label>
+                                                         </div>
+                                                      </div>
+                                                   </div>
+                                                </div>
+                                             </div>
+                                          </div>
                                        </div>
-                                    </div>
-                                    <div class="am-u-md-12">
                                     </div>
                                  </div>
                               </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  <div v-else-if="page == 5" class="page-5">
+                     <div class="content">
+                        <div class="am-cf">
+                           <div class="am-u-md-12 am-u-end">
+                              <div class="">
+                                 <div class="header">
+                                    <div>
+                                       <h1>上传一些图片</h1>
+                                    </div>
+                                 </div>
+                                 <div class="body">
+                                    <div class="am-u-md-12">
+                                       <div class="am-margin-top am-g" v-show="formData.room_count.hall >0">
+                                          <div>
+                                             <div class="am-text-center">
+                                                <span class="am-text-xxl am-block">上传一些关于房间大厅的照片</span>
+                                                <small>最多4张照片，请选择能表面房间整体构造和装饰的图片</small>
+                                             </div>
+                                          </div>
+                                          <div>
+                                             <div class="am-u-md-11 am-u-lg-12 am-cf am-u-sm-centered">
+                                                <div class="am-g">
+                                                   <div v-show="formData.house_img.hall != false" class="am-u-lg-3 am-u-md-6" v-for="(item,index) in formData.house_img.hall">
+                                                      <div class="o-thumbnail am-vertical-align" @mouseenter="closeBtnOn" @mouseleave="closeBtnOff">
+                                                         <img class="am-radius am-img-responsive am-vertical-align-middle am-inline-block" :src="item">
+                                                         <span class="close">
+                                                            <button @click="removeIndex(formData.house_img.hall,index)" type="button" class="am-btn">删除图片</button>
+                                                         </span>
+                                                      </div>
+                                                   </div>
+                                                   <div v-show="formData.house_img.hall.length <4" @dragenter="dragenter" @dragover="dragover" @drop="upload($event,formData.house_img.hall)" class="am-u-lg-3 am-u-md-6 am-u-end  ">
+                                                      <div class=" am-u-sm-12 o-upload-bar am-vertical-align am-text-center">
+                                                         <div class="am-vertical-align-middle">
+                                                            <label class="">
+                                                               <div class="am-text-center upload-ct">
+                                                                  <div><i class="am-icon-plus am-icon-lg"></i></div>
+                                                                  <span class="">点击上传</span>
+                                                               </div>
+                                                               <input @change="upload($event,formData.house_img.hall)" accept="image/*" type="file" multiple style="display:  none;">
+                                                            </label>
+                                                         </div>
+                                                      </div>
+                                                   </div>
+                                                </div>
+                                             </div>
+                                          </div>
+                                       </div>
+                                       <div class="am-margin-top-lg am-g" v-show="formData.room_count.bedroom >0">
+                                          <div>
+                                             <div class="am-text-center">
+                                                <span class="am-text-xxl am-block">上传一些关于房间卧室的照片</span>
+                                                <small>最多4张照片，请选择能表面房间整体构造和装饰的图片</small>
+                                             </div>
+                                          </div>
+                                          <div>
+                                             <div class="am-u-md-11 am-u-lg-12 am-cf am-u-sm-centered">
+                                                <div class="am-g">
+                                                   <div v-show="formData.house_img.bedroom != false" class="am-u-lg-3 am-u-md-6" v-for="(item,index) in formData.house_img.bedroom">
+                                                      <div class="o-thumbnail am-vertical-align" @mouseenter="closeBtnOn" @mouseleave="closeBtnOff">
+                                                         <img class="am-radius am-img-responsive am-vertical-align-middle am-inline-block" :src="item">
+                                                         <span class="close">
+                                                            <button @click="removeIndex(formData.house_img.bedroom,index)" type="button" class="am-btn">删除图片</button>
+                                                         </span>
+                                                      </div>
+                                                   </div>
+                                                   <div v-show="formData.house_img.bedroom.length <4" @dragenter="dragenter" @dragover="dragover" @drop="upload($event,formData.house_img.bedroom)" class="am-u-lg-3 am-u-md-6 am-u-end  ">
+                                                      <div class=" am-u-sm-12 o-upload-bar am-vertical-align am-text-center">
+                                                         <div class="am-vertical-align-middle">
+                                                            <label class="">
+                                                               <div class="am-text-center upload-ct">
+                                                                  <div><i class="am-icon-plus am-icon-lg"></i></div>
+                                                                  <span class="">点击上传</span>
+                                                               </div>
+                                                               <input @change="upload($event,formData.house_img.bedroom)" accept="image/*" type="file" multiple style="display:  none;">
+                                                            </label>
+                                                         </div>
+                                                      </div>
+                                                   </div>
+                                                </div>
+                                             </div>
+                                          </div>
+                                       </div>
+                                       <div class="am-margin-top-lg am-g" v-show="formData.room_count.bathroom >0">
+                                          <div>
+                                             <div class="am-text-center">
+                                                <span class="am-text-xxl am-block">上传一些关于房间卫生间的照片</span>
+                                                <small>最多4张照片，请选择能表面房间整体构造和装饰的图片</small>
+                                             </div>
+                                          </div>
+                                          <div>
+                                             <div class="am-u-md-11 am-u-lg-12 am-cf am-u-sm-centered">
+                                                <div class="am-g">
+                                                   <div v-show="formData.house_img.bathroom != false" class="am-u-lg-3 am-u-md-6" v-for="(item,index) in formData.house_img.bathroom">
+                                                      <div class="o-thumbnail am-vertical-align" @mouseenter="closeBtnOn" @mouseleave="closeBtnOff">
+                                                         <img class="am-radius am-img-responsive am-vertical-align-middle am-inline-block" :src="item">
+                                                         <span class="close">
+                                                            <button @click="removeIndex(formData.house_img.bathroom,index)" type="button" class="am-btn">删除图片</button>
+                                                         </span>
+                                                      </div>
+                                                   </div>
+                                                   <div v-show="formData.house_img.bathroom.length <4" @dragenter="dragenter" @dragover="dragover" @drop="upload($event,formData.house_img.bathroom)" class="am-u-lg-3 am-u-md-6 am-u-end  ">
+                                                      <div class=" am-u-sm-12 o-upload-bar am-vertical-align am-text-center">
+                                                         <div class="am-vertical-align-middle">
+                                                            <label class="">
+                                                               <div class="am-text-center upload-ct">
+                                                                  <div><i class="am-icon-plus am-icon-lg"></i></div>
+                                                                  <span class="">点击上传</span>
+                                                               </div>
+                                                               <input @change="upload($event,formData.house_img.bathroom)" accept="image/*" type="file" multiple style="display:  none;">
+                                                            </label>
+                                                         </div>
+                                                      </div>
+                                                   </div>
+                                                </div>
+                                             </div>
+                                          </div>
+                                       </div>
+                                       <div class="am-margin-top-lg am-g" v-show="formData.room_count.balcony >0">
+                                          <div>
+                                             <div class="am-text-center">
+                                                <span class="am-text-xxl am-block">上传一些关于房间阳台的照片</span>
+                                                <small>最多4张照片，请选择能表面房间整体构造和装饰的图片</small>
+
+                                             </div>
+                                          </div>
+                                          <div>
+                                             <div class="am-u-md-11 am-u-lg-12 am-cf am-u-sm-centered">
+                                                <div class="am-g">
+                                                   <div v-show="formData.house_img.balcony != false" class="am-u-lg-3 am-u-md-6" v-for="(item,index) in formData.house_img.balcony">
+                                                      <div class="o-thumbnail am-vertical-align" @mouseenter="closeBtnOn" @mouseleave="closeBtnOff">
+                                                         <img class="am-radius am-img-responsive am-vertical-align-middle am-inline-block" :src="item">
+                                                         <span class="close">
+                                                            <button @click="removeIndex(formData.house_img.balcony,index)" type="button" class="am-btn">删除图片</button>
+                                                         </span>
+                                                      </div>
+                                                   </div>
+                                                   <div v-show="formData.house_img.balcony.length <4" @dragenter="dragenter" @dragover="dragover" @drop="upload($event,formData.house_img.balcony)" class="am-u-lg-3 am-u-md-6 am-u-end  ">
+                                                      <div class=" am-u-sm-12 o-upload-bar am-vertical-align am-text-center">
+                                                         <div class="am-vertical-align-middle">
+                                                            <label class="">
+                                                               <div class="am-text-center upload-ct">
+                                                                  <div><i class="am-icon-plus am-icon-lg"></i></div>
+                                                                  <span class="">点击上传</span>
+                                                               </div>
+                                                               <input @change="upload($event,formData.house_img.balcony)" accept="image/*" type="file" multiple style="display:  none;">
+                                                            </label>
+                                                         </div>
+                                                      </div>
+                                                   </div>
+                                                </div>
+                                             </div>
+                                          </div>
+                                       </div>
+                                       <div class="am-margin-top-lg am-g" v-show="formData.room_count.kitchen >0">
+                                          <div>
+                                             <div class="am-text-center">
+                                                <span class="am-text-xxl am-block">上传一些关于房间厨房的照片</span>
+                                                <small>最多4张照片，请选择能表面房间整体构造和装饰的图片</small>
+
+                                             </div>
+                                          </div>
+                                          <div>
+                                             <div class="am-u-md-11 am-u-lg-12 am-cf am-u-sm-centered">
+                                                <div class="am-g">
+                                                   <div v-show="formData.house_img.kitchen != false" class="am-u-lg-3 am-u-md-6" v-for="(item,index) in formData.house_img.kitchen">
+                                                      <div class="o-thumbnail am-vertical-align" @mouseenter="closeBtnOn" @mouseleave="closeBtnOff">
+                                                         <img class="am-radius am-img-responsive am-vertical-align-middle am-inline-block" :src="item">
+                                                         <span class="close">
+                                                            <button @click="removeIndex(formData.house_img.kitchen,index)" type="button" class="am-btn">删除图片</button>
+                                                         </span>
+                                                      </div>
+                                                   </div>
+                                                   <div v-show="formData.house_img.kitchen.length <4" @dragenter="dragenter" @dragover="dragover" @drop="upload($event,formData.house_img.kitchen)" class="am-u-lg-3 am-u-md-6 am-u-end  ">
+                                                      <div class=" am-u-sm-12 o-upload-bar am-vertical-align am-text-center">
+                                                         <div class="am-vertical-align-middle">
+                                                            <label class="">
+                                                               <div class="am-text-center upload-ct">
+                                                                  <div><i class="am-icon-plus am-icon-lg"></i></div>
+                                                                  <span class="">点击上传</span>
+                                                               </div>
+                                                               <input @change="upload($event,formData.house_img.kitchen)" accept="image/*" type="file" multiple style="display:  none;">
+                                                            </label>
+                                                         </div>
+                                                      </div>
+                                                   </div>
+                                                </div>
+                                             </div>
+                                          </div>
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  <div v-else-if="page == 6" class="page-6 ">
+                     <div class="content">
+                        <div class="am-cf">
+                           <div class=' am-u-lg-8 am-u-end'>
+                              <div>
+                                 <div class="header">
+                                    <h1>说一下周边的环境吧</h1>
+                                 </div>
+                                 <div class="body">
+                                    <div class="am-g">
+                                       <div class="am-form-group">
+                                          <div class="am-text-xl am-margin-vertical">描述一下小区周边的环境</div>
+                                          <textarea rows="5" v-model="formData.surroundings" placeholder="描述一下小区周边的环境，是否有医院，学校等..."></textarea>
+                                       </div>
+                                    </div>
+                                    <div class="am-g">
+                                       <div class="am-form-group">
+                                          <div class="am-text-xl am-margin-vertical">描述一下小区附近的交通</div>
+                                          <textarea rows="5" v-model="formData.traffic" placeholder="有否地铁公交站，等出行交通..."></textarea>
+                                       </div>
+                                    </div>
+                                    <div class="am-g">
+                                       <div class="am-form-group ">
+                                          <div class="am-text-xl am-margin-vertical">最后随便说一下小区环境吧</div>
+                                          <textarea rows="5" v-model="formData.community_info" placeholder="描述一下小区环境..."></textarea>
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  <div v-else-if="page == 7" class="page-7 ">
+                     <div class="content">
+                        <div class="am-cf">
+                           <div class='am-u-lg-12'>
+                              <div>
+                                 <div class="header">
+                                    <h1>上传房产证等证件信息</h1>
+                                 </div>
+                                 <div class="body">
+                                    <div class="am-g">
+                                       <div>
+                                          <div class="am-text-center">
+                                             <span class="am-text-xl am-block">请上传房产证明</span>
+                                             <small>该属于私密资料，不会被公开，不到交易的最后将不会有人知道.</small>
+                                          </div>
+                                       </div>
+                                       <div>
+                                          <div class="am-u-md-11 am-u-lg-10 am-u-sm-centered">
+                                             <div class="am-panel am-g">
+                                                <div class="am-panel-bd am-text-center am-g thumbnail-bar am-cf cover-bar" v-if="formData.deed_info != false">
+                                                   <div class="am-g " style="max-height: 500px;position:relative;display:inline-block" @mouseenter="closeBtnOn" @mouseleave="closeBtnOff">
+                                                      <img class="am-radius am-img-responsive" style="" :src="formData.deed_info[0]">
+                                                      <span class="close">
+                                                         <button @click="removeIndex(formData.deed_info,0)" type="button" class="am-btn">删除图片</button>
+                                                      </span>
+                                                   </div>
+                                                </div>
+                                                <div v-else @dragenter="dragenter" @dragover="dragover" @drop="upload($event,formData.deed_info)" class="am-panel-bd upload-bar">
+                                                   <div class="am-text-center">
+                                                      <div class="">
+                                                         <label for="upload-file">
+                                                            <div class="am-text-center upload-ct">
+                                                               <div><i class="am-icon-plus am-icon-lg"></i></div>
+                                                               <div class="">点击上传</div>
+                                                               <small>或者将文件拖拽至框内</small>
+                                                            </div>
+                                                         </label>
+                                                         <input id="upload-file" @change="upload($event,formData.deed_info)" accept="image/*" type="file" multiple style="display:  none;">
+                                                      </div>
+                                                   </div>
+                                                </div>
+                                             </div>
+                                          </div>
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  <div v-else-if="page == 8" class="page-8">
+                     <div class="content">
+                        <div class="am-cf">
+                           <div class="am-u-sm-12">
+                              <div>
+                                 <div class="header">
+                                    <h1>我们已经来到最后一步了</h1>
+                                 </div>
+                                 <div class="body">
+                                    <div class="am-margin-vertical">
+                                       <div class="am-text-center">
+                                          <div>
+                                             <div class="am-u-md-9 am-u-sm-centered">
+                                                <div class="am-text-xl">我们将按照你提交的资料为你估价，但这要在你同意我们的合同的条件下，请仔细阅读下面的合同。
+                                                </div>
+                                             </div>
+                                          </div>
+                                       </div>
+                                    </div>
+                                    <div class="am-margin-vertical">
+                                       <div class="am-u-md-10 am-u-sm-centered">
+                                          <div class="am-panel am-panel-default">
+                                             <div class="am-panel-bd">
+                                                <div class="am-scrollable-vertical" style="height:500px;">
+                                                   <h1 class="am-text-center">xxxx合约</h1>
+                                                   <p>
+                                                      xxx
+                                                      xxx
+                                                   </p>
+                                                   <p>xxx</p>
+                                                   <p>
+                                                      乙方将收取甲方交易的百分之98，作为平台交易收款
+                                                   </p>
+                                                   <p>xxxx</p>
+                                                </div>
+                                             </div>
+                                          </div>
+
+                                       </div>
+                                    </div>
+                                    <div class="am-margin-vertical">
+                                       <div class="am-text-center">
+                                          <button class="exit am-btn am-btn-lg am-btn-link am-link-muted">我不同意，我要退出</button>
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  <div v-else-if="page == 9" class="page-9">
+                     <div class="content">
+                        <div class="am-text-center" style="margin-top:250px;">
+                           <div class="am-text-xxxl">
+                              <i class="am-icon-check"></i>
+                           </div>
+                           <div class="am-text-xl">
+                              资料已提交，请您再次等待我们的审核.
+                           </div>
+                           <div class="am-text-xxxl">
+                              <i class="am-icon-clock-o"></i>
                            </div>
                         </div>
                      </div>
@@ -398,6 +846,7 @@
 </template>
 
 <script>
+import sender from '@/Sender.js'
 
 export default {
    props:['id'],
@@ -415,10 +864,17 @@ export default {
                kitchen:{}
             },
             room_count:{hall:1,bedroom:1,bathroom:2,balcony:1,kitchen:1},
+            house_img:{hall:[],bedroom:[],bathroom:[],balcony:[],kitchen:[],cover:[]},
+            direction:"",
+            Decoration:'',
+            supply_heating:'',
+            negative_floor:0,
+            elevator:'',
+            deed_info:[]
          },
-         page:1,
+         page:0,
          fu:{status:false,num:0},
-
+         pageValidate:true
       }
    },
    mounted:function(){
@@ -426,37 +882,216 @@ export default {
    },
    methods:{
       getHouse(){
-         $.post('http://localhost:1234/api/commissioned/readId',{id:this.id}).then(res=>{
+         sender('/api/commissioned/readId',{id:this.id}).then(res=>{
             this.data = res.data;
             this.start = true;
+            this.page = 1;
          })
       },
       range(min,max){
          let arr = [];
+         max = Math.ceil(max);
+
          min = parseInt(min);
          max =  parseInt(max) + (min < 0 ? min :0 );
-         max = Math.ceil(max);
+
+
          for(let i = min;i <= max;i++){
-            if(i !== 0)
-               arr.push(i);
+            if(i === 0)
+               continue;
+
+            arr.push(i<0 ? ('F'+ Math.abs(i)) : i);
+
          }
 
          return arr;
+      },
+      upload(e,arr){
+         let files = e.target.files || e.dataTransfer.files;
+
+         if(!files.length)
+            return;
+         this.$store.dispatch('readerFile',{file:files[0],arr});
+      },
+      removeIndex(arr,index){
+         arr.splice(index,1);
+      },
+      labelClick(e){
+         e.target.parentNode.click();
+      },
+      dragover(e) {
+        e.stopPropagation();
+        e.preventDefault();
+      },
+      dragenter(e) {
+        e.stopPropagation();
+        e.preventDefault();
+      },
+      roomModel(){
+         let data = this.formData,
+             room_count = data.room_count;
+
+         for(let key in room_count){
+            let count =Math.ceil(room_count[key]);
+            if(count >0){
+               for(let i = 1;i <=count;i++){
+
+                  if(!this.formData.huxing_map_info[key][key+'_'+i])
+                     this.$set(this.formData.huxing_map_info[key],key+'_'+i,{arae:'',direction:''});
+
+                  if(i === count){
+                     do{
+                        i++;
+                     }while(this.deleteObjectKey(this.formData.huxing_map_info[key],key+'_'+i))
+                  }
+
+               }
+            }
+         }
+      },
+      deleteObjectKey(obj,key){
+
+         return (!!obj[key]) ? delete obj[key] : false;
+      },
+      closeBtnOn(e){
+         let btn = e.target.parentNode.querySelector('.close');
+         btn.style.opacity = "1";
+      },
+      closeBtnOff(e){
+         let btn = e.target.parentNode.querySelector('.close');
+         btn.style.opacity = '0';
+      },
+      nextValidator(){
+         return this['page'+this.page+'Validator']();
+      },
+      page1Validator(){
+         return true;
+      },
+      page2Validator(){
+
+         let data = this.formData,
+            arr =[
+               data.area,data.floors,data.floor,data.elevator,data.supply_heating,data.Decoration,data.direction,
+               data.house_age_limit,data.floor_age
+            ];
+
+         console.log(data);
+         if(this.fu.status && data.negative_floor == false)
+            return false;
+
+         if(data.floors == '')
+            return false;
+
+         for(let item of arr){
+            console.log(item == false);
+            if(item == false || !item)
+               return false;
+         }
+         return true;
+      },
+      page3Validator(){
+
+         let data = this.formData.huxing_map_info;
+
+         for(let items in data){
+            console.log(items);
+            for(let key in data[items]){
+               let item = data[items][key];
+               if(item.arae == false || !item.arae)
+                  return false;
+               if(item.direction == false || !item.direction)
+                  return false;
+            }
+         }
+
+         return true;
+
+      },
+      page4Validator(){
+
+         let data = this.formData.house_img.cover[0];
+
+         return data ? true :false;
+      },
+      page5Validator(){
+
+         let data = this.formData.house_img,
+             hall = data.hall,
+             bedroom = data.bedroom,
+             bathroom = data.bathroom,
+             balcony = data.balcony,
+             kitchen = data.kitchen;
+
+         if(!hall[0] ||!bedroom[0]||!bathroom[0]||!balcony[0]||!kitchen[0])
+            return false;
+
+         return true;
+      },
+      page6Validator(){
+
+         let data = this.formData,
+             surroundings = data.surroundings,
+             community_info = data.community_info,
+             traffic = data.traffic;
+
+         if(!traffic||!community_info||!surroundings)
+            return false;
+
+         return true;
+
+      },
+      page7Validator(){
+
+         let data = this.formData.deed_info[0];
+
+         return data ? true :false;
+
+      },
+      page8Validator(){
+         return true;
+      },
+      page9Validator(){
+         return true;
+      },
+      submitFormData(){
+         sender('/api/house/addData',this.formData).then(res=>{
+            this.page++;
+         });
       }
    },
    computed:{
+   },
+   watch:{
+      ['fu.status'](val){
+         if(val === false)
+            this.formData.negative_floor = 0;
+      },
+      page(val){
+         this.roomModel();
+         this.pageValidate = this.nextValidator();
+      },
+      formData: {
+         handler() {
+            this.pageValidate = this.nextValidator();
+         },
+         deep: true,
+      }
 
    }
 }
 </script>
 <style>
-   #head .am-topbar{
+#head .am-topbar{
   background: #fff;
   border-bottom: none;
 }
 #head a{
   color:rgba(0,0,0,0.7);
 }
+/*input[type=file]{
+   display: none;
+}*/
+
 </style>
 
 <style scoped>
@@ -474,17 +1109,93 @@ export default {
     height: 32px !important;
     border-width: 1px !important;
 }
-.content div[class^="page-"] .content{
-   height: 600px;
+.content div[class^=page-] .am-form-group label{
+   font-weight: 500;
+   font-size: 24px;
 }
-.content div[class^="page-"] .header{
-   height: 50px;
+.o-thumbnail,
+.o-upload-bar,
+.thumbnail-bar,
+.upload-bar{
+   border: 3px dashed rgba(0,0,0,0.1);
+   border-radius:5px;
+   margin-top: 30px;
 }
-.scroll{
-   height: 550px;
-   overflow-y: scroll;
+.o-thumbnail,
+.thumbnail-bar,
+.upload-bar{
+   margin-top: 30px;
 }
-.scroll::-webkit-scrollbar {
-    display: none;
+
+.upload-bar{
+   padding-top: 80px;
+   padding-bottom: 70px;
+   border-radius:3px;
+}
+.o-thumbnail,
+.o-upload-bar{
+   height: 300px;
+}
+.upload-bar button{
+   outline: none;
+   border-radius:5px;
+}
+.room .count-bar,
+.room .am-u-sm-4{
+   padding-left: 0;
+   padding-right: 0;
+}
+.room .am-u-sm-4 button{
+   width: 32px;
+   height: 32px;
+   border-radius: 50%;
+   border:1px solid #008489;
+}
+
+.room .am-g{
+   padding-top: 10px;
+   padding-bottom: 10px;
+}
+.room .room_count{
+   margin-top: 5px;
+   margin-left: 5px;
+}
+.o-thumbnail img,
+.thumbnail-bar img{
+   display:block;
+   max-width: 100%;
+   vertical-align: middle;
+   margin: 0 auto;
+}
+.thumbnail-bar img{
+   max-height:500px;
+}
+.o-thumbnail img{
+   max-height: 292px;
+}
+
+.close{
+   transition:opacity 0.3s ease-out;
+   position:absolute;
+   top:50%;left:50%;
+   transform: translate(-50%, -50%);
+   opacity:0;
+}
+.close button{
+   color:rgba(255,255,255,0.7);
+   font-weight: 600;
+   font-size: 20px;
+   background: rgba(0,0,0,0.3);
+   border: 3px solid rgba(255,255,255,0.7);
+   border-radius:5px;
+}
+.close button:hover{
+   color:#fff;
+   border: 3px solid rgba(255,255,255,0.8);
+   background: rgba(0,0,0,0.5);
+}
+.upload-ct{
+   cursor:pointer;
+   color:rgba(0,0,0,0.3);
 }
 </style>
