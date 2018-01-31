@@ -1,5 +1,8 @@
 <template>
-   <transition>
+   <div id="home">
+      <div id="head">
+         <nav-top></nav-top>
+      </div>
       <div class="content">
          <div id="home-bg"></div>
          <div class="home-search-bar">
@@ -19,16 +22,21 @@
             <div class="am-container">
                <h1>{{getLocation}}热门楼盘</h1>
             </div>
-
          </div>
       </div>
-   </transition>
+   </div>
 </template>
 
 <script>
+import navTop from '@/components/NavTop'
 import sender from '@/Sender.js'
 
 export default {
+   name:'Home',
+   components:{
+      navTop:navTop,
+
+   },
    mounted: function() {
       console.log('now page is home');
    },
@@ -67,20 +75,18 @@ export default {
 
 </script>
 
-<style>
-#head .am-topbar{
-  background: rgba(0,0,0,0.1);
-  border-bottom: none;
-  color:#fff;
-}
+<style scoped>
+
 
 .home-search-bar{
-   background-image: url('../../storage/city1.jpg');
+   background-image: url('../../storage/city6.png');
    background-color: transparent;
    background-size: cover;
    background-position: center center;
    background-repeat: no-repeat;
    height: 500px;
+  box-shadow: 0px 2px 5px rgba(0,0,0,0.2);
+
 }
 #home-search-input{
    position:absolute;

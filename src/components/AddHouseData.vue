@@ -6,7 +6,7 @@
          </div>
          <div class="am-container">
             <div class="">
-               <form class="am-form" style="min-width: 400px;">
+               <form @submit.prevent class="am-form" style="min-width: 400px;">
                   <div class="back-btn" v-show="page<9" style="height: 60px;background: #fff;" data-am-sticky>
                      <div class="am-fl">
                         <div v-show="page >1">
@@ -17,7 +17,7 @@
                         </div>
                      </div>
                      <div class="am-fr">
-                        <button :disabled="!pageValidate" style="font-size: 1.5em;cursor:pointer;" class="am-btn am-btn-link am-link-muted" v-on="{click:page == 8 ? submitFormData : page++}">
+                        <button type="button" :disabled="!pageValidate" style="font-size: 1.5em;cursor:pointer;" class="am-btn am-btn-link am-link-muted" @click="nextPage">
                            下一步<i class="am-icon-angle-right"></i>
                         </button>
                      </div>
@@ -507,8 +507,8 @@
                                        <div class="am-margin-top am-g" v-show="formData.room_count.hall >0">
                                           <div>
                                              <div class="am-text-center">
-                                                <span class="am-text-xxl am-block">上传一些关于房间大厅的照片</span>
-                                                <small>最多4张照片，请选择能表面房间整体构造和装饰的图片</small>
+                                                <span class="am-text-xxl am-block">上传一些关于大厅的照片</span>
+                                                <small>最多4张照片，请选择能表现房间整体构造和装饰的图片</small>
                                              </div>
                                           </div>
                                           <div>
@@ -542,8 +542,8 @@
                                        <div class="am-margin-top-lg am-g" v-show="formData.room_count.bedroom >0">
                                           <div>
                                              <div class="am-text-center">
-                                                <span class="am-text-xxl am-block">上传一些关于房间卧室的照片</span>
-                                                <small>最多4张照片，请选择能表面房间整体构造和装饰的图片</small>
+                                                <span class="am-text-xxl am-block">上传一些关于卧室的照片</span>
+                                                <small>最多4张照片，请选择能表现房间整体构造和装饰的图片</small>
                                              </div>
                                           </div>
                                           <div>
@@ -577,8 +577,8 @@
                                        <div class="am-margin-top-lg am-g" v-show="formData.room_count.bathroom >0">
                                           <div>
                                              <div class="am-text-center">
-                                                <span class="am-text-xxl am-block">上传一些关于房间卫生间的照片</span>
-                                                <small>最多4张照片，请选择能表面房间整体构造和装饰的图片</small>
+                                                <span class="am-text-xxl am-block">上传一些关于卫生间的照片</span>
+                                                <small>最多4张照片，请选择能表现房间整体构造和装饰的图片</small>
                                              </div>
                                           </div>
                                           <div>
@@ -612,8 +612,8 @@
                                        <div class="am-margin-top-lg am-g" v-show="formData.room_count.balcony >0">
                                           <div>
                                              <div class="am-text-center">
-                                                <span class="am-text-xxl am-block">上传一些关于房间阳台的照片</span>
-                                                <small>最多4张照片，请选择能表面房间整体构造和装饰的图片</small>
+                                                <span class="am-text-xxl am-block">上传一些关于阳台的照片</span>
+                                                <small>最多4张照片，请选择能表现房间整体构造和装饰的图片</small>
 
                                              </div>
                                           </div>
@@ -648,8 +648,8 @@
                                        <div class="am-margin-top-lg am-g" v-show="formData.room_count.kitchen >0">
                                           <div>
                                              <div class="am-text-center">
-                                                <span class="am-text-xxl am-block">上传一些关于房间厨房的照片</span>
-                                                <small>最多4张照片，请选择能表面房间整体构造和装饰的图片</small>
+                                                <span class="am-text-xxl am-block">上传一些关于厨房的照片</span>
+                                                <small>最多4张照片，请选择能表现房间整体构造和装饰的图片</small>
 
                                              </div>
                                           </div>
@@ -797,15 +797,10 @@
                                              <div class="am-panel-bd">
                                                 <div class="am-scrollable-vertical" style="height:500px;">
                                                    <h1 class="am-text-center">xxxx合约</h1>
-                                                   <p>
-                                                      xxx
-                                                      xxx
+                                                   <p>为你封了国境<br/>为你赦了罪<br/>为你撤了历史记载<br/>为你涂了装扮<br/>为你喝了醉<br/>为你建了城池围墙<br/>一颗热的心穿着冰冷外衣<br/>一张白的脸漆上多少褪色的情节<br/>在我的空虚身体里面<br/>爱上哪个肤浅的王位<br/>在你的空虚宝座里面<br/>爱过什麽女爵的滋味<br/>为你封了国境
                                                    </p>
-                                                   <p>xxx</p>
-                                                   <p>
-                                                      乙方将收取甲方交易的百分之98，作为平台交易收款
+                                                   <p>为你赦了罪<br/>为你撤了历史记载<br/>一颗热的心<br/>穿着冰冷外衣<br/>一张白的脸<br/>漆上多少褪色的情节<br/>在我的空虚身体里面<br/>爱上哪个肤浅的王位<br/>在你的空虚宝座里面<br/>爱过什麽女爵的滋味<br/>在我的空虚身体里面<br/>爱上哪个肤浅的王位<br/>在你的空虚宝座里面<br/>爱过什麽女爵的滋味
                                                    </p>
-                                                   <p>xxxx</p>
                                                 </div>
                                              </div>
                                           </div>
@@ -815,6 +810,7 @@
                                     <div class="am-margin-vertical">
                                        <div class="am-text-center">
                                           <button class="exit am-btn am-btn-lg am-btn-link am-link-muted">我不同意，我要退出</button>
+                                          <button @click="formData.agree = true" class="exit am-btn am-btn-lg am-btn-link am-link-muted">我同意上面的合约。</button>
                                        </div>
                                     </div>
                                  </div>
@@ -835,6 +831,11 @@
                            <div class="am-text-xxxl">
                               <i class="am-icon-clock-o"></i>
                            </div>
+                           <div class="">
+                              <router-link to="/" class="am-text-xl am-link-muted">
+                                 回到首页
+                              </router-link>
+                           </div>
                         </div>
                      </div>
                   </div>
@@ -851,10 +852,12 @@ import sender from '@/Sender.js'
 export default {
    props:['id'],
    data(){
+      let that = this;
       return {
          start:false,
          data:{},
          formData:{
+            commissioned_id:that.id,
             floor:'',
             huxing_map_info:{
                hall:{},
@@ -870,11 +873,13 @@ export default {
             supply_heating:'',
             negative_floor:0,
             elevator:'',
-            deed_info:[]
+            deed_info:[],
+            agree:false
          },
          page:0,
          fu:{status:false,num:0},
-         pageValidate:true
+         pageValidate:true,
+         submit:false,
       }
    },
    mounted:function(){
@@ -946,7 +951,7 @@ export default {
                   }
 
                }
-            }
+            }else this.formData.huxing_map_info[key] ={};
          }
       },
       deleteObjectKey(obj,key){
@@ -961,7 +966,16 @@ export default {
          let btn = e.target.parentNode.querySelector('.close');
          btn.style.opacity = '0';
       },
+      nextPage(){
+         console.log(this.page);
+         if(this.page == 8){
+            this.submitFormData();
+         }else this.page++;
+
+      },
       nextValidator(){
+         if(this.page >=9)
+            return;
          return this['page'+this.page+'Validator']();
       },
       page1Validator(){
@@ -975,7 +989,7 @@ export default {
                data.house_age_limit,data.floor_age
             ];
 
-         console.log(data);
+
          if(this.fu.status && data.negative_floor == false)
             return false;
 
@@ -983,7 +997,7 @@ export default {
             return false;
 
          for(let item of arr){
-            console.log(item == false);
+
             if(item == false || !item)
                return false;
          }
@@ -994,8 +1008,9 @@ export default {
          let data = this.formData.huxing_map_info;
 
          for(let items in data){
-            console.log(items);
+
             for(let key in data[items]){
+               console.log(data[items][key],data[items])
                let item = data[items][key];
                if(item.arae == false || !item.arae)
                   return false;
@@ -1005,7 +1020,6 @@ export default {
          }
 
          return true;
-
       },
       page4Validator(){
 
@@ -1015,15 +1029,19 @@ export default {
       },
       page5Validator(){
 
-         let data = this.formData.house_img,
-             hall = data.hall,
-             bedroom = data.bedroom,
-             bathroom = data.bathroom,
-             balcony = data.balcony,
-             kitchen = data.kitchen;
+         let form = this.formData,
+             data = form.house_img,
+             count = form.room_count,
+             arr =['hall' ,
+             'bedroom' ,
+             'bathroom' ,
+             'balcony' ,
+             'kitchen'];
 
-         if(!hall[0] ||!bedroom[0]||!bathroom[0]||!balcony[0]||!kitchen[0])
-            return false;
+         for(let item of arr){
+            if(count[item] > 0 && !data[item][0])
+               return false;
+         }
 
          return true;
       },
@@ -1048,14 +1066,17 @@ export default {
 
       },
       page8Validator(){
-         return true;
-      },
-      page9Validator(){
-         return true;
+         return this.formData.agree;
       },
       submitFormData(){
+         if(this.submit)
+            return;
+
+         this.submit = true;
          sender('/api/house/addData',this.formData).then(res=>{
             this.page++;
+         },res=>{
+            this.submit = false;
          });
       }
    },
@@ -1080,19 +1101,6 @@ export default {
    }
 }
 </script>
-<style>
-#head .am-topbar{
-  background: #fff;
-  border-bottom: none;
-}
-#head a{
-  color:rgba(0,0,0,0.7);
-}
-/*input[type=file]{
-   display: none;
-}*/
-
-</style>
 
 <style scoped>
 .rounds{
@@ -1197,5 +1205,6 @@ export default {
 .upload-ct{
    cursor:pointer;
    color:rgba(0,0,0,0.3);
+   padding: 95px 18px;
 }
 </style>

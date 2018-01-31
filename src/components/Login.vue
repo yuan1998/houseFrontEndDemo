@@ -1,46 +1,49 @@
 <template>
    <transition name="fade" mode="out-in">
-      <div id="signup-login-bar">
-         <div class="am-container am-animation-fade">
-            <div class="header am-text-center">
-               <span>登录</span>
-            </div>
-            <div class="am-g login-bar ">
-               <div class="am-panel am-radius am-u-sm-11 am-u-md-5 am-u-sm-centered">
-                  <div class="am-panel-bd am-g">
-                     <div>
-                        <form class="am-form" @submit.prevent="loginEvent">
-                           <div class="am-form-group" :class="{'am-form-error':username}">
-                              <div>
-                                 <input @blur="username=''" class="am-form-field am-radius" type="text" placeholder="用户名/邮箱/手机号码" v-model="loginFormData.username">
-                                 <small class="am-form-label" v-show="username">{{username}}</small>
+      <div class="content">
+         <navTop></navTop>
+         <div id="signup-login-bar" >
+            <div class="am-container am-animation-fade am-cf">
+               <div class="header am-text-center">
+                  <span>登录</span>
+               </div>
+               <div class="am-g login-bar am-cf">
+                  <div class="am-panel am-radius am-u-sm-11 am-u-md-5 am-u-sm-centered">
+                     <div class="am-panel-bd am-g">
+                        <div>
+                           <form class="am-form" @submit.prevent="loginEvent">
+                              <div class="am-form-group" :class="{'am-form-error':username}">
+                                 <div>
+                                    <input @blur="username=''" class="am-form-field am-radius" type="text" placeholder="用户名/邮箱/手机号码" v-model="loginFormData.username">
+                                    <small class="am-form-label" v-show="username">{{username}}</small>
+                                 </div>
                               </div>
-                           </div>
-                           <div class="am-form-group">
-                              <div>
-                                 <input class="am-radius" placeholder="密码" type="password" v-model="loginFormData.password">
+                              <div class="am-form-group">
+                                 <div>
+                                    <input class="am-radius" placeholder="密码" type="password" v-model="loginFormData.password">
+                                 </div>
                               </div>
-                           </div>
 
-                           <div class="am-form-group">
-                              <router-link to="/signup">
-                                 没有账号啊，快去注册.
-                              </router-link>
-                           </div>
-                           <div>
-                              <input class='' id="remenber-checkbox" type="checkbox" v-model="loginFormData.remenber">
-                              <label for="remenber-checkbox">
-                                 <span style="font-weight: 500;font-size: 16px;-webkit-user-select: none;">
-                                    记住我一万年.
-                                 </span>
-                              </label>
-                           </div>
-                           <div class="am-form-group">
-                              <div class="am-u-sm-6 am-u-sm-centered">
-                                 <button class="am-btn am-radius am-btn-primary am-btn-block" type="submit">登录</button>
+                              <div class="am-form-group">
+                                 <router-link to="/signup">
+                                    没有账号啊，快去注册.
+                                 </router-link>
                               </div>
-                           </div>
-                        </form>
+                              <div>
+                                 <input class='' id="remenber-checkbox" type="checkbox" v-model="loginFormData.remenber">
+                                 <label for="remenber-checkbox">
+                                    <span style="font-weight: 500;font-size: 16px;-webkit-user-select: none;">
+                                       记住我一万年.
+                                    </span>
+                                 </label>
+                              </div>
+                              <div class="am-form-group">
+                                 <div class="am-u-sm-6 am-u-sm-centered">
+                                    <button class="am-btn am-radius am-btn-primary am-btn-block" type="submit">登录</button>
+                                 </div>
+                              </div>
+                           </form>
+                        </div>
                      </div>
                   </div>
                </div>
@@ -52,9 +55,12 @@
 
 <script>
 import sender from '@/Sender.js'
-
+import navTop from '@/components/NavTop2'
 
 export default{
+   components:{
+      navTop:navTop,
+   },
    mounted:function(){
       console.log('now is login page.');
    },
@@ -95,10 +101,18 @@ export default{
    background-repeat: no-repeat;
    transition:background 0.8 ease-out;
 }
+
 .login-bar{
    opacity:0.9;
 }
 .login-bar .am-form-group:first-child{
    padding-top: 20px;
+}
+.content >>> #nav-top-2 .am-topbar-btn{
+   color:#666;
+}
+.content >>> #nav-top-2 li.am-active a{
+   color:#f0f0f0;
+   background: rgba(102,102,102,0.5);
 }
 </style>

@@ -1,57 +1,60 @@
 <template>
    <transition name="fade" mode="out-in">
-            <div id="signup-login-bar">
-         <div class="am-container am-animation-fade">
-            <div class="header am-text-center">
-               <span>注册</span>
-            </div>
-            <div class="am-g signup-bar ">
-               <div class="am-panel am-radius am-u-sm-11 am-u-md-5 am-u-sm-centered">
-                  <div class="am-panel-bd am-g">
-                     <div>
-                        <form @submit.prevent="signupEvent" class="am-form">
-                           <div class="am-form-group" :class="{'am-form-error':username}">
-                              <div>
-                                 <input @blur="usernameValidator" class="am-form-field am-radius" type="text" placeholder="用户名" v-model="signupFormData.username">
-                              <small class='am-form-label' v-show="username">{{username}}</small>
+      <div class="content">
+         <navTop></navTop>
+         <div id="signup-login-bar">
+            <div class="am-container am-animation-fade">
+               <div class="header am-text-center">
+                  <span>注册</span>
+               </div>
+               <div class="am-g signup-bar ">
+                  <div class="am-panel am-radius am-u-sm-9 am-u-md-7 am-u-lg-5 am-u-sm-centered">
+                     <div class="am-panel-bd am-g">
+                        <div>
+                           <form @submit.prevent="signupEvent" class="am-form">
+                              <div class="am-form-group" :class="{'am-form-error':username}">
+                                 <div>
+                                    <input @blur="usernameValidator" class="am-form-field am-radius" type="text" placeholder="用户名" v-model="signupFormData.username">
+                                 <small class='am-form-label' v-show="username">{{username}}</small>
+                                 </div>
                               </div>
-                           </div>
-                           <div class="am-form-group" :class="{'am-form-error':email}">
-                              <div>
-                                 <input @blur="emailValidator" class="am-form-field am-radius" type="text" placeholder="邮箱" v-model="signupFormData.email">
-                                 <small class='am-form-label' v-show="email">{{email}}</small>
+                              <div class="am-form-group" :class="{'am-form-error':email}">
+                                 <div>
+                                    <input @blur="emailValidator" class="am-form-field am-radius" type="text" placeholder="邮箱" v-model="signupFormData.email">
+                                    <small class='am-form-label' v-show="email">{{email}}</small>
+                                 </div>
                               </div>
-                           </div>
-                           <div class="am-form-group" :class="{'am-form-error':tel}">
-                              <div>
-                                 <input @blur="telValidator" class="am-form-field am-radius" type="text" placeholder="手机号码" v-model="signupFormData.tel">
-                                 <small class='am-form-label' v-show="tel">{{tel}}</small>
+                              <div class="am-form-group" :class="{'am-form-error':tel}">
+                                 <div>
+                                    <input @blur="telValidator" class="am-form-field am-radius" type="text" placeholder="手机号码" v-model="signupFormData.tel">
+                                    <small class='am-form-label' v-show="tel">{{tel}}</small>
+                                 </div>
                               </div>
-                           </div>
-                           <div class="am-form-group"  :class="{'am-form-error':password}">
-                              <div>
-                                 <input @blur="passwordValidator" class="am-form-field am-radius" placeholder="密码" type="password" v-model="signupFormData.password">
-                                 <small class='am-form-label' v-show="password">{{password}}</small>
-                              </div>
+                              <div class="am-form-group"  :class="{'am-form-error':password}">
+                                 <div>
+                                    <input @blur="passwordValidator" class="am-form-field am-radius" placeholder="密码" type="password" v-model="signupFormData.password">
+                                    <small class='am-form-label' v-show="password">{{password}}</small>
+                                 </div>
 
-                           </div>
-                           <div class="am-form-group" :class="{'am-form-error':confirmPassword}">
-                              <div>
-                                 <input @blur="confirmPasswordValidator" class="am-form-field am-radius" placeholder="确认密码" type="password" v-model="signupFormData.confirmPassword">
-                                 <small class='am-form-label' v-show="confirmPassword">{{confirmPassword}}</small>
                               </div>
-                           </div>
-                           <div class="am-form-group">
-                              <router-link to="/login">
-                                 已经有账号了？？去登录.
-                              </router-link>
-                           </div>
-                           <div class="am-form-group">
-                              <div class="am-u-sm-6 am-u-sm-centered">
-                                 <button class="am-btn am-radius am-btn-primary am-btn-block" type="submit">注册</button>
+                              <div class="am-form-group" :class="{'am-form-error':confirmPassword}">
+                                 <div>
+                                    <input @blur="confirmPasswordValidator" class="am-form-field am-radius" placeholder="确认密码" type="password" v-model="signupFormData.confirmPassword">
+                                    <small class='am-form-label' v-show="confirmPassword">{{confirmPassword}}</small>
+                                 </div>
                               </div>
-                           </div>
-                        </form>
+                              <div class="am-form-group">
+                                 <router-link to="/login">
+                                    已经有账号了？？去登录.
+                                 </router-link>
+                              </div>
+                              <div class="am-form-group">
+                                 <div class="am-u-sm-6 am-u-sm-centered">
+                                    <button class="am-btn am-radius am-btn-primary am-btn-block" type="submit">注册</button>
+                                 </div>
+                              </div>
+                           </form>
+                        </div>
                      </div>
                   </div>
                </div>
@@ -63,8 +66,13 @@
 
 <script>
 import sender from '@/Sender.js'
+import navTop from '@/components/NavTop2'
+
 
 export default {
+   components:{
+      navTop:navTop,
+   },
    mounted: function() {
       console.log('now is signup page.');
    },
@@ -180,5 +188,21 @@ export default {
 }
 .signup-bar .am-form-group:first-child{
    padding-top: 20px;
+}
+.content >>> #nav-top-2 .am-topbar-brand a,
+.content >>> #nav-top-2 li:not(.am-active) a{
+   color: #f0f0f0;
+}
+
+.content >>> #nav-top-2 li.am-active a:after{
+   border-bottom-color: #ffffff;
+}
+.content >>> #nav-top-2 li.am-active a{
+   color:#fff;
+   background: rgba(14,144,210,0.5);
+}
+
+.content >>> #nav-top-2 .am-topbar-btn{
+   color:#87d2eb;
 }
 </style>
