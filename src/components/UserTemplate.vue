@@ -12,8 +12,8 @@
                               <ul class="side-bar-items">
                                  <li class="side-bar-content-header ">用户</li>
                                  <router-link tag="li" to="/user/" active-class="side-active" exact class="side-bar-item"><a>个人主页</a></router-link>
-                                 <router-link tag="li" to="self" active-class="side-active" exact class="side-bar-item"><a>个人资料</a></router-link>
-                                 <router-link tag="li" to="commissioneds" active-class="side-active" exact class="side-bar-item"><a>我的委托</a></router-link>
+                                 <router-link tag="li" to="/user/self" active-class="side-active" exact class="side-bar-item"><a>个人资料</a></router-link>
+                                 <router-link tag="li" to="/user/commissioneds" active-class="side-active" exact class="side-bar-item"><a>我的委托</a></router-link>
                                  <router-link tag="li" to="jiaoyi" active-class="side-active" exact class="side-bar-item"><a>交易记录</a></router-link>
                                  <li  class="side-bar-content-header">消息中心</li>
                                  <router-link to="webMessage" tag="li" active-class="side-active" exact class="side-bar-item"><a>公告</a></router-link>

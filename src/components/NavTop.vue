@@ -58,7 +58,7 @@
                               <a href="#" class="am-dropdown-toggle">{{getUser.username}}<i class="am-icon-caret-down"></i></a>
                               <ul v-on:mouseleave="downCloseEvent('.userBarDown')" class="am-dropdown-content">
                                  <li>
-                                    <router-link to="/user/self">个人信息</router-link>
+                                    <router-link to="/user">个人信息</router-link>
                                  </li>
                                  <li>
                                     <router-link to="/user/commissioneds">我的委托</router-link>
