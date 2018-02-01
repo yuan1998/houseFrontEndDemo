@@ -10,12 +10,6 @@
                         用户名:{{getUser.username}}
                      </div>
                      <div>
-                        xxxx
-                     </div>
-                     <div>
-                        xxxx
-                     </div>
-                     <div>
                         <button href="#" class="am-btn info-read-btn">
                            <span class="am-block">查看详细</span>
                            <i class="am-icon-angle-down"></i>
