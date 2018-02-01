@@ -16,7 +16,7 @@
                <button @click="newAvatar = []" class="am-btn am-btn-link am-link-muted">取消</button>
             </div>
             <div v-show="upSuccess">
-               <span class="am-text-xl">上传成功，请刷新页面</span>
+               <span class="am-text-xl">上传成功</span>
             </div>
          </div>
 
@@ -62,7 +62,12 @@ import sender from '@/Sender.js'
          },
          changeAvatar(){
             sender('/api/user/changeAvatar',{file:this.newAvatar[0]}).then(res=>{
+               this.$store.dispatch('user/changeAvatar',res.data);
                this.upSuccess = true;
+               this.newAvatar = [];
+               setTimeout(res=>{
+                  this.upSuccess = false;
+               },1500);
             })
          }
       }
@@ -75,18 +80,16 @@ import sender from '@/Sender.js'
    margin-bottom: 50px;
 }
 .avatar-bar img{
-   width:200px;
+
     height:200px;
      line-height: 0;
     /* remove line-height */
     display: inline-block;   /* circle wraps image */
-    border-radius: 50%;  /* relative value */
-    -moz-border-radius: 50%;
-    -webkit-border-radius: 50%;
     transition: linear 0.25s;
 
 }
 .avatar-bar{
+   overflow: hidden;
    display: inline-block;
    width: 200px;
    height: 200px;

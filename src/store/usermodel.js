@@ -13,6 +13,9 @@ export default {
       },
       saveCommissioned(state,data){
          state.userCommissioneds = data;
+      },
+      saveAvatar(state,data){
+         state.user.avatar_url = data;
       }
    },
    actions:{
@@ -23,6 +26,9 @@ export default {
          sender('/api/commissioned/userRead').then(res=>{
             commit('saveCommissioned',res.data);
          })
+      },
+      changeAvatar({commit},data){
+         commit('saveAvatar',data);
       }
    },
    getters:{

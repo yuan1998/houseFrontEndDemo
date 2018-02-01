@@ -21,7 +21,7 @@
                   <div class="commissioned-header am-text-center">
                      <span class="am-text-xl">我的委托</span>
                   </div>
-                  <div class="am-panel-group" v-if="getCommissioned" id="commisioned-bar">
+                  <div class="am-panel-group" v-if="getCommissioned != false" id="commisioned-bar">
                      <template v-for="(item,n) in getCommissioned">
                         <tempc v-bind:data="item" v-bind:index="n"></tempc>
                      </template>

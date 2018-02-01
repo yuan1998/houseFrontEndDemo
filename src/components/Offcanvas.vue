@@ -10,11 +10,11 @@
                    <div class="am-g am-g-collapse">
                       <ul class="am-nav">
                          <router-link to="/user" tag="li" v-if="getUser" class="">
-                            <div>
-                               <span class="avatar-bar">
-                                  <img class="avatar-img am-circle" :src="getAvatar" >
+                            <div class=" am-block">
+                               <span class="avatar-bar am-circle">
+                                  <img class="avatar-img " :src="getAvatar" >
                                </span>
-                               <span>{{getUser.username}}</span>
+                               <span style="position: absolute;top: 3px;padding-left: 7px;">{{getUser.username}}</span>
                             </div>
                          </router-link>
                          <li class="am-nav-header">导航</li>
@@ -147,7 +147,12 @@ export default {
 <style scoped>
 .avatar-img{
    height: 32px;
-   width: 32px;
+}
+.avatar-bar{
+  height: 32px;
+  width: 32px;
+  display: inline-block;
+  overflow: hidden;
 }
 #user-side-menu-bar .am-offcanvas-bar{
    background: #fff;

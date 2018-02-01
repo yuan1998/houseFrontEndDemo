@@ -203,7 +203,7 @@ export default ({
    height: 180px;
 }
 .top{
-   margin-top: 70px;
+   margin-top: 70px !important;
 }
 .top .title{
    font-weight: 500;

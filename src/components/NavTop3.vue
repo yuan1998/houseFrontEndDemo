@@ -18,11 +18,10 @@
                         <a >首页</a>
                      </router-link>
                      <router-link tag="li" active-class="am-active" to="/user"  exact>
-                        <a class="avatar-bar am-hide-sm">
-                           <img class="am-circle am-img-responsive avatar-img"  :src="getAvatar">
-                        </a>
+                        <div class="avatar-bar am-hide-sm"><img class="avatar-img"  :src="getAvatar"></div>
                         <a class="am-show-sm-only">
-                           <span class="am-padding-right"><img class="am-circle" width="35" height="35"  :src="getAvatar"></span>{{getUser.username}}
+                           <span class=" am-vertical-align-middle" style="width: 35px;height: 35px;overflow: hidden;border-radius:35px;">
+                            <img class="" style="height: 35px;vertical-align: top;" :src="getAvatar"></span>{{getUser.username}}
                         </a>
                      </router-link>
                   </ul>
@@ -52,16 +51,22 @@
 
 <style scoped>
    .avatar-bar{
-      height: 64px;
-      padding-top: 10px !important;
+     display: inline-block;
+    width: 42px;
+    height: 42px;
+    box-shadow: rgba(0, 0, 0, 0.4) 0px 0px 1px;
+    overflow: hidden;
+    border-radius: 42px;
+    background: rgb(236, 236, 236);
       /*padding-bottom: 10px;*/
+    margin: 11px;
+
    }
    .avatar-img{
-      width: 40px;
-      height: 40px;
-      display: block;
-      border: 2px solid rgba(255,255,255,0.7);
-      background: rgba(255,255,255,0.7);
+          height: 42px;
+    line-height: 0;
+    display: inline-block;
+    transition: 0.25s linear;
    }
    .am-topbar{
       background: #fff;
@@ -85,6 +90,7 @@
 .am-topbar-nav > li.am-active{
    border-bottom: 2px solid #5085ff;
 }
+.am-nav li.am-active div,
 .am-nav li.am-active a{
   color: #0350ff;
     background-color: #0e90d233;

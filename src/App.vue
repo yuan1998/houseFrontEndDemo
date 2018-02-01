@@ -21,7 +21,6 @@ img {
   /* v2.3 开始移除以下代码，详见 #502 */
   /* max-width: 100%;
   height: auto;*/
-  vertical-align: middle;
   border: 0;
 }
 /*#appHome{

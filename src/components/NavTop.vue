@@ -94,24 +94,24 @@
                      <ul class="am-nav">
                         <li class="am-nav-header">导航</li>
                         <router-link @click.native="sideBarHide" active-class="am-active" tag="li" to="/" exact>
-                           <a><i class="am-icon-home"></i>首页</a>
+                           <a>首页</a>
                         </router-link>
                         <router-link @click.native="sideBarHide" active-class="am-active" tag="li" to="/readHouses" exact>
-                           <a><i class="am-icon-building-o"></i>看房</a>
+                           <a>看房</a>
                         </router-link>
                         <router-link @click.native="sideBarHide" active-class="am-active" tag="li" to="/yezhu/maifang" exact>
-                           <a ><i class="am-icon-money"></i>我要卖房</a>
+                           <a >我要卖房</a>
                         </router-link>
                         <template v-if='getUser'>
                            <li class="am-nav-header">用户</li>
                            <router-link @click.native="sideBarHide" active-class="am-active" tag="li" to="/user/info" exact>
-                              <a><i class="am-icon-user"></i>我的资料 </a>
+                              <a>我的资料 </a>
                            </router-link>
                            <router-link @click.native="sideBarHide" active-class="am-active" tag="li" to="/user/commissioned" exact>
-                              <a ><i class="am-icon-bell-o"></i>我的委托</a>
+                              <a >我的委托</a>
                            </router-link>
                            <router-link @click.native="sideBarHide" active-class="am-active" tag="li" to="/user/transactionlog" exact>
-                              <a><i class="am-icon-align-left"></i>交易记录</a>
+                              <a>交易记录</a>
                            </router-link>
                            <li class="am-nav-header">消息</li>
                            <router-link @click.native="sideBarHide" active-class="am-active" tag="li" to="/message/webMessage" exact>
