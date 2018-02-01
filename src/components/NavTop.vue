@@ -7,8 +7,7 @@
                   <router-link class="am-monospace" to="/" >
                      4n!o
                   </router-link>
-                  <small ><i class="am-icon-location-arrow"></i> {{getIpCity}}</small>
-
+                  <small ><i class="am-icon-location-arrow"></i>{{getIpCity}}</small>
                </span>
 
                <div class="am-topbar-btn am-topbar-toggle am-show-sm-only">
@@ -41,13 +40,13 @@
                            <li v-on:mouseenter="downOpenEvent('.messageBarDown')" v-on:mouseleave="downCloseEvent('.messageBarDown')" class="am-dropdown messageBarDown">
                               <a :class="{ 'mark' : getUserMessage+getWebMessage >0}">消息<sup></sup></a>
                               <ul v-on:mouseleave="downCloseEvent('.messageBarDown')" class="am-dropdown-content" id="home-message">
-                                 <router-link tag="li" to="/message/webMessage" active-class="am-active" exact>
+                                 <router-link tag="li" to="/user/webMessage" active-class="am-active" exact>
                                     <a >
                                        站内消息
                                        <span v-show="getWebMessage >0 " class="am-badge am-badge-secondary am-round am-fr am-margin-right am-text-middle">{{getWebMessage}}</span>
                                     </a>
                                  </router-link>
-                                 <router-link tag="li" to="/message/userMessage" active-class="am-active" exact>
+                                 <router-link tag="li" to="/user/userMessage" active-class="am-active" exact>
                                     <a >
                                        私信
                                        <span v-show="getUserMessage >0" class="am-badge am-badge-secondary am-round am-fr am-margin-right am-text-middle">{{getUserMessage}}</span>
@@ -59,10 +58,10 @@
                               <a href="#" class="am-dropdown-toggle">{{getUser.username}}<i class="am-icon-caret-down"></i></a>
                               <ul v-on:mouseleave="downCloseEvent('.userBarDown')" class="am-dropdown-content">
                                  <li>
-                                    <router-link to="/user/info">个人信息</router-link>
+                                    <router-link to="/user/self">个人信息</router-link>
                                  </li>
                                  <li>
-                                    <router-link to="/user/commissioned">我的委托</router-link>
+                                    <router-link to="/user/commissioneds">我的委托</router-link>
                                  </li>
                                  <li>
                                     <router-link to="/user/transactionlog">交易记录</router-link>
@@ -184,7 +183,7 @@ export default {
      {
         sender('/api/user/logout').then(res=>{
            this.$store.dispatch('user/saveUser',null);
-           router.push({path:'/'});
+           this.$router.push({path:'/'});
         })
      },
      sideBarHide(){
@@ -216,6 +215,7 @@ export default {
 <style scoped>
 .nav{
   position: absolute;
+  z-index: 5;
 }
 .mark{
    position:relative;

@@ -12,6 +12,9 @@
                      <div class="am-panel-bd am-g">
                         <div>
                            <form class="am-form" @submit.prevent="loginEvent">
+                              <div v-if="$route.params.status" class="am-text-center am-text-danger am-margin-bottom-sm">
+                                 <span class="am-text-lg"><i class="am-icon-warning"></i>请先登录在进行操作</span>
+                              </div>
                               <div class="am-form-group" :class="{'am-form-error':username}">
                                  <div>
                                     <input @blur="username=''" class="am-form-field am-radius" type="text" placeholder="用户名/邮箱/手机号码" v-model="loginFormData.username">
@@ -61,8 +64,9 @@ export default{
    components:{
       navTop:navTop,
    },
+   props:['status'],
    mounted:function(){
-      console.log('now is login page.');
+      console.log(this.$route.params);
    },
    data:function(){
       return {
@@ -114,5 +118,9 @@ export default{
 .content >>> #nav-top-2 li.am-active a{
    color:#f0f0f0;
    background: rgba(102,102,102,0.5);
+}
+.content >>> #nav-top-2 .am-topbar-brand a,
+.content >>> #nav-top-2 li:not(.am-active) a{
+   color:#f0f0f0;
 }
 </style>

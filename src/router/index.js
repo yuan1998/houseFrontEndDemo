@@ -7,6 +7,10 @@ import Login from '@/components/Login'
 import Signup from '@/components/Signup'
 import AddHouseData from '@/components/AddHouseData'
 import page404 from '@/components/404'
+import userTemplate from '@/components/UserTemplate'
+import userHome from '@/components/UserHome'
+import selfInfo from '@/components/UserSelfInfo'
+import userCommissioned from '@/components/UserCommissioneds'
 
 Vue.use(Router)
 
@@ -30,8 +34,14 @@ const router = new Router({
     {
       path:'/login',
       name:'login',
-      component:Login
+      component:Login,
     },
+    {
+      path:'/login/:status',
+      props:true,
+      name:'pleaseLogin',
+      component:Login,
+      },
     {
       path:'/signup',
       name:'signup',
@@ -47,6 +57,28 @@ const router = new Router({
       path:'/404',
       name:'404',
       component:page404
+    },
+    {
+      path:'/user',
+      component:userTemplate,
+      children:[
+         {
+            path:'',
+            name:'userHome',
+            name:'user',
+            component:userHome
+         },
+         {
+            path:'self',
+            name:'selfInfo',
+            component:selfInfo
+         },
+         {
+            path:'commissioneds',
+            name:'UserCommissioneds',
+            component:userCommissioned
+         }
+      ]
     }
   ]
 })

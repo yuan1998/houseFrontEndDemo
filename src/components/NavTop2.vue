@@ -1,11 +1,11 @@
 <template>
    <div id="nav-top-2">
       <div class="am-topbar" style="margin-bottom: 0px">
-         <span class="am-topbar-brand">
-            <router-link class="am-monospace" to="/" >
+         <router-link tag="span" to="/" class="am-topbar-brand">
+            <a class="am-monospace">
                4n!o
-            </router-link>
-         </span>
+            </a>
+         </router-link>
 
          <button class="am-topbar-btn am-topbar-toggle am-btn am-btn-link am-btn-sm am-show-sm-only" data-am-collapse="{target: '#doc-topbar-collapse'}">
             <span class="am-sr-only">菜单</span> <span class="am-icon-bars"></span>

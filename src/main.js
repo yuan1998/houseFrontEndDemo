@@ -22,7 +22,7 @@ new Vue({
   created:function(){
    this.$store.dispatch('set_headers');
    this.$store.dispatch('getIpInfo');
-   this.$store.dispatch('isLogin',{want:['username','email','tel','id','permission']});
+   this.$store.dispatch('isLogin',{want:['username','email','tel','id','permission','avatar_url']});
   },
   mounted:function(){
 

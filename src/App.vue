@@ -13,6 +13,9 @@
 [v-cloak]{
    display: none;
 }
+*{
+  position:relative;
+}
 img {
   box-sizing: border-box;
   /* v2.3 开始移除以下代码，详见 #502 */
