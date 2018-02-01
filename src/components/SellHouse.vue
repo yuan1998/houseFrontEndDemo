@@ -7,8 +7,8 @@
             <div class="content">
                <div c id="sell-house-bg">
                   <div class="am-container am-text-center">
-                     <div class="am-g top">
-                        <div class="title">
+                     <div class="am-g ">
+                        <div class="title top">
                            <div class="">发布出售房源</div>
                         </div>
                         <div class="subtitle">
@@ -205,12 +205,12 @@ export default ({
 .top{
    margin-top: 70px!important;
 }
-.top .title{
+.top.title{
    font-weight: 500;
    color: #fff;
    font-size: 35px;
 }
-.top .subtitle h3{
+.top~.subtitle h3{
    color:#eee;
 }
 .main{
