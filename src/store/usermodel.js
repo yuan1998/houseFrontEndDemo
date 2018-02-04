@@ -23,7 +23,7 @@ export default {
          commit('saveUser',data);
       },
       getCommissioned({commit}){
-         sender('/api/commissioned/userRead').then(res=>{
+         sender('/api/commissioned/userRead',{page:1}).then(res=>{
             commit('saveCommissioned',res.data);
          })
       },
@@ -35,11 +35,8 @@ export default {
       user:(state)=>{
          return state.user;
       },
-      getCommissioned(state){
-         return state.userCommissioneds;
-      },
       getComM(state){
-         return state.userCommissioneds.filter((item,index) => index <3 );
+         return state.userCommissioneds;
       }
    }
 

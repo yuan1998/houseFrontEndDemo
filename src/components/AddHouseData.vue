@@ -3,13 +3,13 @@
       <div class="addHouseData">
          <navtop></navtop>
          <div class="content" >
-            <div class="am-progress am-progress-xs" data-am-sticky="{top:60}">
-               <div class="am-progress-bar" :style="{width:Math.ceil((100 / 9) * page) +'%'}"></div>
+            <div class="am-progress am-progress-xs" data-am-sticky>
+               <div class="am-progress-bar" :style="{width:Math.ceil((100 / 10) * page) +'%'}"></div>
             </div>
-            <div class="am-container">
+            <div class="am-container" style="min-width: 300px;">
                <div class="">
-                  <form @submit.prevent class="am-form" style="min-width: 400px;">
-                     <div class="back-btn" v-show="page<9" style="height: 60px;background: #fff;" data-am-sticky>
+                  <form @submit.prevent class="am-form" >
+                     <div class="back-btn" v-show="page<10" style="height: 60px;background: #fff;" data-am-sticky>
                         <div class="am-fl">
                            <div v-show="page >1">
                               <button @click="page--" class="am-btn am-btn-link am-link-muted" style="font-size: 1.5em;cursor:pointer;">
@@ -26,20 +26,57 @@
                      </div>
                      <div v-if="page == 1" class="page-1 ">
                         <div class="content">
-                           <div class=' am-u-lg-8 am-u-end'>
+                           <div class=' am-u-lg-5 am-u-md-7 am-u-end'>
                               <div class="header">
                                  <h1>确认你的房源</h1>
                               </div>
-                              <div>
-                                  <span style="font-size: 30px;padding-left:10px;padding-right: 7px;">在</span><span style="font-weight: 500;font-size: 80px;">{{data.city}}</span>
+                              <div class="am-g">
+                                 <div class="am-u-md-12">
+                                    <div class="am-form-group">
+                                       <label>城市</label>
+                                       <input v-model="formData.city" type="text" placeholder="城市">
+                                    </div>
+                                 </div>
                               </div>
-                              <div>
-                                 <span style="font-size: 20px;padding-left:30px;padding-right: 7px;">的</span> <span style="font-weight: 500;font-size: 60px;">{{data.community}}</span> <span style="font-size: 20px;padding-left:10px;padding-right: 7px;">小区</span>
+                              <div class="am-g">
+                                 <div class="am-u-md-12">
+                                    <div class="am-form-group">
+                                       <label>小区</label>
+                                       <input v-model="formData.community" @keyup="getLnt" type="text" placeholder="小区名称">
+                                    </div>
+                                 </div>
                               </div>
-                              <div> {{data.building_number}}号楼 {{data.unit_number}}单元 {{data.house_number}}号房 </div>
-                              <div>
-                                 是你的房子吗？
+                              <div class="am-g">
+                                 <div class="am-u-md-12">
+                                    <div class="am-form-group">
+                                       <label>位置</label>
+                                       <input v-model="formData.location" type="text" placeholder="输入小区后在地图调整位置">
+                                    </div>
+                                 </div>
                               </div>
+                              <div class="am-g">
+                                 <div class="am-u-md-12">
+                                    <div class="am-form-group">
+                                       <label>房屋地址</label>
+                                       <div class="am-g">
+                                          <div class="am-u-sm-4">
+                                             <input type="text" class="am-form-field " v-model="formData.building_number" placeholder="楼栋号">
+                                          </div>
+                                          <div class="am-u-sm-4">
+                                             <input type="text" class="am-form-field " v-model="formData.unit_number" placeholder="单元号">
+                                          </div>
+                                          <div class="am-u-sm-4">
+                                             <input type="text" class="am-form-field " v-model="formData.house_number" placeholder="门牌号">
+                                          </div>
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                           <div class="am-u-lg-7 ">
+                              <div class="map-bar am-show-lg-only"></div>
+                              <mapa @location="getLoaction" v-bind:city="formData.city" v-bind:lng="lng" v-bind:lat="lat">
+                              </mapa>
                            </div>
                         </div>
                      </div>
@@ -440,7 +477,40 @@
                               </div>
                         </div>
                      </div>
-                     <div v-else-if="page == 4" class="page-4">
+                     <div v-else-if="page == 4" class="page-4 ">
+                        <div class="content">
+                           <div class='am-u-md-7 am-u-end'>
+                              <div class="header">
+                                 <h1>再填一些最基本的信息</h1>
+                              </div>
+                              <div class="am-g">
+                                 <div class="am-u-md-12">
+                                    <div class="am-form-group">
+                                       <label>联系人</label>
+                                       <input v-model="formData.contact" type="text" placeholder="我们将会按照您留下的姓名称呼您">
+                                    </div>
+                                 </div>
+                              </div>
+                              <div class="am-g">
+                                 <div class="am-u-md-12">
+                                    <div class="am-form-group">
+                                       <label>联系人电话</label>
+                                       <input v-model="formData.tel" type="text" placeholder="方便我们审核后联系您">
+                                    </div>
+                                 </div>
+                              </div>
+                              <div class="am-g">
+                                 <div class="am-u-md-12">
+                                    <div class="am-form-group">
+                                       <label>期望价格</label>
+                                       <input v-model="formData.expect_price"  type="text" placeholder="你期望的价格">
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                     <div v-else-if="page == 5" class="page-5">
                         <div class="content">
                            <div class="am-cf">
                               <div class="am-u-md-12 am-u-end">
@@ -462,8 +532,8 @@
                                                 <div class="am-u-md-11 am-u-lg-10 am-u-sm-centered">
                                                    <div class="am-panel am-g">
                                                       <div class="am-panel-bd am-text-center am-g thumbnail-bar am-cf cover-bar" v-if="formData.house_img.cover != false">
-                                                         <div class="am-g " style="max-height: 500px;position:relative;display:inline-block" @mouseenter="closeBtnOn" @mouseleave="closeBtnOff">
-                                                            <img class="am-radius am-img-responsive" style="" :src="formData.house_img.cover[0]">
+                                                         <div class="am-g center-img am-radius" :style="'background-image:url('+formData.house_img.cover[0]+')'" @mouseenter="closeBtnOn" @mouseleave="closeBtnOff">
+                                                            <!-- <img class="am-radius am-img-responsive" style="" :src="formData.house_img.cover[0]"> -->
                                                             <span class="close">
                                                                <button @click="removeIndex(formData.house_img.cover,0)" type="button" class="am-btn">删除图片</button>
                                                             </span>
@@ -494,7 +564,7 @@
                            </div>
                         </div>
                      </div>
-                     <div v-else-if="page == 5" class="page-5">
+                     <div v-else-if="page == 6" class="page-6">
                         <div class="content">
                            <div class="am-cf">
                               <div class="am-u-md-12 am-u-end">
@@ -517,8 +587,8 @@
                                                 <div class="am-u-md-11 am-u-lg-12 am-cf am-u-sm-centered">
                                                    <div class="am-g">
                                                       <div v-show="formData.house_img.hall != false" class="am-u-lg-3 am-u-md-6" v-for="(item,index) in formData.house_img.hall">
-                                                         <div class="o-thumbnail am-vertical-align" @mouseenter="closeBtnOn" @mouseleave="closeBtnOff">
-                                                            <img class="am-radius am-img-responsive am-vertical-align-middle am-inline-block" :src="item">
+                                                         <div class="o-thumbnail am-text-center center-img" @mouseenter="closeBtnOn" :style="'background-image:url('+item+')'" @mouseleave="closeBtnOff">
+                                                            <!-- <img class="am-radius am-inline-block" :src="item"> -->
                                                             <span class="close">
                                                                <button @click="removeIndex(formData.house_img.hall,index)" type="button" class="am-btn">删除图片</button>
                                                             </span>
@@ -552,8 +622,8 @@
                                                 <div class="am-u-md-11 am-u-lg-12 am-cf am-u-sm-centered">
                                                    <div class="am-g">
                                                       <div v-show="formData.house_img.bedroom != false" class="am-u-lg-3 am-u-md-6" v-for="(item,index) in formData.house_img.bedroom">
-                                                         <div class="o-thumbnail am-vertical-align" @mouseenter="closeBtnOn" @mouseleave="closeBtnOff">
-                                                            <img class="am-radius am-img-responsive am-vertical-align-middle am-inline-block" :src="item">
+                                                         <div class="o-thumbnail am-text-center center-img" @mouseenter="closeBtnOn" :style="'background-image:url('+item+')'" @mouseleave="closeBtnOff">
+                                                            <!-- <img class="am-radius am-inline-block" :src="item"> -->
                                                             <span class="close">
                                                                <button @click="removeIndex(formData.house_img.bedroom,index)" type="button" class="am-btn">删除图片</button>
                                                             </span>
@@ -587,8 +657,8 @@
                                                 <div class="am-u-md-11 am-u-lg-12 am-cf am-u-sm-centered">
                                                    <div class="am-g">
                                                       <div v-show="formData.house_img.bathroom != false" class="am-u-lg-3 am-u-md-6" v-for="(item,index) in formData.house_img.bathroom">
-                                                         <div class="o-thumbnail am-vertical-align" @mouseenter="closeBtnOn" @mouseleave="closeBtnOff">
-                                                            <img class="am-radius am-img-responsive am-vertical-align-middle am-inline-block" :src="item">
+                                                         <div class="o-thumbnail am-text-center center-img" @mouseenter="closeBtnOn" :style="'background-image:url('+item+')'" @mouseleave="closeBtnOff">
+                                                            <!-- <img class="am-radius am-inline-block" :src="item"> -->
                                                             <span class="close">
                                                                <button @click="removeIndex(formData.house_img.bathroom,index)" type="button" class="am-btn">删除图片</button>
                                                             </span>
@@ -623,8 +693,8 @@
                                                 <div class="am-u-md-11 am-u-lg-12 am-cf am-u-sm-centered">
                                                    <div class="am-g">
                                                       <div v-show="formData.house_img.balcony != false" class="am-u-lg-3 am-u-md-6" v-for="(item,index) in formData.house_img.balcony">
-                                                         <div class="o-thumbnail am-vertical-align" @mouseenter="closeBtnOn" @mouseleave="closeBtnOff">
-                                                            <img class="am-radius am-img-responsive am-vertical-align-middle am-inline-block" :src="item">
+                                                         <div class="o-thumbnail am-text-center center-img" @mouseenter="closeBtnOn" :style="'background-image:url('+item+')'" @mouseleave="closeBtnOff">
+                                                            <!-- <img class="am-radius  am-inline-block" :src="item"> -->
                                                             <span class="close">
                                                                <button @click="removeIndex(formData.house_img.balcony,index)" type="button" class="am-btn">删除图片</button>
                                                             </span>
@@ -659,8 +729,8 @@
                                                 <div class="am-u-md-11 am-u-lg-12 am-cf am-u-sm-centered">
                                                    <div class="am-g">
                                                       <div v-show="formData.house_img.kitchen != false" class="am-u-lg-3 am-u-md-6" v-for="(item,index) in formData.house_img.kitchen">
-                                                         <div class="o-thumbnail am-vertical-align" @mouseenter="closeBtnOn" @mouseleave="closeBtnOff">
-                                                            <img class="am-radius am-img-responsive am-vertical-align-middle am-inline-block" :src="item">
+                                                         <div class="o-thumbnail am-text-center center-img" @mouseenter="closeBtnOn" :style="'background-image:url('+item+')'" @mouseleave="closeBtnOff">
+                                                            <!-- <img class="am-radius am-inline-block" :src="item"> -->
                                                             <span class="close">
                                                                <button @click="removeIndex(formData.house_img.kitchen,index)" type="button" class="am-btn">删除图片</button>
                                                             </span>
@@ -690,7 +760,7 @@
                            </div>
                         </div>
                      </div>
-                     <div v-else-if="page == 6" class="page-6 ">
+                     <div v-else-if="page == 7" class="page-7 ">
                         <div class="content">
                            <div class="am-cf">
                               <div class=' am-u-lg-8 am-u-end'>
@@ -723,7 +793,7 @@
                            </div>
                         </div>
                      </div>
-                     <div v-else-if="page == 7" class="page-7 ">
+                     <div v-else-if="page == 8" class="page-8 ">
                         <div class="content">
                            <div class="am-cf">
                               <div class='am-u-lg-12'>
@@ -733,18 +803,21 @@
                                     </div>
                                     <div class="body">
                                        <div class="am-g">
-                                          <div>
-                                             <div class="am-text-center">
-                                                <span class="am-text-xl am-block">请上传房产证明</span>
-                                                <small>该属于私密资料，不会被公开，不到交易的最后将不会有人知道.</small>
-                                             </div>
-                                          </div>
+
                                           <div>
                                              <div class="am-u-md-11 am-u-lg-10 am-u-sm-centered">
+                                                <div class="am-g">
+                                                   <div>
+                                                      <div class="am-text-center">
+                                                         <span class="am-text-xl am-block">请上传房产证明</span>
+                                                         <small>该属于私密资料，不会被公开，不到交易的最后将不会有人知道.</small>
+                                                      </div>
+                                                   </div>
+                                                </div>
                                                 <div class="am-panel am-g">
                                                    <div class="am-panel-bd am-text-center am-g thumbnail-bar am-cf cover-bar" v-if="formData.deed_info != false">
-                                                      <div class="am-g " style="max-height: 500px;position:relative;display:inline-block" @mouseenter="closeBtnOn" @mouseleave="closeBtnOff">
-                                                         <img class="am-radius am-img-responsive" style="" :src="formData.deed_info[0]">
+                                                      <div class="am-g center-img" style="max-height: 500px;position:relative;display:inline-block" @mouseenter="closeBtnOn" @mouseleave="closeBtnOff" :style="'background-image:url('+ formData.deed_info[0]+ ')'">
+                                                         <!-- <img class="am-radius am-img-responsive" style="" :src="formData.deed_info[0]"> -->
                                                          <span class="close">
                                                             <button @click="removeIndex(formData.deed_info,0)" type="button" class="am-btn">删除图片</button>
                                                          </span>
@@ -774,7 +847,7 @@
                            </div>
                         </div>
                      </div>
-                     <div v-else-if="page == 8" class="page-8">
+                     <div v-else-if="page == 9" class="page-9">
                         <div class="content">
                            <div class="am-cf">
                               <div class="am-u-sm-12">
@@ -821,7 +894,7 @@
                            </div>
                         </div>
                      </div>
-                     <div v-else-if="page == 9" class="page-9">
+                     <div v-else-if="page == 10" class="page-10">
                         <div class="content">
                            <div class="am-text-center" style="margin-top:250px;">
                               <div class="am-text-xxxl">
@@ -852,11 +925,16 @@
 <script>
 import sender from '@/Sender.js'
 import navtop from '@/components/NavTop3'
+import mapa from '@/components/user/map'
+
+
+
 
 export default {
    props:['id'],
    components:{
-      navtop:navtop,
+      navtop,
+      mapa
    },
    data(){
       let that = this;
@@ -864,7 +942,11 @@ export default {
          start:false,
          data:{},
          formData:{
-            commissioned_id:that.id,
+            city:'',
+            location:'',
+            house_number:'',
+            building_number:'',
+            unit_number:'',
             floor:'',
             huxing_map_info:{
                hall:{},
@@ -881,18 +963,66 @@ export default {
             negative_floor:0,
             elevator:'',
             deed_info:[],
-            agree:false
+            agree:false,
+            contact:'',
+            tel:'',
+            expect_price:'',
          },
          page:0,
          fu:{status:false,num:0},
          pageValidate:true,
          submit:false,
+         location:[],
+         lng:0,
+         lat:0,
+         to:null
       }
    },
    mounted:function(){
-      this.getHouse();
+
+      setTimeout(res=>{
+         this.getHouse();
+         this.getC();
+      },300);
+
+      $('.back-btn').sticky({
+         top:7,
+      });
+      $('.am-progress-xs').sticky({
+         top:0,
+      })
    },
    methods:{
+      getC(){
+         this.formData.city = this.getCity;
+      },
+      getLoaction(location){
+         if(!location)
+            this.formData.location = '没有找到，请重新输入或手动选择';
+         else this.formData.location = location.regeocode.formatted_address || '没有找到，请重新输入或手动选择';
+         console.log(this.formData.location)
+      },
+      parseLocation(data){
+         this.location = data;
+         let arr =data.geocodes[0].location.split(',');
+         this.lng = parseFloat(arr[0]);
+         this.lat = parseFloat(arr[1]);
+      },
+      getLnt(){
+
+         clearTimeout(this.to);
+
+         this.to = setTimeout(res=>{
+
+            $.get(`http://restapi.amap.com/v3/geocode/geo?city=${this.formData.city}&address=${this.formData.community}&output=json&key=bf5b356d3ffaab642c974983267b1ce8`).then(res=>{
+               console.log(res.geocodes !=false);
+               if(res.geocodes !=false)
+                  this.parseLocation(res);
+               else this.getLoaction();
+            })
+         },1000)
+
+      },
       getHouse(){
          sender('/api/commissioned/readId',{id:this.id}).then(res=>{
             this.data = res.data;
@@ -975,17 +1105,23 @@ export default {
       },
       nextPage(){
 
-         if(this.page == 8){
+         if(this.page == 9){
             this.submitFormData();
          }else this.page++;
-
       },
       nextValidator(){
-         if(this.page >=9)
+         if(this.page >=10 || typeof this['page'+this.page+'Validator'] !== 'function')
             return;
          return this['page'+this.page+'Validator']();
       },
       page1Validator(){
+         let data = this.formData,
+            arr = [data.community,data.city,data.location,data.building_number,data.unit_number,data.house_number];
+
+         for(let i of arr){
+            if(!i || i == false )
+               return false;
+         }
          return true;
       },
       page2Validator(){
@@ -1029,12 +1165,21 @@ export default {
          return true;
       },
       page4Validator(){
+         let data = this.formData;
+
+         if(!data.contact || !data.tel || !data.expect_price)
+            return false;
+
+         return true;
+
+      },
+      page5Validator(){
 
          let data = this.formData.house_img.cover[0];
 
          return data ? true :false;
       },
-      page5Validator(){
+      page6Validator(){
 
          let form = this.formData,
              data = form.house_img,
@@ -1052,7 +1197,7 @@ export default {
 
          return true;
       },
-      page6Validator(){
+      page7Validator(){
 
          let data = this.formData,
              surroundings = data.surroundings,
@@ -1063,16 +1208,13 @@ export default {
             return false;
 
          return true;
-
-      },
-      page7Validator(){
-
-         let data = this.formData.deed_info[0];
-
-         return data ? true :false;
-
       },
       page8Validator(){
+         let data = this.formData;
+
+         return data.deed_info[0] ?true :false;
+      },
+      page9Validator(){
          return this.formData.agree;
       },
       submitFormData(){
@@ -1085,9 +1227,15 @@ export default {
          },res=>{
             this.submit = false;
          });
-      }
+      },
+      getC(){
+          this.formData.city = this.getCity;
+      },
    },
    computed:{
+      getCity(){
+          return this.$store.getters['getIpCity'];
+      },
    },
    watch:{
       ['fu.status'](val){
@@ -1128,8 +1276,11 @@ export default {
     border-width: 1px !important;
 }
 .content div[class^=page-] .am-form-group label{
-   font-weight: 500;
-   font-size: 24px;
+   word-wrap: break-word !important;
+      font-family: Circular,-apple-system,BlinkMacSystemFont,Roboto,Helvetica Neue,sans-serif !important;
+      font-size: 19px !important;
+      line-height: 24px !important;
+      font-weight: normal !important;
 }
 .o-thumbnail,
 .o-upload-bar,
@@ -1144,7 +1295,11 @@ export default {
 .upload-bar{
    margin-top: 30px;
 }
-
+.thumbnail-bar div{
+   max-height: 465px !important;
+   height: 500px;
+   width: 100%;
+}
 .upload-bar{
    padding-top: 80px;
    padding-bottom: 70px;
@@ -1153,6 +1308,8 @@ export default {
 .o-thumbnail,
 .o-upload-bar{
    height: 300px;
+   /*overflow: hidden;*/
+   width: 100%;
 }
 .upload-bar button{
    outline: none;
@@ -1181,7 +1338,6 @@ export default {
 .o-thumbnail img,
 .thumbnail-bar img{
    display:block;
-   max-width: 100%;
    vertical-align: middle;
    margin: 0 auto;
 }
@@ -1190,6 +1346,9 @@ export default {
 }
 .o-thumbnail img{
    max-height: 292px;
+}
+.cover-bar{
+   max-height: 500px;
 }
 
 .close{
@@ -1216,5 +1375,36 @@ export default {
    cursor:pointer;
    color:rgba(0,0,0,0.3);
    padding: 95px 18px;
+}
+.map-bar{
+   margin-top: 100px;
+}
+.am-form-group select,
+.am-form-group textarea,
+.am-form-group input:not([type=checkbox]){
+   outline: none;
+    font-family: Circular,-apple-system,BlinkMacSystemFont,Roboto,Helvetica Neue,sans-serif !important;
+    font-size: 19px !important;
+    line-height: 24px !important;
+    letter-spacing: undefined !important;
+    padding-top: undefined !important;
+    padding-bottom: undefined !important;
+    color: #484848 !important;
+    font-weight: 300 !important;
+    background-color: transparent !important;
+    border-color:#dbdbdb;
+    padding: 11px !important;
+    width: 100% !important;
+    border: 1px solid #aaa;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    border-radius: 2px;
+    background-color: #fff;
+    color: #484848;
+}
+.am-form-group textarea:focus,
+.am-form-group input:focus{
+   outline: none;
+   border-color:#666;
 }
 </style>

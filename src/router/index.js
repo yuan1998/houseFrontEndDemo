@@ -6,11 +6,18 @@ import SellHouse from '@/components/SellHouse'
 import Login from '@/components/Login'
 import Signup from '@/components/Signup'
 import AddHouseData from '@/components/AddHouseData'
+import HouseAddData from '@/components/HouseAddData'
 import page404 from '@/components/404'
 import userTemplate from '@/components/UserTemplate'
 import userHome from '@/components/UserHome'
 import selfInfo from '@/components/UserSelfInfo'
 import userCommissioned from '@/components/UserCommissioneds'
+import transactionLog from '@/components/UserTransactionLog'
+import SystemMessage from '@/components/SystemMessage'
+import UserMessage from '@/components/UserMessage'
+import AdminUser from '@/components/AdminUser'
+import AdminCommissioned from '@/components/AdminCommissioned'
+import houseInfo from '@/components/house/info.vue'
 
 Vue.use(Router)
 
@@ -29,7 +36,7 @@ const router = new Router({
     {
       path:'/yezhu/maifang',
       name:'maifang',
-      component:SellHouse
+      component:AddHouseData,
     },
     {
       path:'/login',
@@ -48,10 +55,10 @@ const router = new Router({
       component:Signup
     },
     {
-      path:'/yezhu/addhousedata/:id',
+      path:'/yezhu/addData/:id',
       props:true,
       name:'AddHouseData',
-      component:AddHouseData,
+      component:HouseAddData,
     },
     {
       path:'/404',
@@ -77,8 +84,38 @@ const router = new Router({
             path:'commissioneds',
             name:'UserCommissioneds',
             component:userCommissioned
-         }
+         },
+         {
+            path:'transactionLog',
+            name:'UserTransactionLog',
+            component:transactionLog
+         },
+         {
+            path:'message/system',
+            name:'SystemMessage',
+            component:SystemMessage
+         },
+         {
+            path:'message/user',
+            name:'UserMessage',
+            component:UserMessage
+         },
+         {
+            path:'/admin/user',
+            name:'adminUser',
+            component:AdminUser
+         },
+         {
+            path:'/admin/commissioneds',
+            name:'adminCommissioned',
+            component:AdminCommissioned
+         },
       ]
+    },
+    {
+      path:'/house/:id',
+      component:houseInfo,
+      props:true
     }
   ]
 })

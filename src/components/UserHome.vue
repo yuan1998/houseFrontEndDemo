@@ -10,10 +10,10 @@
                         用户名:{{getUser.username}}
                      </div>
                      <div>
-                        <button href="#" class="am-btn info-read-btn">
+                        <router-link to="/user/self" class="am-btn info-read-btn">
                            <span class="am-block">查看详细</span>
                            <i class="am-icon-angle-down"></i>
-                        </button>
+                        </router-link>
                      </div>
                   </div>
                </div>
@@ -21,22 +21,25 @@
                   <div class="commissioned-header am-text-center">
                      <span class="am-text-xl">我的委托</span>
                   </div>
-                  <div class="am-panel-group" v-if="getCommissioned != false" id="commisioned-bar">
-                     <template v-for="(item,n) in getCommissioned">
+                  <div class="am-panel-group" v-if="houses != false" id="commisioned-bar">
+                     <template v-for="(item,n) in houses">
                         <tempc v-bind:data="item" v-bind:index="n"></tempc>
                      </template>
-                     <div class="am-text-center am-margin-top">
-                        <span style="color:#5085ff">.....</span>
-                     </div>
+                     <template v-if="total">
+                       <div class="am-text-center am-margin-top">
+                          <span style="color:#5085ff">.....</span>
+                       </div>
+                       <div class="am-text-center">
+                         <button href="#" class="am-btn cimmissioned-read-btn">
+                            <span class="am-block">查看更多</span>
+                         </button>
+                       </div>
+                     </template>
                   </div>
                   <div class="am-text-center" v-else>
                      <span class="am-text-xxl">Epmty...</span>
                   </div>
-                  <div class="am-text-center">
-                     <button href="#" class="am-btn cimmissioned-read-btn">
-                        <span class="am-block">查看更多</span>
-                     </button>
-                  </div>
+
                </div>
             </div>
          </div>
@@ -61,20 +64,29 @@ import avatar from '@/components/user/userAvatar'
          return{
             user:null,
             newAvatar:[],
+            houses:[],
+            total:0,
          }
+      },
+      mounted(){
+        this.getUserHouse();
       },
       methods:{
          getUserD(){
             let user = this.$store.getters['user/user'];
             this.user =  user ||'error';
+         },
+         getUserHouse(){
+            sender('/api/house/getUserHouse',{page:1}).then(res=>{
+              this.houses = res.data.data.filter((res,index)=> index <2);
+              this.total = res.data.total;
+              console.log(res.data);
+            })
          }
       },
       computed:{
          getUser(){
             return this.$store.getters['user/user'];
-         },
-         getCommissioned(){
-            return this.$store.getters['user/getComM'];
          }
       }
    }

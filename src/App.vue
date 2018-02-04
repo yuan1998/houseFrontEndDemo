@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app" style="min-width: 300px;">
     <transition name="fade" mode="out-in">
        <router-view></router-view>
     </transition>
@@ -15,13 +15,14 @@
 }
 *{
   position:relative;
+  font-family: Circular,-apple-system,BlinkMacSystemFont,Roboto,Helvetica Neue,sans-serif !important;
 }
 img {
   box-sizing: border-box;
-  /* v2.3 开始移除以下代码，详见 #502 */
-  /* max-width: 100%;
-  height: auto;*/
   border: 0;
+}
+textarea{
+  resize: none;
 }
 /*#appHome{
   background-image: url('https://farm4.staticflickr.com/3854/32764887833_7c91946505_k.jpg');
@@ -32,7 +33,18 @@ img {
     background-repeat: no-repeat;
 }*/
 
-
+   .center-img{
+    background-size: cover;
+    background-position: center;
+     display: inline-block;
+     background-repeat: no-repeat;
+   }
+   .width-img{
+      background-size: 100% 100%;
+      background-position: center;
+     display: inline-block;
+     background-repeat: no-repeat;
+   }
 #nprogress .nprogress-bar{
   background: #8387d2;
 }

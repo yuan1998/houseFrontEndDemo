@@ -11,8 +11,8 @@
                       <ul class="am-nav">
                          <router-link to="/user" tag="li" v-if="getUser" class="">
                             <div class=" am-block">
-                               <span class="avatar-bar am-circle">
-                                  <img class="avatar-img " :src="getAvatar" >
+                               <span class="avatar-bar am-circle center-img" :style="'background-image:url('+getAvatar+')'">
+                                  <!-- <img class="avatar-img " :src="getAvatar" > -->
                                </span>
                                <span style="position: absolute;top: 3px;padding-left: 7px;">{{getUser.username}}</span>
                             </div>
@@ -136,7 +136,7 @@ export default {
      },
      getAvatar(){
         if(this.getUser.avatar_url != false && 'name' in (this.getUser.avatar_url||{})) {
-           return "http://localhost:1234/storage/img/"+this.getUser.avatar_url.name
+           return this.getUser.avatar_url.get;
         }
         return require('../../storage/notAvatar.png');
      }
@@ -151,8 +151,7 @@ export default {
 .avatar-bar{
   height: 32px;
   width: 32px;
-  display: inline-block;
-  overflow: hidden;
+  /*overflow: hidden;*/
 }
 #user-side-menu-bar .am-offcanvas-bar{
    background: #fff;

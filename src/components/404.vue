@@ -4,13 +4,18 @@
          <div class="am-vertical-align-middle ">
             <div class="header">
                <div class="am-animation-fade">
-                  <span class="am-monospace am-text-xxxl">ERROR 404</span>
+                  <span class="am-monospace error-title am-text-xxxl">ERROR 404</span>
                </div>
             </div>
             <div class="content">
                <div class="">
                   <span class="am-monospace am-animation-fade delay am-text-xxl">
                      Oops! The Page Is Not Define!
+                  </span>
+               </div>
+               <div class="">
+                  <span class="am-monospace am-animation-fade delay am-text-xl">
+                     <router-link class="am-link am-muted" to="/">I So Sorry.But You Can Back To Home...</router-link>
                   </span>
                </div>
             </div>
@@ -20,7 +25,9 @@
 </template>
 
 <style scoped>
-
+*{
+   user-select: none;
+}
 #page-404-bar{
    display: block;
    position:fixed;
@@ -45,7 +52,7 @@
    transition:width 0.5s ease-out;
 }
 #page-404-bar .header span:hover:before{
-   width: 218px;
+   width: 408px;
 }
 #page-404-bar .content span{
    color:#b02374;
@@ -53,5 +60,8 @@
 .delay{
    -webkit-animation-delay: 0.5s;
   animation-delay: 0.5s;
+}
+.error-title{
+       font-size: 13.2rem;
 }
 </style>

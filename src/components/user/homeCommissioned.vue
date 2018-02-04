@@ -4,25 +4,49 @@
          <div class="am-panel-hd ">
             <div class="am-text-center">
                <span>{{data.city}} {{data.community}} {{data.building_number}}号楼 {{data.unit_number}}单元 {{data.house_number}}号</span>
-
-               <a v-if="data.status == 'pass'" class="am-badge am-fr am-badge-success am-radius">审核通过</a>
-               <a v-else-if="data.status == 'audit'" class="am-badge am-fr am-badge-secondary am-radius">审核中</a>
-               <a v-else-if="data.status == 'unpass'" class="am-badge am-fr am-badge-danger am-radius">审核失败</a>
-               <a v-else-if="data.status == 'valuation'" class="am-badge am-fr am-badge-danger am-radius">估价中</a>
-               <a v-else-if="data.status == 'sell'" class="am-badge am-fr am-badge-danger am-radius">在售</a>
-               <a v-else-if="data.status == 'pay'" class="am-badge am-fr am-badge-danger am-radius">交易中</a>
-               <a v-else-if="data.status == 'complete'" class="am-badge am-fr am-badge-danger am-radius">交易完成</a>
-               <a v-else-if="data.status == 'close'" class="am-badge am-fr am-badge-danger am-radius">已关闭</a>
+                <a v-if="getStatus != false" class="am-badge am-fr am-badge-secondary am-radius">{{getStatus[data.status]}}</a>
             </div>
          </div>
          <div :id="'amdoc-'+index" class="am-panel-collapse am-collapse">
             <div class="am-panel-bd">
                <div>
+                  {{data}}
                   <div>
                      提交日期：{{data.created_at}}
                   </div>
                   <div>
                      联系人 ：{{data.contact}}  联系人电话：{{data.tel}}
+                  </div>
+                  <div>
+                     地址：{{data.location}}
+                  </div>
+                  <div>
+                    小区：{{data.community}}
+                  </div>
+                  <div>
+                    户型 ：
+                    <span v-if="data.room_count.hall >0"> {{data.room_count.hall}}厅 </span>
+                    <span v-if="data.room_count.bedroom >0"> {{data.room_count.bedroom}}室 </span>
+                    <span v-if="data.room_count.bathroom >0"> {{data.room_count.bathroom}}卫 </span>
+                    <span v-if="data.room_count.belcony >0"> {{data.room_count.belcony}}阳台 </span>
+                    <span v-if="data.room_count.kitchen >0"> {{data.room_count.kitchen}}厨房 </span>
+                  </div>
+                  <div>
+                    <span>
+                      装修：{{data.Decoration}}
+                    </span>
+                    <span class="am-margin-horizontal-sm">
+                       暖气：{{data.supply_heating}}
+                    </span>
+                    <span class="am-margin-horizontal-sm">
+                        电梯：{{data.elevator}}
+                    </span>
+                    <span class="am-margin-horizontal-sm">
+                      朝向：{{data.direction}}
+                    </span>
+                  </div>
+                  <div>
+
                   </div>
                   <div v-if="data.status == 'audit'" class="am-text-center">
                      请耐心等待审核,这将不会需要太久.
@@ -50,9 +74,13 @@
             collapse.collapse('toggle');
          },
          toggleClass(condi){
-
             $('.panel-'+this.index).find('i[class^=am-icon]').removeClass().addClass(condi ? 'am-icon-angle-down' : 'am-icon-angle-up');
          }
+      },
+      computed:{
+        getStatus(){
+          return this.$store.getters['house/getStatus'];
+        }
       }
    }
 </script>
@@ -63,9 +91,11 @@
 
    background: #fff;
    }
-
+    .am-panel-hd,
+    .am-panel-bd,
    .am-panel-default{
-    border-color: #5085ff5e;
+      border-color: #5085ff5e;
+      border-radius:6px;
    }
    .am-panel-title{
           display: block;
@@ -80,7 +110,7 @@
    }
    .am-panel-bd{
     border-top: 1px solid #5085ff1e !important;
-    background: #fffcfc;
+    background: #ffffff;
    }
    .am-panel-hd.pft span:hover .am-icon-angle-up:after,
    .am-panel-hd.pft span:hover .am-icon-angle-down:after{

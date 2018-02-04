@@ -14,10 +14,20 @@
                                  <router-link tag="li" to="/user/" active-class="side-active" exact class="side-bar-item"><a>个人主页</a></router-link>
                                  <router-link tag="li" to="/user/self" active-class="side-active" exact class="side-bar-item"><a>个人资料</a></router-link>
                                  <router-link tag="li" to="/user/commissioneds" active-class="side-active" exact class="side-bar-item"><a>我的委托</a></router-link>
-                                 <router-link tag="li" to="jiaoyi" active-class="side-active" exact class="side-bar-item"><a>交易记录</a></router-link>
+                                 <router-link tag="li" to="/user/transactionlog" active-class="side-active" exact class="side-bar-item"><a>交易记录</a></router-link>
                                  <li  class="side-bar-content-header">消息中心</li>
-                                 <router-link to="webMessage" tag="li" active-class="side-active" exact class="side-bar-item"><a>公告</a></router-link>
-                                 <router-link tag="li" to="userMessage" active-class="side-active" exact class="side-bar-item"><a>私信</a></router-link>
+                                 <router-link to="/user/message/system" tag="li" active-class="side-active" exact class="side-bar-item">
+                                  <a>
+                                    系统通知
+                                    <span v-show="getSystemCount > 0" class="am-badge am-radius am-badge-secondary am-fr am-margin-right-sm am-text-middle">{{getSystemCount}}</span>
+                                  </a>
+                                  </router-link>
+                                 <router-link tag="li" to="user" active-class="side-active" exact class="side-bar-item">
+                                  <a>
+                                    私信
+                                    <span v-show="getUserCount >0" class="am-badge am-radius am-badge-secondary am-fr am-margin-right-sm am-text-middle">{{getUserCount}}</span>
+                                  </a>
+                                </router-link>
                                  <template v-if="getUser && getUser.permission > 3">
                                     <li  class="side-bar-content-header">后台管理</li>
                                     <router-link tag="li" to="/admin/user" active-class="side-active" exact class="side-bar-item"><a>用户管理</a></router-link>
@@ -53,12 +63,18 @@ import offcanvas from '@/components/Offcanvas'
          offcanvas
       },
       mounted(){
-        this.$store.dispatch('user/getCommissioned');
+        this.$store.dispatch('house/getStatusList');
       },
       computed:{
         getUser(){
           return this.$store.getters['user/user'];
         },
+        getSystemCount(){
+          return this.$store.getters['message/webMessageCount'];
+        },
+        getUserCount(){
+          return this.$store.getters['message/userMessageCount'];
+        }
       }
    }
 </script>

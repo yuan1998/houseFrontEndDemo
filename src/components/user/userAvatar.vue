@@ -3,8 +3,8 @@
 
          <div class="user-avatar am-text-center am-margin-top-lg">
             <div>
-               <div class="avatar-bar" >
-                  <img  :src="getAvatar" >
+               <div class="avatar-bar" :style="'background-image:url('+getAvatar+');'">
+                  <!-- <img  :src="getAvatar" > -->
                   <button v-if="!upSuccess" @click="clickInput" class="am-btn avatar-btn">更换头像</button>
                   <i v-else class="uploadSuccess am-icon-check"></i>
                </div>
@@ -39,7 +39,7 @@ import sender from '@/Sender.js'
             if(this.newAvatar[0])
                return this.newAvatar[0];
             else if(this.getUser.avatar_url != false && 'name' in (this.getUser.avatar_url||{})) {
-               return "http://localhost:1234/storage/img/"+this.getUser.avatar_url.name
+               return this.getUser.avatar_url.get;
             }
             return require('@/../storage/notAvatar.png');
          },
@@ -88,7 +88,7 @@ import sender from '@/Sender.js'
     transition: linear 0.25s;
 
 }
-.avatar-bar{
+/*.avatar-bar{
    overflow: hidden;
    display: inline-block;
    width: 200px;
@@ -96,6 +96,16 @@ import sender from '@/Sender.js'
     border-radius:200px;
     background: #ececec;
    box-shadow: 0px 0px 1px rgba(0,0,0,0.4);
+}*/
+
+.avatar-bar{
+   width: 200px;
+   height: 200px;
+    border-radius:200px;
+    display: inline-block;
+   background-size: cover;
+   background-position: center;
+
 }
 .user-avatar{
    min-height: 270px;

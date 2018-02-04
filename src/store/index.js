@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import userStore from '@/store/usermodel.js'
 import messageStore from '@/store/messagemodel.js'
-import $ from 'jquery'
+import houseStore from '@/store/housemodel.js'
 Vue.use(Vuex)
 
 import sender from '@/Sender.js'
@@ -12,6 +12,7 @@ export default new Vuex.Store({
    modules:{
       user:userStore,
       message:messageStore,
+      house:houseStore,
    },
    state:{
       alertMsg : {'title':'添加成功～','content':'请耐心等待审核'},
@@ -44,10 +45,10 @@ export default new Vuex.Store({
       isLogin(state,data){
          sender('/api/user/is_login',data).then((res,textStatus,response)=>{
 
-            let token =response.getResponseHeader('s_token');
-            console.log(token);
-            if(token)
-               state.dispatch('set_token',token);
+            // let token =response.getResponseHeader('s_token');
+            // console.log(token);
+            // if(token)
+            //    state.dispatch('set_token',token);
 
             if(res.success){
                state.dispatch('user/saveUser',res.data);

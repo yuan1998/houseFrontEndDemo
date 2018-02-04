@@ -1,11 +1,11 @@
 <template>
    <div id="nav-top">
       <!-- 导航 -->
-      <div class="nav am-g">
+      <div class="nav am-g am-cf">
          <div class="am-topbar am-topbar-inverse" style="margin-bottom: 0px">
                <span class="am-topbar-brand">
                   <router-link class="am-monospace" to="/" >
-                     4n!o
+                     <a >4n!o</a>
                   </router-link>
                   <small ><i class="am-icon-location-arrow"></i>{{getIpCity}}</small>
                </span>
@@ -30,9 +30,6 @@
                         <router-link tag="li" active-class="am-active" to="/readHouses" exact>
                            <a >看房</a>
                         </router-link>
-                        <li class="">
-                           <a href="">哩个</a>
-                        </li>
                         <li>
                            <router-link to="/yezhu/maifang">我要卖房</router-link>
                         </li>
@@ -40,13 +37,13 @@
                            <li v-on:mouseenter="downOpenEvent('.messageBarDown')" v-on:mouseleave="downCloseEvent('.messageBarDown')" class="am-dropdown messageBarDown">
                               <a :class="{ 'mark' : getUserMessage+getWebMessage >0}">消息<sup></sup></a>
                               <ul v-on:mouseleave="downCloseEvent('.messageBarDown')" class="am-dropdown-content" id="home-message">
-                                 <router-link tag="li" to="/user/webMessage" active-class="am-active" exact>
+                                 <router-link tag="li" to="/user/message/system" active-class="am-active" exact>
                                     <a >
                                        站内消息
                                        <span v-show="getWebMessage >0 " class="am-badge am-badge-secondary am-round am-fr am-margin-right am-text-middle">{{getWebMessage}}</span>
                                     </a>
                                  </router-link>
-                                 <router-link tag="li" to="/user/userMessage" active-class="am-active" exact>
+                                 <router-link tag="li" to="/user/message/user" active-class="am-active" exact>
                                     <a >
                                        私信
                                        <span v-show="getUserMessage >0" class="am-badge am-badge-secondary am-round am-fr am-margin-right am-text-middle">{{getUserMessage}}</span>
@@ -104,10 +101,10 @@
                         </router-link>
                         <template v-if='getUser'>
                            <li class="am-nav-header">用户</li>
-                           <router-link @click.native="sideBarHide" active-class="am-active" tag="li" to="/user/info" exact>
+                           <router-link @click.native="sideBarHide" active-class="am-active" tag="li" to="/user/self" exact>
                               <a>我的资料 </a>
                            </router-link>
-                           <router-link @click.native="sideBarHide" active-class="am-active" tag="li" to="/user/commissioned" exact>
+                           <router-link @click.native="sideBarHide" active-class="am-active" tag="li" to="/user/commissioneds" exact>
                               <a >我的委托</a>
                            </router-link>
                            <router-link @click.native="sideBarHide" active-class="am-active" tag="li" to="/user/transactionlog" exact>
@@ -213,9 +210,15 @@ export default {
 </script>
 
 <style scoped>
+*{
+  user-select: none;
+}
+#my-nav{
+  background: #fff;
+}
 .nav{
-  position: absolute;
-  z-index: 5;
+  /*position: absolute;*/
+  z-index: 2;
 }
 .mark{
    position:relative;
@@ -227,6 +230,21 @@ export default {
    width: 6px;
    height: 6px;
    background: red;
+}
+.am-topbar-brand a{
+  color:#FF5A5F ;
+}
+.am-topbar-brand,
+.am-topbar-inverse .am-topbar-nav > li:not(.am-active) > a{
+  z-index: 3;
+  color:#666;
+}
+.am-topbar-inverse .am-topbar-nav > li.am-active > a{
+  color:#FF5A5F;
+}
+.am-topbar-inverse .am-topbar-nav > li:not(.am-active) > a:hover{
+  color:#FF5A5F ;
+  background: rgba(0,0,0,0.1);
 }
 .am-nav li .am-badge{
    margin-top: 4px;
@@ -268,7 +286,8 @@ export default {
 }
 
 .nav li:not(.am-active) a:hover{
-   background: rgba(0,0,0,0.4);
+   background: rgba(0,0,0,0.1);
+   color:#ff5a5f;
 }
 .nav li:not(.am-active) a:after{
    border-bottom-color:rgba(255,255,255,0.7);
@@ -278,13 +297,21 @@ export default {
 }
 
 .nav .am-topbar{
-  background: rgba(0,0,0,0.1);
+  /*background: rgba(0,0,0,0.1);*/
+  background: #fff;
   border-bottom: none;
   color:#fff;
   box-shadow: 0px 2px 5px rgba(0,0,0,0.2);
 }
+
 .am-dropdown-content{
   top: 80%;
+}
+
+.am-topbar-brand a:focus {
+    color: #FF5A5F;
+    outline: none;
+    background-color: transparent;
 }
 
 </style>

@@ -21,27 +21,26 @@ import sender from '@/Sender.js'
       },
       saveWebCount(state,payload){
          state.unreadWebMessageCount = payload
+      },
+      systemMessageLess(state){
+         state.unreadWebMessageCount--;
+      },
+      userMessageLess(state){
+         state.unreadUserMessageCount--;
       }
    },
    actions:{
       getUserMessage(state){
-
-         sender('/api/envelope/getUserMessage').then(res=>{
-            state.commit('userMessage',res.data)
-         })
-         sender('/api/adminMessage/userGetMessage').then(res=>{
-            state.commit('webMessage',res.data)
-         })
-
          sender('/api/envelope/getUnreadCount').then(res=>{
             state.commit('saveUserCount',res.data)
          })
          sender('/api/adminMessage/getUnreadCount').then(res=>{
             state.commit('saveWebCount',res.data)
          })
-
-
       },
+      less({commit},type){
+         type ? commit('userMessageLess') :commit('systemMessageLess');
+      }
    },
    getters:{
       userMessageCount:(state)=>{
