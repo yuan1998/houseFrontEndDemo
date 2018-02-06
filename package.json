@@ -14,6 +14,7 @@
     "build": "node build/build.js"
   },
   "dependencies": {
+    "amaze-vue": "^1.1.11",
     "amazeui": "^2.7.2",
     "amazeui-vue": "^0.3.2",
     "jquery": "^3.3.1",

@@ -1,6 +1,6 @@
 <template>
-  <div id="app" style="min-width: 300px;">
-    <transition name="fade" mode="out-in">
+  <div id="app" style="" class="am-cf">
+    <transition class="am-cf" name="fade" mode="out-in">
        <router-view></router-view>
     </transition>
   </div>

@@ -36,6 +36,7 @@
             </div>
          </div>
       </div>
+      <top></top>
    </div>
 </template>
 
@@ -43,6 +44,7 @@
 import navTop from '@/components/NavTop'
 import search from '@/components/home/homeSearchBar'
 import hot from '@/components/home/homeHotBar'
+import top from '@/components/ToPageTop'
 
 import sender from '@/Sender.js'
 
@@ -51,17 +53,20 @@ export default {
    components:{
       navTop,
       hot,
-      search
+      search,
+      top
    },
    mounted: function() {
-      console.log('now page is home');
+      setTimeout(res=>{
+         this.unreadMessage();
+      },1000);
    },
    data:function(){
       return {
          keyword:'',
          result:null,
          searchStart:false,
-         welcome:['让你在繁华的闹市中，有一间属于自己的庇护所','与家人一起，在新居中迎接新年','随波逐流的你也需要休息','好几个星期了，我都想着她','最后已事过境迁 长街风景已变']
+         welcome:['让你在繁华的闹市中，有一间属于自己的庇护所','与家人一起，在新居中迎接新年','随波逐流的你也需要休息','好几个星期了，我都想着她','最后已事过境迁 长街风景已变','千万不要因为走得太久，而忘记了我们为什么出发']
       }
    },
    methods:{
@@ -86,6 +91,30 @@ export default {
          let r = Math.floor(Math.random()*lth);
          console.log(r);
          return this.welcome[r];
+      },
+      unreadMessage(){
+
+         let u = this.$store.getters['message/userMessageCount'],
+             s = this.$store.getters['message/webMessageCount'],
+             msg = '';
+
+         if(u==0 && s==0)
+            return;
+         else if(u >0 && s>0)
+            msg = `你有${u}条私信和${s}条系统通知未阅读,<router-link to="/user/message/system" class="am-link">去查看</router-link>`;
+         else if(u>0)
+            msg = `你有${u}条私信未阅读,<router-link to="/user/message/user" class="am-link">去查看</router-link>`;
+         else if(s > 0)
+            msg = `你有${s}条系统通知未阅读,<router-link to="/user/message/system" class="am-link">去查看</router-link>`;
+
+         this.$message({
+              title: '通知',
+              message: msg,
+              placement: 'right-bottom',
+              closeable:true,
+              delay:5000,
+          })
+
       }
    },
    computed:{

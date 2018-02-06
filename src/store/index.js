@@ -16,7 +16,8 @@ export default new Vuex.Store({
    },
    state:{
       alertMsg : {'title':'添加成功～','content':'请耐心等待审核'},
-      ipInfo:{}
+      ipInfo:{},
+      scrollTop:0,
    },
    mutations:{
       setMsgTitle(state,text){
@@ -27,6 +28,9 @@ export default new Vuex.Store({
       },
       saveIpInfo(state,data){
          state.ipInfo = data;
+      },
+      saveOffsetTop(state,offset){
+         state.scrollTop = offset;
       }
    },
    actions:{
@@ -77,14 +81,29 @@ export default new Vuex.Store({
       add({commit}){
          commit('add');
       },
-      readerFile(state,{file,arr}){
+      readerFile(state,{file,callback}){
          let reader = new FileReader(),result;
 
-         reader.onload = (e) =>{
-            arr.push(e.target.result);
-         }
+         // reader.onload = (e) =>{
+         //    arr.push(e.target.result);
+         // }
+
+         reader.onload = callback;
+
 
          reader.readAsDataURL(file);
+      },
+      windowScroll(state,height){
+         console.log(height);
+         let $w = $(window);
+         $w.smoothScroll({
+            position:height
+         });
+      },
+      scrollEvent({commit}){
+         window.addEventListener('scroll',res=>{
+            commit('saveOffsetTop',window.pageYOffset);
+         })
       }
    },
    getters:{
@@ -93,6 +112,9 @@ export default new Vuex.Store({
       },
       msg(state){
          return state.alertMsg;
+      },
+      getScrollTop(state){
+         return state.scrollTop;
       }
    }
 })

@@ -1,7 +1,7 @@
 <template>
    <transition>
       <div class="card-item" v-show="data != false">
-         <div class="">
+         <router-link tag="div" :to="'/house/'+data.id" class="card-link">
             <div class="am-cf">
                <div class="img-wrap">
                   <div class="img-bar">
@@ -10,12 +10,14 @@
                </div>
 
             </div>
-            <div class="text">
+            <div class="text am-cf">
                <div class="price">
                   ¥{{data.price}}万元
                </div>
-               <div class="title">
-                  {{data.city}} {{data.community}}
+               <div class="title am-g-collapse am-cf">
+                  <span class="title am-u-lg-12">{{data.title}}</span>
+                  <span class="am-hide-lg-only">·</span>
+                  <span class="location am-u-lg-12">{{data.city}} {{data.community}}</span>
                </div>
                <div class="info">
                   <span>{{data.area}}平米</span>
@@ -26,7 +28,7 @@
                   <span v-if="data.room_count.belcony >0">{{data.room_count.belcony}}阳台</span>
                </div>
             </div>
-         </div>
+         </router-link>
       </div>
    </transition>
 </template>
@@ -75,13 +77,19 @@
    .text{
       margin-top: 8px;
    }
-   .title{
+   .title .title{
+      font-size: 18px;
+      color:#666;
+      font-weight: 700;
+       padding-top: 7px;
+      overflow: hidden;
+   }
+   .title .location{
        word-wrap: break-word !important;
        font-family: Circular,-apple-system,BlinkMacSystemFont,Roboto,Helvetica Neue,sans-serif !important;
        font-size: 16px !important;
        font-weight: 400 !important;
        color:#6d6d6d !important;
-       padding-top: 7px;
    }
    .info{
       word-wrap: break-word !important;
@@ -104,5 +112,8 @@
        right: 0px !important;
        height: 100% !important;
        width: 100% !important;
+   }
+   .card-link{
+    cursor:pointer;
    }
 </style>

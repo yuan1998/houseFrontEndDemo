@@ -1,13 +1,13 @@
 <template>
    <transition>
-      <div class="house-info-page" v-show="start">
-         <div class="">
+      <div class="house-info-page" v-if="start === true">
+         <div class="am-cf">
             <navtop class="am-cf"></navtop>
             <div class="content">
-               <div class="thumbnail-bar">
+               <div class="thumbnail-bar am-cf">
                   <span>
-                     <div class="warp">
-                        <div class="img-bar">
+                     <div class="warp am-cf">
+                        <div class="img-bar am-cf">
                            <div class="col-5 center-img" @click="openSlider" :style="'background-image:url(' +allImage[0] +')'">
                            </div>
                            <div class="col-5 center-img" @click="openSlider" :style="'background-image:url(' +allImage[1] +')'">
@@ -21,24 +21,51 @@
                      </div>
                   </span>
                </div>
-               <div class="main-info">
-                  <div class="am-container">
-                     <div class="am-g">
-                        <div class="am-u-sm-12">
-                           <nav class="scrollspy-nav" data-am-sticky>
-                                <ul>
-                                  <li><a href="#about">详细</a></li>
-                                  <li><span>·</span></li>
-                                  <li><a href="#comment">评论</a></li>
-                                  <li><span>·</span></li>
-                                  <li><a href="#location">位置</a></li>
-                                  <li><span>·</span></li>
-                                  <li><a href="#">再见王子</a></li>
-                                  <li><span>·</span></li>
-                                  <li><a href="#">第三张</a></li>
-                                </ul>
-                           </nav>
+               <div class="main-info am-cf">
+                  <div class="am-g">
+                     <nav class="scrollspy-nav am-cf " :style="navFixed? navStyle : ''">
+                        <div class="am-container am-g-collapse">
+                           <div class="am-u-lg-8 am-u-md-10 am-u-md-centered am-u-lg-uncentered ">
+                              <ul class="">
+                                 <li ><a :class="{'am-active':navActive == 'about'}" @click="scrollTo(navTop)">详细</a></li>
+                                 <li><span>·</span></li>
+                                 <li ><a :class="{'am-active':navActive == 'comment'}" @click="scrollTo(commentTop - 100)">评论</a></li>
+                                 <li><span>·</span></li>
+                                 <li><a :class="{'am-active':navActive == 'location'}" @click="scrollTo(locationTop - 100)">位置</a></li>
+                                 <li><span>·</span></li>
+                                 <li><a href="#">再见王子</a></li>
+                                 <li><span>·</span></li>
+                                 <li><a href="#">第三张</a></li>
+                             </ul>
+                          </div>
                         </div>
+                     </nav>
+                     <div class="bottom-bar am-u-sm-12 am-hide-lg-only">
+                        <div class="am-container">
+                           <div class="am-g">
+                              <div class="am-u-sm-6 am-text-left">
+                                 <div class="price">
+                                    <span>
+                                       ¥{{data.price}}
+                                    </span>
+                                    万元
+                                 </div>
+                                 <div class="unit_price">
+                                    <span>
+                                       ¥{{getUnitPrice}}
+                                    </span>
+                                    万元/平米
+                                 </div>
+                              </div>
+                              <div class="visible am-u-sm-6 am-text-right">
+                                 <button class="am-btn am-btn-default">预约看房</button>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  <div class="am-container">
+                     <div class="am-g am-cf">
                         <div class="am-u-lg-8 am-u-md-10 am-u-md-centered am-u-lg-uncentered">
                            <div id="about">
                               <div class="house-title">
@@ -55,17 +82,17 @@
                                        {{data.area}}平米
                                     </span>
                                  </div>
-                                 <div class="room_count">
-                                    <span v-if="data.room_count.hall >0">
+                                 <div class="room_count" >
+                                    <span v-if="data.room_count.hall > 0">
                                        {{data.room_count.hall}}个大厅
                                     </span>
-                                    <span v-if="data.room_count.bedroom >0">
+                                    <span v-if="data.room_count.bedroom > 0">
                                        {{data.room_count.bedroom}}个卧室
                                     </span>
-                                    <span v-if="data.room_count.batchroom >0">
+                                    <span v-if="data.room_count.batchroom > 0">
                                        {{data.room_count.batchroom}}个卫生间
                                     </span>
-                                    <span v-if="data.room_count.belconry >0">
+                                    <span v-if="data.room_count.belconry > 0">
                                        {{data.room_count.belconry}}个阳台
                                     </span>
                                  </div>
@@ -280,33 +307,36 @@
                               </div>
                            </div>
                         </div>
-                        <div class="am-u-lg-4 am-show-lg">
-                           <div>
-                              <div class="am-panel am-panel-default">
-                                 <div class="am-panel-bd">
-                                    <div class="price">
-                                       <span>
-                                          ¥{{data.price}}
-                                       </span>
-                                       万元
-                                    </div>
-                                    <div class="unit_price">
-                                       <span>
-                                          ¥{{getUnitPrice}}
-                                       </span>
-                                       万元/平米
-                                    </div>
-                                    <div class="visible am-text-center">
-                                       <button class="am-btn am-btn-block am-btn-default">预约看房</button>
-                                       <small>您暂时不会被收费</small>
+                        <div class="am-u-lg-4 am-show-lg " >
+                           <div :style="sideFixed ? sideStyle : ''">
+                              <div class="side-bar" >
+                                 <div class="am-panel am-panel-default">
+                                    <div class="am-panel-bd">
+                                       <div class="price">
+                                          <span>
+                                             ¥{{data.price}}
+                                          </span>
+                                          万元
+                                       </div>
+                                       <div class="unit_price">
+                                          <span>
+                                             ¥{{getUnitPrice}}
+                                          </span>
+                                          万元/平米
+                                       </div>
+                                       <div class="visible am-text-center">
+                                          <button class="am-btn am-btn-block am-btn-default">预约看房</button>
+                                          <small>您暂时不会被收费</small>
+                                       </div>
                                     </div>
                                  </div>
-                              </div>
-                              <div class="am-text-center report">
-                                 <i class="am-icon-flag-o"></i>
-                                 <span>举报此房源</span>
+                                 <div class="am-text-center report">
+                                    <i class="am-icon-flag-o"></i>
+                                    <span>举报此房源</span>
+                                 </div>
                               </div>
                            </div>
+
                         </div>
                      </div>
 
@@ -344,14 +374,35 @@ import slider from '@/components/home/sliderTemp'
             allImage:[],
             comment:[],
             lat:0,
-            lng:0
+            lng:0,
+            scrollTop:0,
+            navFixed:false,
+            navStyle:{
+               position:'fixed',
+               top:0,
+               background:'#fff',
+               'padding-bottom':'5px',
+               'border-bottom':'1px solid #e0e0e0'
+            },
+            sideFixed:false,
+            sideStyle:{
+               position:'fixed',
+               top:'65px',
+               width:'295px',
+               // right:'1px',
+            },
+            navTop:0,
+            sideTop:0,
+            aboutTop:0,
+            commentTop:0,
+            locationTop:0,
+            navActive:'about',
          }
       },
       mounted(){
          setTimeout(res=>{
             this.init();
          },300);
-
       },
       methods:{
          init(){
@@ -399,12 +450,49 @@ import slider from '@/components/home/sliderTemp'
          closeSilder(){
 
             this.$refs.silderd.$el.style.display = 'none';
-            console.log(this.$refs.silderd.$el.style);
+
+         },
+         getTop(){
+
+            this.sideTop = $('.side-bar').offset().top;
+            this.navTop = $('.scrollspy-nav').offset().top;
+            this.aboutTop = $('#about').offset().top;
+            this.commentTop = $('#comment').offset().top;
+            this.locationTop = $('#location').offset().top;
+
+         },
+         navA(val){
+            if(val+ 250 >this.locationTop )
+               this.navActive = 'location';
+            else if(val + 250 >this.commentTop)
+               this.navActive = 'comment';
+            else this.navActive = 'about';
+         },
+         scrollTo(val){
+            this.$store.dispatch('windowScroll',val);
          }
       },
       computed:{
          getUnitPrice(){
             return Math.floor((this.data.price / this.data.area)*100)/100;
+         },
+         getScrollTop(){
+            return this.$store.getters['getScrollTop'];
+         }
+      },
+      watch:{
+         getScrollTop(val){
+
+            if(!this.start)
+               return;
+
+            if(this.navTop == 0 || this.sideTop == 0 || !this.aboutTop || !this.commentTop ||!this.locationTop)
+               this.getTop(val);
+
+            this.navA(val);
+
+            this.navFixed = (val > this.navTop);
+            this.sideFixed = (val > this.sideTop);
          }
       }
    }
@@ -744,6 +832,7 @@ import slider from '@/components/home/sliderTemp'
       font-weight: 400 !important;
       margin-top: 0 !important;
    }
+   .bottom-bar button,
    .am-panel .visible button{
       background: #ff5a5f;
       color:#fefefe;
@@ -761,6 +850,8 @@ import slider from '@/components/home/sliderTemp'
       color:#464646;
       line-height: 29px;
    }
+   .bottom-bar .price span,
+   .bottom-bar .unit_price span,
    .am-panel .unit_price span,
    .am-panel .price span{
       font-size: 22px !important;
@@ -789,5 +880,24 @@ import slider from '@/components/home/sliderTemp'
    .report *{
       user-select: none;
       cursor:pointer;
+   }
+   .side-bar{
+      /*width:inherit;*/
+   }
+
+   .bottom-bar{
+      position:fixed;
+      bottom: 0;
+      background: #fff;
+      z-index: 999;
+      padding-bottom: 20px;
+      padding-top: 20px;
+      border-top:1px solid #e0e0e0;
+      padding-right: 4%;
+      padding-left: 4%;
+      min-width: 360px;
+   }
+   .bottom-bar button{
+      padding: 0.8em 2.1em;
    }
 </style>

@@ -7,10 +7,16 @@ import App from './App'
 import 'jquery'
 import 'amazeui/dist/css/amazeui.css'
 import 'amazeui/dist/js/amazeui.js'
+
+import AmazeVue from 'amaze-vue';
+    import 'amaze-vue/dist/amaze-vue.css';
+
+
 import sender from './Sender.js'
 
 import VueAMap from 'vue-amap';
 
+Vue.use(AmazeVue);
 Vue.use(VueAMap);
 
 VueAMap.initAMapApiLoader({
@@ -33,7 +39,7 @@ new Vue({
    this.$store.dispatch('isLogin',{want:['username','email','tel','id','permission','avatar_url']});
   },
   mounted:function(){
-
+   this.$store.dispatch('scrollEvent');
   }
 })
 

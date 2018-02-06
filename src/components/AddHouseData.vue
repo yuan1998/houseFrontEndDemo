@@ -316,10 +316,10 @@
                                              <div >
                                                 <div class="am-u-md-6">
                                                    <div class="am-form-group">
-                                                      <div class="am-input-group">
+                                                      <span class="am-block">
                                                          <input class="am-form-field" :placeholder="'大厅'+n+'的面积'" type="number" v-model.number="formData.huxing_map_info.hall['hall_'+n]['arae']">
-                                                         <span style="background: rgba(0,0,0,0);" class="am-input-group-label">m²</span>
-                                                      </div>
+                                                         <span class="exprice">m²</span>
+                                                      </span>
                                                    </div>
                                                 </div>
                                                 <div class="am-u-md-6">
@@ -349,10 +349,10 @@
                                              <div >
                                                 <div class="am-u-md-6">
                                                    <div class="am-form-group">
-                                                      <div class="am-input-group">
+                                                      <span class="am-block">
                                                          <input class="am-form-field" :placeholder="'卧室'+n+'的面积'" type="number" v-model.number="formData.huxing_map_info.bedroom['bedroom_'+n]['arae']">
-                                                         <span style="background: rgba(0,0,0,0);" class="am-input-group-label">m²</span>
-                                                      </div>
+                                                         <span class="exprice">m²</span>
+                                                      </span>
                                                    </div>
                                                 </div>
                                                 <div class="am-u-md-6">
@@ -382,10 +382,10 @@
                                              <div >
                                                 <div class="am-u-md-6">
                                                    <div class="am-form-group">
-                                                      <div class="am-input-group">
+                                                      <span class="am-block">
                                                          <input class="am-form-field" :placeholder="'卫生间'+n+'的面积'" type="number" v-model.number="formData.huxing_map_info.bathroom['bathroom_'+n]['arae']">
-                                                         <span style="background: rgba(0,0,0,0);" class="am-input-group-label">m²</span>
-                                                      </div>
+                                                         <span class="exprice">m²</span>
+                                                      </span>
                                                    </div>
                                                 </div>
                                                 <div class="am-u-md-6">
@@ -415,10 +415,10 @@
                                              <div >
                                                 <div class="am-u-md-6">
                                                    <div class="am-form-group">
-                                                      <div class="am-input-group">
+                                                      <span class="am-block">
                                                          <input class="am-form-field" :placeholder="'阳台'+n+'的面积'" type="number" v-model.number="formData.huxing_map_info.balcony['balcony_'+n]['arae']">
-                                                         <span style="background: rgba(0,0,0,0);" class="am-input-group-label">m²</span>
-                                                      </div>
+                                                         <span class="exprice">m²</span>
+                                                      </span>
                                                    </div>
                                                 </div>
                                                 <div class="am-u-md-6">
@@ -448,10 +448,10 @@
                                              <div >
                                                 <div class="am-u-md-6">
                                                    <div class="am-form-group">
-                                                      <div class="am-input-group">
+                                                      <span class="am-block">
                                                          <input class="am-form-field" :placeholder="'厨房'+n+'的面积'" type="number" v-model.number="formData.huxing_map_info.kitchen['kitchen_'+n]['arae']">
-                                                         <span style="background: rgba(0,0,0,0);" class="am-input-group-label">m²</span>
-                                                      </div>
+                                                         <span class="exprice">m²</span>
+                                                      </span>
                                                    </div>
                                                 </div>
                                                 <div class="am-u-md-6">
@@ -503,7 +503,11 @@
                                  <div class="am-u-md-12">
                                     <div class="am-form-group">
                                        <label>期望价格</label>
-                                       <input v-model="formData.expect_price"  type="text" placeholder="你期望的价格">
+                                       <span class="am-block">
+                                          <input v-model="formData.expect_price"  type="text" placeholder="你期望的价格">
+                                          <span class='exprice'>万元</span>
+                                       </span>
+
                                     </div>
                                  </div>
                               </div>
@@ -532,14 +536,14 @@
                                                 <div class="am-u-md-11 am-u-lg-10 am-u-sm-centered">
                                                    <div class="am-panel am-g">
                                                       <div class="am-panel-bd am-text-center am-g thumbnail-bar am-cf cover-bar" v-if="formData.house_img.cover != false">
-                                                         <div class="am-g center-img am-radius" :style="'background-image:url('+formData.house_img.cover[0]+')'" @mouseenter="closeBtnOn" @mouseleave="closeBtnOff">
+                                                         <div class="am-g center-img am-radius" :style="'background-image:url('+formData.house_img.cover[0].get+')'" @mouseenter="closeBtnOn" @mouseleave="closeBtnOff">
                                                             <!-- <img class="am-radius am-img-responsive" style="" :src="formData.house_img.cover[0]"> -->
                                                             <span class="close">
                                                                <button @click="removeIndex(formData.house_img.cover,0)" type="button" class="am-btn">删除图片</button>
                                                             </span>
                                                          </div>
                                                       </div>
-                                                      <div v-else @dragenter="dragenter" @dragover="dragover" @drop="upload($event,formData.house_img.cover)" class="am-panel-bd upload-bar">
+                                                      <div v-else @dragenter.prevent.stop @dragover.prevent.stop @drop="upload($event,formData.house_img.cover)" class="am-panel-bd upload-bar">
                                                          <div class="am-text-center">
                                                             <div class="">
                                                                <label for="upload-file">
@@ -579,22 +583,27 @@
                                           <div class="am-margin-top am-g" v-show="formData.room_count.hall >0">
                                              <div>
                                                 <div class="am-text-center">
-                                                   <span class="am-text-xxl am-block">上传一些关于大厅的照片</span>
-                                                   <small>最多4张照片，请选择能表现房间整体构造和装饰的图片</small>
+                                                   <span class="am-text-xxl am-block">上传一些关于房子的照片</span>
+                                                   <small>最多30张照片，请选择明亮并能表现房间整体构造和装饰的图片</small>
                                                 </div>
                                              </div>
                                              <div>
                                                 <div class="am-u-md-11 am-u-lg-12 am-cf am-u-sm-centered">
                                                    <div class="am-g">
-                                                      <div v-show="formData.house_img.hall != false" class="am-u-lg-3 am-u-md-6" v-for="(item,index) in formData.house_img.hall">
-                                                         <div class="o-thumbnail am-text-center center-img" @mouseenter="closeBtnOn" :style="'background-image:url('+item+')'" @mouseleave="closeBtnOff">
+                                                      <div v-show="formData.house_img.house != false" class="am-u-lg-3 am-u-md-6" v-for="(item,index) in formData.house_img.house">
+                                                         <div class="o-thumbnail am-text-center center-img" @mouseenter="closeBtnOn" :style="'background-image:url('+item.get+')'" @mouseleave="closeBtnOff">
                                                             <!-- <img class="am-radius am-inline-block" :src="item"> -->
                                                             <span class="close">
-                                                               <button @click="removeIndex(formData.house_img.hall,index)" type="button" class="am-btn">删除图片</button>
+                                                               <button @click="removeIndex(formData.house_img.house,index)" type="button" class="am-btn">删除图片</button>
                                                             </span>
                                                          </div>
                                                       </div>
-                                                      <div v-show="formData.house_img.hall.length <4" @dragenter="dragenter" @dragover="dragover" @drop="upload($event,formData.house_img.hall)" class="am-u-lg-3 am-u-md-6 am-u-end  ">
+                                                      <div class="am-u-lg-3 am-u-md-6" v-show="loading">
+                                                         <div class="o-thumbnail am-text-center center-img">
+                                                             <am-loading color="primary" :loading="loading"></am-loading>
+                                                         </div>
+                                                      </div>
+                                                      <div v-show="formData.house_img.house.length <30" @dragenter.prevent.stop @dragover.prevent.stop @drop="upload($event,formData.house_img.house)" class="am-u-lg-3 am-u-md-6 am-u-end  ">
                                                          <div class=" am-u-sm-12 o-upload-bar am-vertical-align am-text-center">
                                                             <div class="am-vertical-align-middle">
                                                                <label class="">
@@ -602,149 +611,7 @@
                                                                      <div><i class="am-icon-plus am-icon-lg"></i></div>
                                                                      <span class="">点击上传</span>
                                                                   </div>
-                                                                  <input @change="upload($event,formData.house_img.hall)" accept="image/*" type="file" multiple style="display:  none;">
-                                                               </label>
-                                                            </div>
-                                                         </div>
-                                                      </div>
-                                                   </div>
-                                                </div>
-                                             </div>
-                                          </div>
-                                          <div class="am-margin-top-lg am-g" v-show="formData.room_count.bedroom >0">
-                                             <div>
-                                                <div class="am-text-center">
-                                                   <span class="am-text-xxl am-block">上传一些关于卧室的照片</span>
-                                                   <small>最多4张照片，请选择能表现房间整体构造和装饰的图片</small>
-                                                </div>
-                                             </div>
-                                             <div>
-                                                <div class="am-u-md-11 am-u-lg-12 am-cf am-u-sm-centered">
-                                                   <div class="am-g">
-                                                      <div v-show="formData.house_img.bedroom != false" class="am-u-lg-3 am-u-md-6" v-for="(item,index) in formData.house_img.bedroom">
-                                                         <div class="o-thumbnail am-text-center center-img" @mouseenter="closeBtnOn" :style="'background-image:url('+item+')'" @mouseleave="closeBtnOff">
-                                                            <!-- <img class="am-radius am-inline-block" :src="item"> -->
-                                                            <span class="close">
-                                                               <button @click="removeIndex(formData.house_img.bedroom,index)" type="button" class="am-btn">删除图片</button>
-                                                            </span>
-                                                         </div>
-                                                      </div>
-                                                      <div v-show="formData.house_img.bedroom.length <4" @dragenter="dragenter" @dragover="dragover" @drop="upload($event,formData.house_img.bedroom)" class="am-u-lg-3 am-u-md-6 am-u-end  ">
-                                                         <div class=" am-u-sm-12 o-upload-bar am-vertical-align am-text-center">
-                                                            <div class="am-vertical-align-middle">
-                                                               <label class="">
-                                                                  <div class="am-text-center upload-ct">
-                                                                     <div><i class="am-icon-plus am-icon-lg"></i></div>
-                                                                     <span class="">点击上传</span>
-                                                                  </div>
-                                                                  <input @change="upload($event,formData.house_img.bedroom)" accept="image/*" type="file" multiple style="display:  none;">
-                                                               </label>
-                                                            </div>
-                                                         </div>
-                                                      </div>
-                                                   </div>
-                                                </div>
-                                             </div>
-                                          </div>
-                                          <div class="am-margin-top-lg am-g" v-show="formData.room_count.bathroom >0">
-                                             <div>
-                                                <div class="am-text-center">
-                                                   <span class="am-text-xxl am-block">上传一些关于卫生间的照片</span>
-                                                   <small>最多4张照片，请选择能表现房间整体构造和装饰的图片</small>
-                                                </div>
-                                             </div>
-                                             <div>
-                                                <div class="am-u-md-11 am-u-lg-12 am-cf am-u-sm-centered">
-                                                   <div class="am-g">
-                                                      <div v-show="formData.house_img.bathroom != false" class="am-u-lg-3 am-u-md-6" v-for="(item,index) in formData.house_img.bathroom">
-                                                         <div class="o-thumbnail am-text-center center-img" @mouseenter="closeBtnOn" :style="'background-image:url('+item+')'" @mouseleave="closeBtnOff">
-                                                            <!-- <img class="am-radius am-inline-block" :src="item"> -->
-                                                            <span class="close">
-                                                               <button @click="removeIndex(formData.house_img.bathroom,index)" type="button" class="am-btn">删除图片</button>
-                                                            </span>
-                                                         </div>
-                                                      </div>
-                                                      <div v-show="formData.house_img.bathroom.length <4" @dragenter="dragenter" @dragover="dragover" @drop="upload($event,formData.house_img.bathroom)" class="am-u-lg-3 am-u-md-6 am-u-end  ">
-                                                         <div class=" am-u-sm-12 o-upload-bar am-vertical-align am-text-center">
-                                                            <div class="am-vertical-align-middle">
-                                                               <label class="">
-                                                                  <div class="am-text-center upload-ct">
-                                                                     <div><i class="am-icon-plus am-icon-lg"></i></div>
-                                                                     <span class="">点击上传</span>
-                                                                  </div>
-                                                                  <input @change="upload($event,formData.house_img.bathroom)" accept="image/*" type="file" multiple style="display:  none;">
-                                                               </label>
-                                                            </div>
-                                                         </div>
-                                                      </div>
-                                                   </div>
-                                                </div>
-                                             </div>
-                                          </div>
-                                          <div class="am-margin-top-lg am-g" v-show="formData.room_count.balcony >0">
-                                             <div>
-                                                <div class="am-text-center">
-                                                   <span class="am-text-xxl am-block">上传一些关于阳台的照片</span>
-                                                   <small>最多4张照片，请选择能表现房间整体构造和装饰的图片</small>
-
-                                                </div>
-                                             </div>
-                                             <div>
-                                                <div class="am-u-md-11 am-u-lg-12 am-cf am-u-sm-centered">
-                                                   <div class="am-g">
-                                                      <div v-show="formData.house_img.balcony != false" class="am-u-lg-3 am-u-md-6" v-for="(item,index) in formData.house_img.balcony">
-                                                         <div class="o-thumbnail am-text-center center-img" @mouseenter="closeBtnOn" :style="'background-image:url('+item+')'" @mouseleave="closeBtnOff">
-                                                            <!-- <img class="am-radius  am-inline-block" :src="item"> -->
-                                                            <span class="close">
-                                                               <button @click="removeIndex(formData.house_img.balcony,index)" type="button" class="am-btn">删除图片</button>
-                                                            </span>
-                                                         </div>
-                                                      </div>
-                                                      <div v-show="formData.house_img.balcony.length <4" @dragenter="dragenter" @dragover="dragover" @drop="upload($event,formData.house_img.balcony)" class="am-u-lg-3 am-u-md-6 am-u-end  ">
-                                                         <div class=" am-u-sm-12 o-upload-bar am-vertical-align am-text-center">
-                                                            <div class="am-vertical-align-middle">
-                                                               <label class="">
-                                                                  <div class="am-text-center upload-ct">
-                                                                     <div><i class="am-icon-plus am-icon-lg"></i></div>
-                                                                     <span class="">点击上传</span>
-                                                                  </div>
-                                                                  <input @change="upload($event,formData.house_img.balcony)" accept="image/*" type="file" multiple style="display:  none;">
-                                                               </label>
-                                                            </div>
-                                                         </div>
-                                                      </div>
-                                                   </div>
-                                                </div>
-                                             </div>
-                                          </div>
-                                          <div class="am-margin-top-lg am-g" v-show="formData.room_count.kitchen >0">
-                                             <div>
-                                                <div class="am-text-center">
-                                                   <span class="am-text-xxl am-block">上传一些关于厨房的照片</span>
-                                                   <small>最多4张照片，请选择能表现房间整体构造和装饰的图片</small>
-
-                                                </div>
-                                             </div>
-                                             <div>
-                                                <div class="am-u-md-11 am-u-lg-12 am-cf am-u-sm-centered">
-                                                   <div class="am-g">
-                                                      <div v-show="formData.house_img.kitchen != false" class="am-u-lg-3 am-u-md-6" v-for="(item,index) in formData.house_img.kitchen">
-                                                         <div class="o-thumbnail am-text-center center-img" @mouseenter="closeBtnOn" :style="'background-image:url('+item+')'" @mouseleave="closeBtnOff">
-                                                            <!-- <img class="am-radius am-inline-block" :src="item"> -->
-                                                            <span class="close">
-                                                               <button @click="removeIndex(formData.house_img.kitchen,index)" type="button" class="am-btn">删除图片</button>
-                                                            </span>
-                                                         </div>
-                                                      </div>
-                                                      <div v-show="formData.house_img.kitchen.length <4" @dragenter="dragenter" @dragover="dragover" @drop="upload($event,formData.house_img.kitchen)" class="am-u-lg-3 am-u-md-6 am-u-end  ">
-                                                         <div class=" am-u-sm-12 o-upload-bar am-vertical-align am-text-center">
-                                                            <div class="am-vertical-align-middle">
-                                                               <label class="">
-                                                                  <div class="am-text-center upload-ct">
-                                                                     <div><i class="am-icon-plus am-icon-lg"></i></div>
-                                                                     <span class="">点击上传</span>
-                                                                  </div>
-                                                                  <input @change="upload($event,formData.house_img.kitchen)" accept="image/*" type="file" multiple style="display:  none;">
+                                                                  <input @change="upload($event,formData.house_img.house)" accept="image/*" type="file" multiple style="display:  none;">
                                                                </label>
                                                             </div>
                                                          </div>
@@ -816,14 +683,14 @@
                                                 </div>
                                                 <div class="am-panel am-g">
                                                    <div class="am-panel-bd am-text-center am-g thumbnail-bar am-cf cover-bar" v-if="formData.deed_info != false">
-                                                      <div class="am-g center-img" style="max-height: 500px;position:relative;display:inline-block" @mouseenter="closeBtnOn" @mouseleave="closeBtnOff" :style="'background-image:url('+ formData.deed_info[0]+ ')'">
+                                                      <div class="am-g center-img" style="max-height: 500px;position:relative;display:inline-block" @mouseenter="closeBtnOn" @mouseleave="closeBtnOff" :style="'background-image:url('+ formData.deed_info[0].get+ ')'">
                                                          <!-- <img class="am-radius am-img-responsive" style="" :src="formData.deed_info[0]"> -->
                                                          <span class="close">
                                                             <button @click="removeIndex(formData.deed_info,0)" type="button" class="am-btn">删除图片</button>
                                                          </span>
                                                       </div>
                                                    </div>
-                                                   <div v-else @dragenter="dragenter" @dragover="dragover" @drop="upload($event,formData.deed_info)" class="am-panel-bd upload-bar">
+                                                   <div v-else @dragenter.prevent.stop @dragover.prevent.stop @drop="upload($event,formData.deed_info)" class="am-panel-bd upload-bar">
                                                       <div class="am-text-center">
                                                          <div class="">
                                                             <label for="upload-file">
@@ -956,7 +823,7 @@ export default {
                kitchen:{}
             },
             room_count:{hall:1,bedroom:1,bathroom:2,balcony:1,kitchen:1},
-            house_img:{hall:[],bedroom:[],bathroom:[],balcony:[],kitchen:[],cover:[]},
+            house_img:{house:[],cover:[]},
             direction:"",
             Decoration:'',
             supply_heating:'',
@@ -975,15 +842,15 @@ export default {
          location:[],
          lng:0,
          lat:0,
-         to:null
+         to:null,
+         loading:false,
+         saveInterval:null,
+         storage:$.AMUI.store,
       }
    },
    mounted:function(){
 
-      setTimeout(res=>{
-         this.getHouse();
-         this.getC();
-      },300);
+
 
       $('.back-btn').sticky({
          top:7,
@@ -991,16 +858,71 @@ export default {
       $('.am-progress-xs').sticky({
          top:0,
       })
+
+
+
+
+      setTimeout(res=>{
+         this.init();
+      },500);
    },
    methods:{
+      init(){
+
+         if(this.getSotrage())
+            this.getLnt();
+         else this.getC();
+
+         this.start = true;
+         this.page = 1;
+
+      },
+      setIntervalSave(){
+         this.saveInterval = setInterval(res=>{
+            this.$message({
+               title:'保存一下',
+               message:'我们每个一段时间都会为您保存一下',
+               customClass:'am-hide-sm',
+               placement: 'left-bottom'
+            })
+            this.setSotrage();
+         },15000)
+      },
+      setSotrage(){
+         this.storage.set('temporaryHouse',this.formData);
+      },
+      getSotrage(){
+         if(!this.storage.enabled)
+            return false;
+
+         this.setIntervalSave();
+
+         let temp = this.storage.get('temporaryHouse');
+
+         if(!temp || temp == false || temp === false || temp == undefined)
+            return false;
+
+         this.formData = temp;
+         this.$message({
+            title:'已读取上次保存文本',
+            message:'我们每个一段时间都会为您保存一下',
+            customClass:'am-hide-sm',
+            placement: 'left-bottom'
+         })
+         return true;
+      },
       getC(){
          this.formData.city = this.getCity;
       },
       getLoaction(location){
-         if(!location)
+         if(!location || !location.regeocode.formatted_address){
+            this.$notify({
+               message:'并没有找到你输入的小区',
+               type:'warning',
+            })
             this.formData.location = '没有找到，请重新输入或手动选择';
-         else this.formData.location = location.regeocode.formatted_address || '没有找到，请重新输入或手动选择';
-         console.log(this.formData.location)
+         }else this.formData.location = location.regeocode.formatted_address ;
+
       },
       parseLocation(data){
          this.location = data;
@@ -1012,11 +934,13 @@ export default {
 
          clearTimeout(this.to);
 
-         this.to = setTimeout(res=>{
+         if(!this.formData.city || !this.formData.community)
+            return;
 
+         this.to = setTimeout(res=>{
             $.get(`http://restapi.amap.com/v3/geocode/geo?city=${this.formData.city}&address=${this.formData.community}&output=json&key=bf5b356d3ffaab642c974983267b1ce8`).then(res=>{
                console.log(res.geocodes !=false);
-               if(res.geocodes !=false)
+               if(!res.geocodes || res.geocodes !=false)
                   this.parseLocation(res);
                else this.getLoaction();
             })
@@ -1026,8 +950,6 @@ export default {
       getHouse(){
          sender('/api/commissioned/readId',{id:this.id}).then(res=>{
             this.data = res.data;
-            this.start = true;
-            this.page = 1;
          })
       },
       range(min,max){
@@ -1053,21 +975,55 @@ export default {
 
          if(!files.length)
             return;
-         this.$store.dispatch('readerFile',{file:files[0],arr});
+
+         let that =this;
+
+
+         let fx = (e)=>{
+            let str = e.target.result;
+            this.loading = true;
+            sender('/api/img/save',{file:str}).then(res=>{
+               arr.push(res.data);
+               that.loading = false;
+               that.$notify({
+                  message: '上传成功。',
+                  type: 'success'
+               });
+               setTimeout(res=>{
+                  that.$store.dispatch('windowScroll',$(document).height() - $(window).height());
+               },200)
+            },res=>{
+               that.loading = false;
+               that.$notify({
+                    message: '上传失败.',
+                    type: 'error'
+                });
+            })
+
+         }
+
+         this.$store.dispatch('readerFile',{file:files[0],callback:fx});
       },
       removeIndex(arr,index){
-         arr.splice(index,1);
+
+         let filename = arr[index].name;
+
+         sender('/api/img/remove',{file:filename}).then(res=>{
+            arr.splice(index,1);
+            this.$notify({
+              message: '已经删除鸟',
+              type: 'success'
+            });
+            this.setSotrage();
+         },res=>{
+            this.$notify({
+              message: '已经删除鸟',
+              type: 'error'
+            });
+         })
       },
       labelClick(e){
          e.target.parentNode.click();
-      },
-      dragover(e) {
-        e.stopPropagation();
-        e.preventDefault();
-      },
-      dragenter(e) {
-        e.stopPropagation();
-        e.preventDefault();
       },
       roomModel(){
          let data = this.formData,
@@ -1171,7 +1127,6 @@ export default {
             return false;
 
          return true;
-
       },
       page5Validator(){
 
@@ -1181,21 +1136,10 @@ export default {
       },
       page6Validator(){
 
-         let form = this.formData,
-             data = form.house_img,
-             count = form.room_count,
-             arr =['hall' ,
-             'bedroom' ,
-             'bathroom' ,
-             'balcony' ,
-             'kitchen'];
+         let data = this.formData.house_img.house;
 
-         for(let item of arr){
-            if(count[item] > 0 && !data[item][0])
-               return false;
-         }
+         return data[3] ? true : false ;
 
-         return true;
       },
       page7Validator(){
 
@@ -1218,14 +1162,18 @@ export default {
          return this.formData.agree;
       },
       submitFormData(){
+
          if(this.submit)
             return;
 
          this.submit = true;
          sender('/api/house/addData',this.formData).then(res=>{
             this.page++;
+            clearInterval(this.saveInterval);
+            $.AMUI.store.remove('temporaryHouse');
          },res=>{
             this.submit = false;
+
          });
       },
       getC(){
@@ -1282,14 +1230,20 @@ export default {
       line-height: 24px !important;
       font-weight: normal !important;
 }
-.o-thumbnail,
+
 .o-upload-bar,
-.thumbnail-bar,
 .upload-bar{
    border: 3px dashed rgba(0,0,0,0.1);
+
+}
+.o-upload-bar,
+.upload-bar,
+.o-thumbnail,
+.thumbnail-bar{
    border-radius:5px;
    margin-top: 30px;
 }
+
 .o-thumbnail,
 .thumbnail-bar,
 .upload-bar{
@@ -1308,7 +1262,7 @@ export default {
 .o-thumbnail,
 .o-upload-bar{
    height: 300px;
-   /*overflow: hidden;*/
+   overflow: hidden;
    width: 100%;
 }
 .upload-bar button{
@@ -1379,6 +1333,7 @@ export default {
 .map-bar{
    margin-top: 100px;
 }
+
 .am-form-group select,
 .am-form-group textarea,
 .am-form-group input:not([type=checkbox]){
@@ -1402,9 +1357,22 @@ export default {
     background-color: #fff;
     color: #484848;
 }
+
+.am-form-field{
+   height: 48px;
+}
 .am-form-group textarea:focus,
 .am-form-group input:focus{
    outline: none;
    border-color:#666;
+}
+.exprice{
+   position:absolute;
+   right: 10px;
+   font-size: 15px;
+   font-weight: 400;
+   color:#484848;
+   top: 25%;
+   user-select: none
 }
 </style>

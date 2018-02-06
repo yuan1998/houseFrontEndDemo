@@ -32,6 +32,20 @@
                               <div class="am-u-sm-12 am-u-md-3 am-text-center am-sm-only-text-left">
                                  <div class="am-g">
                                     <span class="am-text-xl">
+                                       小区名称:
+                                    </span>
+                                 </div>
+                              </div>
+                              <div class="am-u-md-9">
+                                 <div class="am-g">
+                                    <span class="am-text-lg">{{data.community}}</span>
+                                 </div>
+                              </div>
+                           </div>
+                           <div class="am-g am-text-middle">
+                              <div class="am-u-sm-12 am-u-md-3 am-text-center am-sm-only-text-left">
+                                 <div class="am-g">
+                                    <span class="am-text-xl">
                                        房屋地址:
                                     </span>
                                  </div>
@@ -50,7 +64,69 @@
                         </div>
                      </div>
                   </div>
-                  <div class="page-2" v-else-if='page==2'>
+                  <div class="page-2" v-else-if="page == 2">
+                    <div class="header am-margin-top-lg">
+                        <h3 class="am-text-xxl">为你的房子贴上标签</h3>
+                     </div>
+                     <div class="body">
+                        <div class="am-u-sm-12">
+                          <div class="select-tags">
+                            <div class="title">选择的标签</div>
+                            <div class="select-tags-bar">
+                                <div class="am-panel am-panel-default">
+                                  <div class="am-panel-bd">
+                                    <div class="not-tag" v-if="formData.tags == false">
+                                      请在下方选择标签
+                                    </div>
+                                    <span class="tag-item" v-else v-for="(item,index) in formData.tags" >
+                                      <span class="tag-title">{{item}}</span>
+                                      <span @click="removeTag(index)" class="tag-close">x</span>
+                                    </span>
+                                  </div>
+                                </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="am-u-sm-12">
+                          <div class="all-tags">
+                            <div class="title">标签</div>
+                            <div class="all-tags-bar">
+                              <div class="am-panel am-panel-default">
+                                <div class="am-panel-bd">
+                                  <div v-if="lengthEqual()" class='not-tag'>
+                                    你的房子真棒.
+                                  </div>
+                                  <template v-else>
+                                    <span v-for="item in tags" v-if="inArray(item)" class="tag-item">
+                                      <span class="tag-title">{{item}}</span>
+                                      <span @click="addTag(item)" class="tag-add">+</span>
+                                    </span>
+                                  </template>
+
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="am-u-sm-12">
+                          <div class="commissioned">
+                            <label >
+                              <input @click.self="commissioned" class="am-inline-block" type="checkbox">
+                              <span >委托售卖(我们将有专业的人士帮你出售，不过我们将收取成交价的98%作为委托金)</span>
+                            </label>
+                          </div>
+                        </div>
+                     </div>
+                     <div class="am-u-sm-12 am-text-center am-margin-top-lg">
+                         <div class="am-u-sm-6 am-text-left">
+                            <button type="button" @click="page--" class="am-btn am-btn-link am-link-muted pre-btn"><i class="am-icon-angle-left"></i>回去，我再看看.</button>
+                         </div>
+                         <div class="am-u-sm-6 am-text-right">
+                            <button type="button" @click="page++" class="am-text-xl am-btn am-btn-default next-btn">{{ formData.tags == false ? '没什么好说的下一步' : '下一步' }}<i class=" am-icon-angle-right"></i></button>
+                         </div>
+                      </div>
+                  </div>
+                  <div class="page-3" v-else-if='page==3'>
                      <div class="header am-margin-top-lg">
                         <h3 class="am-text-xxl">做好上架的准备</h3>
                      </div>
@@ -81,7 +157,12 @@
                            <div class="am-g">
                               <div class="am-form-group">
                                  <label>最终的售价</label>
-                                    <input class="" placeholder="你最终决定的售价，不用写单位，单位为万元" type="text" v-model="formData.price">
+                                 <span class="am-block">
+                                   <input class="" placeholder="你最终决定的售价，不用写单位，单位为万元"
+                                   type="text" v-model="formData.price">
+                                   <span class="tag">万元</span>
+                                 </span>
+
                               </div>
                            </div>
                            <div class="">
@@ -101,7 +182,7 @@
                         </div>
                      </div>
                   </div>
-                  <div v-else-if="page == 3" class="page-3">
+                  <div v-else-if="page == 4" class="page-4">
                         <div class="content">
                            <div class="am-text-center" style="margin-top:250px;">
                               <div class="am-text-xxxl">
@@ -156,7 +237,9 @@ import mapa from '@/components/user/map'
                price:'',
                product_info:'',
                id:that.id,
+               tags:[],
             },
+            tags:['新房','学区房','市中心','随时看房','地铁房'],
             next:false,
          }
       },
@@ -175,8 +258,7 @@ import mapa from '@/components/user/map'
          init(){
             this.getLngLat();
          },
-         getLngLat()
-         {
+         getLngLat(){
             $.get(`http://restapi.amap.com/v3/geocode/geo?&address=${this.data.location}&output=json&key=bf5b356d3ffaab642c974983267b1ce8`).then(res=>{
                   if(res.geocodes ==false)
                      return;
@@ -187,10 +269,30 @@ import mapa from '@/components/user/map'
             })
          },
          submit(){
-
             sender('/api/house/additional',this.formData).then(res=>{
                this.page++;
             })
+         },
+         inArray(val){
+          let r =this.formData.tags.findIndex(e=> e ==val);
+          return (r == -1);
+         },
+         addTag(val){
+           this.formData.tags.push(val);
+         },
+         removeTag(index){
+            this.formData.tags.splice(index,1);
+         },
+         lengthEqual(){
+          console.log(this.tags.length == this.formData.tags.length);
+            return this.tags.length == this.formData.tags.length;
+         },
+         commissioned(event){
+          let checked =event.target.checked;
+
+          if(checked){
+            this.inArray('随时看房') ? this.addTag('随时看房') : '';
+          }else this.removeTag('随时看房');
          }
       },
       computed:{
@@ -221,6 +323,7 @@ import mapa from '@/components/user/map'
       background: #fff;
    }
 
+   .title,
    .am-form-group label{
       word-wrap: break-word !important;
       font-family: Circular,-apple-system,BlinkMacSystemFont,Roboto,Helvetica Neue,sans-serif !important;
@@ -294,6 +397,7 @@ import mapa from '@/components/user/map'
        background-color: #fff;
        color: #484848;
    }
+
    .pre-btn{
        width: auto !important;
        font-family: Circular,-apple-system,BlinkMacSystemFont,Roboto,Helvetica Neue,sans-serif !important;
@@ -307,17 +411,67 @@ import mapa from '@/components/user/map'
        padding-right: 24px !important;
        padding-left: 24px !important;
        min-width: 77.66563145999496px !important;
-
-       /*background: #008489 !important;*/
    }
+
    .pre-btn:focus{
       color:#666;
       outline: none;
        border-color: none;
    }
+
    .am-form-group textarea:focus,
    .am-form-group input:focus{
       outline: none;
       border-color:#666;
    }
+
+   .tag{
+     position:absolute;
+     right: 10px;
+     top: 25%;
+     user-select: none;
+     font-size: 14px;
+     font-weight: 400;
+   }
+
+   .all-tags-bar,
+   .select-tags-bar{
+    margin-top: 20px;
+
+   }
+  .select-tags-bar .am-panel-bd,
+   .all-tags-bar .am-panel-bd{
+     height: 65px;
+   }
+
+   .tag-item{
+      border:1px solid #e0e0e0;
+      padding: 0.3em 0.3em;
+      font-size: 16px;
+      margin-right: 15px;
+      font-weight: 400;
+      color:#484848;
+      border-radius:5px;
+      line-height: 28px;
+   }
+    .tag-add,
+    .tag-close{
+      font-size: 17px;
+      font-weight: 300;
+      padding: 2px;
+
+    }
+    .not-tag{
+      padding: 6px;
+    }
+
+    .commissioned input{
+      font-size: 20px;
+      font-weight: 500;
+    }
+
+    .commissioned span{
+      font-size: 16px;
+      font-weight: 400;
+    }
 </style>
