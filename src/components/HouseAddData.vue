@@ -97,9 +97,9 @@
                                     你的房子真棒.
                                   </div>
                                   <template v-else>
-                                    <span v-for="item in tags" v-if="inArray(item)" class="tag-item">
+                                    <span v-for="item in tags" v-if="inArray(item)" @click="addTag(item)" class="tag-item">
                                       <span class="tag-title">{{item}}</span>
-                                      <span @click="addTag(item)" class="tag-add">+</span>
+                                      <span  class="tag-add">+</span>
                                     </span>
                                   </template>
 

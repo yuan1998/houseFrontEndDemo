@@ -24,6 +24,15 @@ img {
 textarea{
   resize: none;
 }
+
+
+ .reservation-open,
+ .sm-map-open,
+ .menu-open,
+ .search-open,
+ .slider-open{
+    overflow: hidden;
+ }
 /*#appHome{
   background-image: url('https://farm4.staticflickr.com/3854/32764887833_7c91946505_k.jpg');
   height: 500px;

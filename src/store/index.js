@@ -18,6 +18,7 @@ export default new Vuex.Store({
       alertMsg : {'title':'添加成功～','content':'请耐心等待审核'},
       ipInfo:{},
       scrollTop:0,
+      windowWidth:null,
    },
    mutations:{
       setMsgTitle(state,text){
@@ -31,6 +32,9 @@ export default new Vuex.Store({
       },
       saveOffsetTop(state,offset){
          state.scrollTop = offset;
+      },
+      saveWindowWidth(state,width){
+         state.windowWidth = width;
       }
    },
    actions:{
@@ -49,14 +53,12 @@ export default new Vuex.Store({
       isLogin(state,data){
          sender('/api/user/is_login',data).then((res,textStatus,response)=>{
 
-            // let token =response.getResponseHeader('s_token');
-            // console.log(token);
-            // if(token)
-            //    state.dispatch('set_token',token);
-
             if(res.success){
                state.dispatch('user/saveUser',res.data);
                state.dispatch('message/getUserMessage');
+               setInterval(res=>{
+                  state.dispatch('message/getUserMessage');
+               },10000)
             }
          })
       },
@@ -74,7 +76,7 @@ export default new Vuex.Store({
       },
       getIpInfo(state){
          $.getScript('http://int.dpool.sina.com.cn/iplookup/iplookup.php?format=js').then(res=>{
-            console.log(remote_ip_info);
+
             state.commit('saveIpInfo',remote_ip_info);
          })
       },
@@ -94,7 +96,7 @@ export default new Vuex.Store({
          reader.readAsDataURL(file);
       },
       windowScroll(state,height){
-         console.log(height);
+
          let $w = $(window);
          $w.smoothScroll({
             position:height
@@ -104,10 +106,17 @@ export default new Vuex.Store({
          window.addEventListener('scroll',res=>{
             commit('saveOffsetTop',window.pageYOffset);
          })
+      },
+      resizeEvent({commit}){
+         commit('saveWindowWidth',window.innerWidth);
+         window.addEventListener('resize',res=>{
+            commit('saveWindowWidth',window.innerWidth);
+         })
       }
    },
    getters:{
       getIpCity(state){
+         return '西安';
          return state.ipInfo.city || null;
       },
       msg(state){
@@ -115,6 +124,9 @@ export default new Vuex.Store({
       },
       getScrollTop(state){
          return state.scrollTop;
+      },
+      getWindowWidth(state){
+         return state.windowWidth;
       }
    }
 })

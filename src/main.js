@@ -9,7 +9,7 @@ import 'amazeui/dist/css/amazeui.css'
 import 'amazeui/dist/js/amazeui.js'
 
 import AmazeVue from 'amaze-vue';
-    import 'amaze-vue/dist/amaze-vue.css';
+import 'amaze-vue/dist/amaze-vue.css';
 
 
 import sender from './Sender.js'
@@ -24,7 +24,14 @@ VueAMap.initAMapApiLoader({
   plugin: ['AMap.Scale', 'AMap.OverView', 'AMap.ToolBar', 'AMap.MapType']
 });
 
-Vue.config.productionTip = false
+Vue.config.productionTip = false;
+
+/*
+   Vue.prototype
+ */
+
+Vue.prototype.$storage = $.AMUI.store;
+
 /* eslint-disable no-new */
 
 new Vue({
@@ -40,6 +47,7 @@ new Vue({
   },
   mounted:function(){
    this.$store.dispatch('scrollEvent');
+   this.$store.dispatch('resizeEvent');
   }
 })
 

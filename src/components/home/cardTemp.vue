@@ -2,7 +2,7 @@
    <transition>
       <div class="card-item" v-show="data != false">
          <router-link tag="div" :to="'/house/'+data.id" class="card-link">
-            <div class="am-cf">
+            <div class="am-cf cover">
                <div class="img-wrap">
                   <div class="img-bar">
                      <div class="cover-bar center-img" :style="'background-image:url('+data.house_img.cover[0].get+')'"></div>
@@ -16,7 +16,6 @@
                </div>
                <div class="title am-g-collapse am-cf">
                   <span class="title am-u-lg-12">{{data.title}}</span>
-                  <span class="am-hide-lg-only">·</span>
                   <span class="location am-u-lg-12">{{data.city}} {{data.community}}</span>
                </div>
                <div class="info">

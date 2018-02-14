@@ -17,11 +17,11 @@
                   </div>
                </div>
                <div class="right-btn am-show-md" v-if="rightHide" @click="ar-=50">
-                  <i class="am-icon-angle-right am-text-xxxl"></i>
+                  <i class="am-icon-angle-right"></i>
                </div>
             </div>
             <div class="more-btn">
-               <button class="am-btn am-btn-default am-radius">查看更多{{getCity}}的房源</button>
+               <router-link tag="button" :to="'/search?address='+getCity" class="am-btn am-btn-default am-radius">查看更多{{getCity}}的房源</router-link>
             </div>
          </div>
       </div>
@@ -63,11 +63,13 @@ import sender from '@/Sender.js'
       mounted(){
          setTimeout(res=>{
             this.getData()
+            this.windowWidth = window.innerWidth;
          },100);
 
          this.$nextTick(res=> {
             window.addEventListener('resize', e=> {
-              this.windowWidth = window.innerWidth
+              this.windowWidth = window.innerWidth;
+              console.log('width',this.windowWidth)
             });
           })
       },
@@ -78,6 +80,8 @@ import sender from '@/Sender.js'
                do{
                   this.data.push(res.data.data[0])
                }while(this.data.length != 6)
+
+               this.$emit('loadinged')
             })
          }
       }
@@ -155,7 +159,7 @@ import sender from '@/Sender.js'
 
    .right-btn{
       position:absolute;
-      right: -20px;
+      right: -30px;
       top: 50%;
       z-index: 5;
       cursor: pointer;
@@ -163,12 +167,15 @@ import sender from '@/Sender.js'
    }
    .left-btn{
       position:absolute;
-      left: -20px;
+      left: -30px;
       top: 50%;
       z-index: 5;
       cursor: pointer;
       color:#666;
-
+   }
+   .left-btn i,
+   .right-btn i{
+    font-size: 60px;
    }
    .more-btn button{
       font-size: 19px;

@@ -2,7 +2,6 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import HelloWorld from '@/components/HelloWorld'
 import Home from '@/components/Home'
-import SellHouse from '@/components/SellHouse'
 import Login from '@/components/Login'
 import Signup from '@/components/Signup'
 import AddHouseData from '@/components/AddHouseData'
@@ -15,9 +14,33 @@ import userCommissioned from '@/components/UserCommissioneds'
 import transactionLog from '@/components/UserTransactionLog'
 import SystemMessage from '@/components/SystemMessage'
 import UserMessage from '@/components/UserMessage'
-import AdminUser from '@/components/AdminUser'
-import AdminCommissioned from '@/components/AdminCommissioned'
-import houseInfo from '@/components/house/info.vue'
+
+/**
+ *   Houses
+ */
+import SellHouse from '@/components/SellHouse'
+import houseInfo from '@/components/house/info'
+
+/**
+ *   admin
+ *
+ */
+
+import adminTemplate from '@/components/Admin/AdminTemplate'
+import adminHome from '@/components/Admin/adminHome'
+import adminUserList from '@/components/Admin/UserList'
+import adminUserInfo from '@/components/Admin/Admin-User-Info'
+import adminUserAdd from '@/components/Admin/Admin-user-add'
+import adminHouseList from '@/components/Admin/admin-house-list'
+import adminHouseInfo from '@/components/Admin/admin-house-info'
+import adminHouseAdd from '@/components/Admin/admin-house-add'
+
+
+/**
+ *  search page
+ */
+import searchPage from '@/components/search/search-page'
+
 
 Vue.use(Router)
 
@@ -99,24 +122,63 @@ const router = new Router({
             path:'message/user',
             name:'UserMessage',
             component:UserMessage
-         },
-         {
-            path:'/admin/user',
-            name:'adminUser',
-            component:AdminUser
-         },
-         {
-            path:'/admin/commissioneds',
-            name:'adminCommissioned',
-            component:AdminCommissioned
-         },
+         }
       ]
     },
     {
       path:'/house/:id',
       component:houseInfo,
       props:true
-    }
+    },
+    {
+      path:'/admin',
+      component:adminTemplate,
+      children:[
+         {
+            path:'',
+            name:'adminHome',
+            component:adminHome,
+         },
+         {
+            path:'user/list',
+            name:'adminUserList',
+            component:adminUserList,adminUserInfo
+         },
+         {
+            path:'user/info/:id',
+            props:true,
+            name:'adminUserInfo',
+            component:adminUserInfo
+         },
+         {
+            path:'user/add',
+            name:'adminUserAdd',
+            component:adminUserAdd
+         },
+         {
+            path:'house/:status',
+            props:true,
+            name:'adminHouse',
+            component:adminHouseList,
+         },
+         {
+            path:'addhouse',
+            name:'adminAddHouse',
+            component:adminHouseAdd,
+         },
+         {
+            path:'house/info/:id',
+            props:true,
+            name:'adminHouseInfo',
+            component:adminHouseInfo
+         },
+      ]
+    },
+    {
+      path:'/search',
+      component:searchPage,
+      props:true
+    },
   ]
 })
 router.afterEach((to, from) => {

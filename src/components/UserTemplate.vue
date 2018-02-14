@@ -79,47 +79,49 @@ import offcanvas from '@/components/Offcanvas'
    }
 </script>
 <style scoped>
-.am-container{
-  margin-top: 60px;
-}
-   .side-bar-content-header{
-      font-size: 16px;
-      padding-top: 0.4rem;
-      padding-left: 1.25rem;
-      padding-bottom: 0.4rem;
-   }
-   .side-bar-items{
-      padding-left: 0;
-    list-style: none;
-   }
-   .side-bar-item a{
-      font-size: 14px;
-    display: inline-block;
-    width: 100%;
-    color: #666;
-    padding: 0.3rem 0;
+    .am-container{
+        margin-top: 60px;
+    }
+    .side-bar-content-header{
+        font-size: 16px;
+        font-weight: 500;
+        color:#464646;
+        padding-top: 0.4rem;
+        padding-left: 1.25rem;
+        padding-bottom: 0.4rem;
+    }
+    .side-bar-items{
+        padding-left: 0;
+        list-style: none;
+    }
+    .side-bar-item a{
+        font-size: 15px;
+        display: inline-block;
+        width: 100%;
+        color: #666;
+        padding: 0.3rem 0;
 
-}
-.side-active a,
-.side-bar-item a:hover{
-   color: #0350ff;
-}
+    }
+    .side-active a,
+    .side-bar-item a:hover{
+        color: #0350ff;
+    }
 
-.side-active,
-.side-bar-item:hover{
-   color: #5085FF;
-    border-right: 2px solid #5085FF;
-    background: #dce7ff;
-    cursor: pointer;
-}
-.side-bar-item{
-   display: inline-block;
-    width: 100%;
-    padding-left: 2.5rem;
-}
-.side-bar-content{
-   border-right: 1px solid rgba(0,0,0,0.1);
-   height: 100%;
-}
+    .side-active,
+    .side-bar-item:hover{
+        color: #5085FF;
+        border-right: 2px solid #5085FF;
+        background: #dce7ff;
+        cursor: pointer;
+    }
+    .side-bar-item{
+        display: inline-block;
+        width: 100%;
+        padding-left: 2.5rem;
+    }
+    .side-bar-content{
+        border-right: 1px solid rgba(0,0,0,0.1);
+        height: 100%;
+    }
 
 </style>

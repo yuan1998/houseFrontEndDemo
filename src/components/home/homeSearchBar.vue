@@ -1,38 +1,53 @@
 <template>
-   <transition>
-      <div id="home-search-bar " class="am-cf">
-         <div class="content am-u-sm-11 am-u-sm-centered am-cf">
-            <form class="am-form am-g am-g-collapse">
-               <div class="am-u-md-6">
-                  <div class="am-form-group">
-                     <label>目标</label>
-                     <input type="text" placeholder="请输入你的目标">
-                  </div>
-               </div>
-               <div class="am-u-md-6">
-                  <div class="am-form-group am-u-md-8">
-                     <label>路段</label>
-                     <input type="text" placeholder="或者输入路段">
-                  </div>
-                  <div class="am-u-md-4 am-text-center">
-                     <button class=" search-btn am-btn am-btn-lg am-btn-default">出发</button>
-                  </div>
-               </div>
-            </form>
-         </div>
-      </div>
-   </transition>
+    <transition>
+        <div id="home-search-bar " class="am-cf">
+            <div class="content am-u-sm-11 am-u-sm-centered am-cf">
+                <form @submit.prevent="search" class="am-form am-g am-g-collapse">
+                    <div class="am-u-md-6">
+                        <div class="am-form-group">
+                            <label>目标</label>
+                            <input type="text" v-model="destination" placeholder="请输入你的目标">
+                        </div>
+                    </div>
+                    <div class="am-u-md-6">
+                        <div class="am-form-group am-u-md-8">
+                            <label>路段</label>
+                            <input type="text" v-model="road" placeholder="或者输入路段">
+                        </div>
+                        <div class="am-u-md-4 am-text-center">
+                            <button class=" search-btn am-btn am-btn-lg am-btn-default">搜索</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </transition>
 </template>
 
 <script>
-   export default{
-      name:'homeSearch',
-      data(){
-         return {
+import unity from '@/mixin/unity'
 
-         }
-      }
-   }
+    export default{
+        mixins:[unity],
+        name:'homeSearch',
+        data(){
+            return {
+                destination:'',
+                road:'',
+            }
+        },
+        methods:{
+            search(){
+                let d = this.destination;
+                let r = this.road;
+
+                if(!r && !d)
+                    this.$router.push({path:'/search?address='+this._getCity});
+                else this.$router.push({path:'/search?address='+ (r || d)});
+
+            }
+        }
+    }
 </script>
 
 <style scoped>
@@ -68,6 +83,12 @@
       }
       .search-btn{
          margin-bottom: 0px !important;
+      }
+   }
+
+   @media only screen and (min-width: 0px) and (max-width: 639px){
+      .search-btn{
+         padding: 0.9em 1.9em !important;
       }
    }
 

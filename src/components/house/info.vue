@@ -12,7 +12,7 @@
                            </div>
                            <div class="col-5 center-img" @click="openSlider" :style="'background-image:url(' +allImage[1] +')'">
                            </div>
-                           <div class="col-5 center-img" @click="openSlider" :style="'background-image:url(' + allImage[1]+')'">
+                           <div class="col-5 center-img" @click="openSlider" :style="'background-image:url(' + allImage[2]+')'">
                            </div>
                         </div>
                         <span class="all-btn-bar">
@@ -32,10 +32,6 @@
                                  <li ><a :class="{'am-active':navActive == 'comment'}" @click="scrollTo(commentTop - 100)">评论</a></li>
                                  <li><span>·</span></li>
                                  <li><a :class="{'am-active':navActive == 'location'}" @click="scrollTo(locationTop - 100)">位置</a></li>
-                                 <li><span>·</span></li>
-                                 <li><a href="#">再见王子</a></li>
-                                 <li><span>·</span></li>
-                                 <li><a href="#">第三张</a></li>
                              </ul>
                           </div>
                         </div>
@@ -58,7 +54,13 @@
                                  </div>
                               </div>
                               <div class="visible am-u-sm-6 am-text-right">
-                                 <button class="am-btn am-btn-default">预约看房</button>
+                                 <button v-if="!reservationData" @click="reservationOpen = true" class="am-btn am-btn-default">预约看房</button>
+                                 <template v-else>
+                                    <div class="">
+                                       <div class="bottom-bar-text am-text-center"><i class="am-icon-check"></i>已预约 {{parseDate(reservationData.date)}}</div>
+                                       <div class="am-text-center bottom-bar-sub-text">请联系房主决定看房具体时间</div>
+                                    </div>
+                                 </template>
                               </div>
                            </div>
                         </div>
@@ -111,62 +113,73 @@
                                  </div>
                               </div>
                               <div class="room-size am-cf">
-                                 <div class="hall" v-if="data.huxing_map_info.hall != false">
-                                    <span class="room-item am-u-md-3 am-u-sm-6" v-for="(item,b) in parseObject(data.huxing_map_info.hall)">
-                                       <span class="title">
-                                          大厅{{n}}
-                                       </span>
-                                       <span class="info">
-                                          {{item.area}}平米
-                                       </span>
-                                    </span>
-                                 </div>
-                                 <div class="bedroom" v-if="data.huxing_map_info.bedroom != false">
-                                    <span class="room-item am-u-md-3 am-u-sm-6" v-for="(item,n) in parseObject(data.huxing_map_info.bedroom)">
-                                       <span class="title">
-                                          卧室{{n+1}}
-                                       </span>
-                                       <span class="info">
-                                          {{item.arae}}平米
-                                          <small>·</small>
-                                          {{item.direction}}
+                                 <div class="hall am-cf" v-if="data.huxing_map_info.hall != false">
+                                    <span class="am-u-md-3 am-u-sm-6 am-u-end" v-for="(item,n) in parseObject(data.huxing_map_info.hall)">
+                                       <span class="room-item">
+                                          <span class="title">
+                                             大厅{{n+1}}
+                                          </span>
+                                          <span class="info">
+                                             {{item.arae}}平米
+                                             <small>·</small>
+                                             {{item.direction}}
+                                          </span>
                                        </span>
                                     </span>
                                  </div>
-                                 <div class="batchroom" v-if="data.huxing_map_info.batchroom != false">
-                                    <span class="room-item am-u-md-3 am-u-sm-6" v-for="(item,n) in parseObject(data.huxing_map_info.batchroom)">
-                                       <span class="title">
-                                          卫生间{{n+1}}
-                                       </span>
-                                       <span class="info">
-                                          {{item.arae}}平米
-                                          <small>·</small>
-                                          {{item.direction}}
+                                 <div class="bedroom am-cf" v-if="data.huxing_map_info.bedroom != false">
+                                    <span class=" am-u-md-3 am-u-sm-6 am-u-end" v-for="(item,n) in parseObject(data.huxing_map_info.bedroom)">
+                                       <span class="room-item">
+                                          <span class="title">
+                                             卧室{{n+1}}
+                                          </span>
+                                          <span class="info">
+                                             {{item.arae}}平米
+                                             <small>·</small>
+                                             {{item.direction}}
+                                          </span>
                                        </span>
                                     </span>
                                  </div>
-                                 <div class="belconry" v-if="data.huxing_map_info.belconry != false">
-                                    <span class="room-item am-u-md-3 am-u-sm-6" v-for="(item,n) in parseObject(data.huxing_map_info.belconry)">
-                                       <span class="title">
-                                          阳台{{n+1}}
+                                 <div class="bathroom am-cf" v-if="data.huxing_map_info.bathroom != false">
+                                    <span class=" am-u-md-3 am-u-sm-6 am-u-end" v-for="(item,n) in parseObject(data.huxing_map_info.bathroom)">
+                                       <span class="room-item">
+                                          <span class="title">
+                                             卫生间{{n+1}}
+                                          </span>
+                                          <span class="info">
+                                             {{item.arae}}平米
+                                             <small>·</small>
+                                             {{item.direction}}
+                                          </span>
                                        </span>
-                                       <span class="info">
-                                          {{item.arae}}平米
-                                          <small>·</small>
-                                          {{item.direction}}
-                                       </span>
-
                                     </span>
                                  </div>
-                                 <div class="kitchen" v-if="data.huxing_map_info.kitchen != false">
-                                    <span class="room-item am-u-md-3 am-u-sm-6" v-for="(item,n) in parseObject(data.huxing_map_info.kitchen)">
-                                       <span class="title">
-                                          厨房{{n+1}}
+                                 <div class="balcony am-cf" v-if="data.huxing_map_info.balcony != false">
+                                    <span class=" am-u-md-3 am-u-sm-6 am-u-end" v-for="(item,n) in parseObject(data.huxing_map_info.balcony)">
+                                       <span class="room-item">
+                                          <span class="title">
+                                             阳台{{n+1}}
+                                          </span>
+                                          <span class="info">
+                                             {{item.arae}}平米
+                                             <small>·</small>
+                                             {{item.direction}}
+                                          </span>
                                        </span>
-                                       <span class="info">
-                                          {{item.arae}}平米
-                                          <small>·</small>
-                                          {{item.direction}}
+                                    </span>
+                                 </div>
+                                 <div class="kitchen am-cf" v-if="data.huxing_map_info.kitchen != false">
+                                    <span class="am-u-md-3 am-u-sm-6 am-u-end" v-for="(item,n) in parseObject(data.huxing_map_info.kitchen)">
+                                       <span class="room-item">
+                                          <span class="title">
+                                             厨房{{n+1}}
+                                          </span>
+                                          <span class="info">
+                                             {{item.arae}}平米
+                                             <small>·</small>
+                                             {{item.direction}}
+                                          </span>
                                        </span>
                                     </span>
                                  </div>
@@ -307,9 +320,9 @@
                               </div>
                            </div>
                         </div>
-                        <div class="am-u-lg-4 am-show-lg " >
+                        <div class="am-u-lg-4 am-show-lg" >
                            <div :style="sideFixed ? sideStyle : ''">
-                              <div class="side-bar" >
+                              <div class="side-bar  side-bar-s" >
                                  <div class="am-panel am-panel-default">
                                     <div class="am-panel-bd">
                                        <div class="price">
@@ -324,10 +337,26 @@
                                           </span>
                                           万元/平米
                                        </div>
-                                       <div class="visible am-text-center">
-                                          <button class="am-btn am-btn-block am-btn-default">预约看房</button>
-                                          <small>您暂时不会被收费</small>
-                                       </div>
+                                       <template v-if="!reservationData">
+                                          <div class="">
+                                             <div class="visible-date">看房日期</div>
+                                             <button class="date-btn" @click.self="openDatePicker">
+                                                {{ reservation ? parseDate() :'请选择日期' }}
+                                             </button>
+                                          </div>
+                                          <div class="visible am-text-center">
+                                             <button @click="reservationHouse" class="am-btn am-btn-block am-btn-default">预约看房</button>
+                                             <small>您暂时不会被收费</small>
+                                          </div>
+                                       </template>
+                                       <template v-else>
+                                          <div class="reservation-success">
+                                             <div class="am-text-center"><i class="am-icon-check"></i>已预约 {{parseDate(reservationData.date)}}</div>
+                                             <div class="am-text-center">
+                                                请联系房主决定看房具体时间
+                                             </div>
+                                          </div>
+                                       </template>
                                     </div>
                                  </div>
                                  <div class="am-text-center report">
@@ -336,17 +365,62 @@
                                  </div>
                               </div>
                            </div>
-
                         </div>
                      </div>
-
                   </div>
                </div>
+            </div>
+         </div>
+         <homefooter></homefooter>
+         <slider ref="silderd" v-bind:data="allImage" @onclose="closeSilder" :style="{display:'none'}"></slider>
+         <div class="reservation-bar" v-show="reservationOpen && !mdWidth">
+            <div class="max">
+                  <div class="side-wrap">
+                     <div class="side-bar" >
+                        <div class="am-panel am-panel-default">
+                           <div class="am-panel-bd">
+                              <button @click="reservationOpen = false" type="button" class="am-fr am-close">&times;</button>
+                              <div class="price">
+                                 <span>
+                                    ¥{{data.price}}
+                                 </span>
+                                 万元
+                              </div>
+                              <div class="unit_price">
+                                 <span>
+                                    ¥{{getUnitPrice}}
+                                 </span>
+                                 万元/平米
+                              </div>
+                              <template v-if="!reservationResult">
+                                 <div class="">
+                                    <div class="visible-date">看房日期</div>
+                                    <button class="date-btn" @click.self="openDatePicker">
+                                       {{ reservation ? parseDate() :'请选择日期' }}
+                                    </button>
+                                 </div>
+                                 <div class="visible am-text-center">
+                                    <button @click="reservationHouse" class="am-btn am-btn-block am-btn-default">预约看房</button>
+                                    <small>您暂时不会被收费</small>
+                                 </div>
+                              </template>
+                              <template v-else>
+                                 <div class="reservation-success">
+                                    <div class="am-text-center"><i class="am-icon-check"></i>预约成功</div>
+
+                                 </div>
+                              </template>
+                           </div>
+                        </div>
+                        <div class="am-text-center report">
+                           <i class="am-icon-flag-o"></i>
+                           <span>举报此房源</span>
+                        </div>
+                     </div>
+                  </div>
 
             </div>
          </div>
-         <slider ref="silderd" v-bind:data="allImage" @onclose="closeSilder" :style="{display:'none'}"></slider>
-
       </div>
    </transition>
 </template>
@@ -356,15 +430,20 @@ import sender from '@/Sender.js'
 import navtop from '@/components/NavTop'
 import mapa from '@/components/user/map'
 import slider from '@/components/home/sliderTemp'
+import homefooter from '@/components/Footer'
 
+import utils from '@/mixin/unity'
+import mUser from '@/mixin/user.js'
 
    export default {
       name:'house-info',
       props:['id'],
+      mixins:[utils,mUser],
       components:{
          navtop,
          mapa,
-         slider
+         slider,
+         homefooter
       },
       data(){
          return {
@@ -397,6 +476,11 @@ import slider from '@/components/home/sliderTemp'
             commentTop:0,
             locationTop:0,
             navActive:'about',
+            reservation:'',
+            reservationResult:false,
+            mdReservationOpen:false,
+            reservationOpen:false,
+            reservationData:false,
          }
       },
       mounted(){
@@ -414,6 +498,7 @@ import slider from '@/components/home/sliderTemp'
                this.start = true;
                this.filterImg(res.data.house_img);
                this.getLngLat();
+               this.checkIsReservation();
             })
          },
          filterImg(imgs){
@@ -442,24 +527,27 @@ import slider from '@/components/home/sliderTemp'
                let arr =res.geocodes[0].location.split(',');
                this.lng = parseFloat(arr[0]);
                this.lat = parseFloat(arr[1]);
+               this.$nextTick(_=>{
+                  this.datePickerInit();
+               })
             })
          },
          openSlider(){
             this.$refs.silderd.$el.style.display = 'block';
+            this._bodyAddClass('slider-open');
          },
          closeSilder(){
 
             this.$refs.silderd.$el.style.display = 'none';
-
+            this._bodyRemoveClass('slider-open');
          },
          getTop(){
 
-            this.sideTop = $('.side-bar').offset().top;
-            this.navTop = $('.scrollspy-nav').offset().top;
-            this.aboutTop = $('#about').offset().top;
-            this.commentTop = $('#comment').offset().top;
-            this.locationTop = $('#location').offset().top;
-
+            this.sideTop = this._elToTopHeight('.side-bar-s');
+            this.navTop = this._elToTopHeight('.scrollspy-nav');
+            this.aboutTop = this._elToTopHeight('#about');
+            this.commentTop = this._elToTopHeight('#comment');
+            this.locationTop = this._elToTopHeight('#location');
          },
          navA(val){
             if(val+ 250 >this.locationTop )
@@ -469,7 +557,75 @@ import slider from '@/components/home/sliderTemp'
             else this.navActive = 'about';
          },
          scrollTo(val){
-            this.$store.dispatch('windowScroll',val);
+            this._scrollToPage(val);
+         },
+         datePickerInit(){
+            let nowTemp = new Date();
+            let nowDay = new Date(nowTemp.getFullYear(), nowTemp.getMonth(), nowTemp.getDate(), 0, 0, 0, 0).valueOf();
+            let nowMoth = new Date(nowTemp.getFullYear(), nowTemp.getMonth(), 1, 0, 0, 0, 0).valueOf();
+            let nowYear = new Date(nowTemp.getFullYear(), 0, 1, 0, 0, 0, 0).valueOf();
+
+            $('.date-btn').datepicker({
+               onRender:(date,viewMode)=>{
+                  let viewDate = nowDay;
+
+                  switch (viewMode) {
+                      // moths 视图，与当前月份比较
+                     case 1:
+                        viewDate = nowMoth;
+                        break;
+                      // years 视图，与当前年份比较
+                     case 2:
+                        viewDate = nowYear;
+                        break;
+                  }
+
+
+                  return date.valueOf() < viewDate ? 'am-disabled' : '';
+               }
+            })
+            .on('changeDate.datepicker.amui',e=>{
+               this.reservation = new Date(e.date).getTime();
+            });
+         },
+         openDatePicker(e){
+
+            $(e.target).datepicker('open')
+            ;
+         },
+         parseDate(val){
+            let dateTime = parseInt(val || this.reservation);
+            let time = new Date(dateTime);
+            let date = time.getFullYear()+'-'+(time.getMonth()+ 1) +'-'+time.getDate();
+            return date;
+         },
+         reservationHouse(){
+
+            if(!this._isLogin)
+               return;
+
+            let date = this.reservation;
+            if(!date || date == false){
+               document.querySelector('.date-btn').click();
+               return;
+            }
+
+            sender('/api/reservation/create',{hid:this.data.id,date})
+               .then(res=>{
+                  this.checkIsReservation();
+               })
+         },
+         checkIsReservation(){
+            if(!this._isLogin)
+               return;
+
+
+            sender('/api/reservation/check',{hid:this.id})
+               .then(res=>{
+                  let data = res.data;
+                  if(data && data != false)
+                     this.reservationData = data;
+               })
          }
       },
       computed:{
@@ -478,6 +634,15 @@ import slider from '@/components/home/sliderTemp'
          },
          getScrollTop(){
             return this.$store.getters['getScrollTop'];
+         },
+         mdWidth(){
+            let result = (this.$store.getters['getWindowWidth'] >1024);
+
+            if(result && this.reservationOpen)
+               this.reservationOpen = false;
+            console.log(result);
+
+            return result;
          }
       },
       watch:{
@@ -491,8 +656,14 @@ import slider from '@/components/home/sliderTemp'
 
             this.navA(val);
 
-            this.navFixed = (val > this.navTop);
-            this.sideFixed = (val > this.sideTop);
+            this.navFixed = (val+10 > this.navTop);
+            this.sideFixed = (val+50 > this.sideTop);
+         },
+         reservationOpen(val){
+            val
+            ? this._bodyAddClass('reservation-open')
+            : this._bodyRemoveClass('reservation-open');
+
          }
       }
    }
@@ -509,9 +680,11 @@ import slider from '@/components/home/sliderTemp'
       cursor: pointer;
       position: relative;
    }
+
    .col-5{
 
    }
+
    .col-5{
        width: 100%;
        display: inline-block !important;
@@ -521,6 +694,7 @@ import slider from '@/components/home/sliderTemp'
        -webkit-animation-timing-function: ease-out !important;
        animation-timing-function: ease-out !important;
    }
+
    .col-5:not(.col-5:first-child){
       margin-left: 9px;
    }
@@ -538,6 +712,7 @@ import slider from '@/components/home/sliderTemp'
          height: 473px !important;
       }
    }
+
    .all-btn{
       cursor: pointer !important;
        -webkit-transition: background 0.3s, border-color 0.3s !important;
@@ -567,7 +742,9 @@ import slider from '@/components/home/sliderTemp'
        position: absolute !important;
        right: 20px!important;
        bottom: 30px !important;
-       box-shadow: 0 1px 1px 1px rgba(0, 0, 0, 0.14) !important;
+   }
+   .all-btn-bar button{
+      box-shadow: 0 1px 1px 1px rgba(0, 0, 0, 0.14) !important;
    }
 
    @media only screen and (min-width:640px) {
@@ -696,10 +873,12 @@ import slider from '@/components/home/sliderTemp'
    }
 
    .room-item{
+      display: block;
       padding-top: 5px;
       padding-bottom: 3px;
       border:1px solid #e0e0e0;
       border-radius:5px;
+      padding-left: 8px;
    }
    .room-item span{
       display: block;
@@ -707,8 +886,8 @@ import slider from '@/components/home/sliderTemp'
 
    .room-item .title{
       padding-top: 5px;
-      font-size: 18px;
-      font-weight: 500;
+      font-size: 17px;
+      font-weight: 400;
       line-height: 28px;
    }
 
@@ -889,7 +1068,7 @@ import slider from '@/components/home/sliderTemp'
       position:fixed;
       bottom: 0;
       background: #fff;
-      z-index: 999;
+      z-index: 100;
       padding-bottom: 20px;
       padding-top: 20px;
       border-top:1px solid #e0e0e0;
@@ -900,4 +1079,74 @@ import slider from '@/components/home/sliderTemp'
    .bottom-bar button{
       padding: 0.8em 2.1em;
    }
+   .room-size .am-u-sm-6{
+      padding-top: 9px;
+      padding-left: 0!important;
+   }
+
+   .date-btn{
+      width: 100%;
+      padding-left: 10px;
+      padding-right: 10px;
+      height: 35px;
+      background: #fff;
+      border:1px solid #e1e1e1;
+      border-radius:2px;
+      text-align:left;
+      box-shadow:0 0 1px #e1e1e1;
+      color:#666;
+      font-size: 16px;
+      margin-top: 7px;
+   }
+   .visible-date{
+      margin-top: 10px;
+      font-size: 14px;
+      font-weight: 400;
+      color:#767676;
+   }
+
+   .reservation-success div{
+      padding-top: 10px;
+      font-size: 16px;
+      color:#666;
+   }
+   .reservation-success i {
+      color:#ff5a5f;
+      font-size: 20px;
+   }
+   .max{
+      position:fixed !important;
+      left: 0!important;bottom: 0!important;top: 0!important;right: 0!important;
+      background: rgba(255,255,255,0.75)!important;
+      z-index: 100 !important;
+   }
+   .side-wrap{
+      position:absolute!important;
+      top: 50%!important;
+      left: 50%!important;
+      transform: translate(-50%,-50%) !important;
+      width: 350px!important;
+      z-index: 201!important;
+   }
+   .side-wrap .am-close {
+      z-index: 202 !important;
+
+      font-size: 25px !important;
+   }
+   .side-wrap .price{
+      padding-top: 20px !important;
+   }
+
+   .bottom-bar-text{
+      padding-top: 0px;
+      color:#666;
+   }
+   .bottom-bar-text i{
+      color:#df5a5f;
+   }
+   .bottom-bar-sub-text{
+      padding-top: 2px;
+      color:#696969;
+   }
+
 </style>

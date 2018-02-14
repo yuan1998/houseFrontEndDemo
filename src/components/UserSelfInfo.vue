@@ -5,7 +5,7 @@
             <div class="am-u-sm-12">
                <div class="info">
                   <avatar></avatar>
-                  <form class="am-form">
+                  <div class="am-u-md-10 am-u-sm-12 am-u-sm-centered">
                      <div class="am-form-group">
                         <label>用户名</label>
                         <input type="text" v-model="getUser.username" disabled>
@@ -25,7 +25,7 @@
                      <div  class="am-text-center" v-if="save">
                         <button class="am-btn am-btn-primary">保存</button>
                      </div>
-                  </form>
+                  </div>
                </div>
             </div>
          </div>
@@ -72,3 +72,28 @@ import avatar from '@/components/user/userAvatar'
 
    }
 </script>
+
+<style scoped>
+.am-form-group label{
+   font-weight: 400;
+   font-size: 18px;
+   color:#767676;
+}
+.am-form-group input{
+   width: 100%;
+   height: 40px;
+   font-size: 18px;
+   line-height: 37px;
+   color:#666;
+   border-radius: 5px;
+   border:1px solid #e1e1e1;
+   padding-left: 5px;
+
+}
+
+.am-form-group input[disabled]{
+   background-color: #e1e1e1;
+   user-select: none;
+}
+
+</style>

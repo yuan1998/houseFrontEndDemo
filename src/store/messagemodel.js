@@ -31,9 +31,9 @@ import sender from '@/Sender.js'
    },
    actions:{
       getUserMessage(state){
-         sender('/api/envelope/getUnreadCount').then(res=>{
-            state.commit('saveUserCount',res.data)
-         })
+         // sender('/api/envelope/getUnreadCount').then(res=>{
+         //    state.commit('saveUserCount',res.data)
+         // })
          sender('/api/adminMessage/getUnreadCount').then(res=>{
             state.commit('saveWebCount',res.data)
          })

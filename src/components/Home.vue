@@ -1,127 +1,122 @@
 <template>
-   <div id="home">
-      <div id="head">
-         <nav-top></nav-top>
-      </div>
-      <div class="content">
-         <div id="home-bg"></div>
-         <div class="home-top-bar">
-            <div class="am-container">
-               <div class="am-g">
-                  <div class="am-u-sm-12">
-                     <div class="content am-cf">
-                        <h1 class="am-u-md-12">
-                           <span class="title">4n!o</span>
-                        </h1>
-                        <div class="subtitle am-u-md-8 am-u-end">{{randWelcome()}}</div>
-                     </div>
-                     <!-- <form class="am-form am-g" v-on:submit.prevent="search">
-                        <div class="am-form-group am-form-group-lg ">
-                           <input id="home-search-input" class=" am-form-field am-radius" v-model="keyword" type="text" placeholder="试试输入地段" />
+    <div id="home" v-show='start'>
+        <div id="head" class="am-cf">
+            <nav-top position="absolute" input="home"></nav-top>
+            <template v-if="alertShow">
+                <alert :content="message" @close="alertClose"></alert>
+            </template>
+        </div>
+        <div class="content">
+            <div id="home-bg"></div>
+            <div class="home-top-bar">
+                <div class="am-container">
+                <div class="am-g">
+                    <div class="am-u-sm-12">
+                        <div class="content am-cf">
+                            <h1 class="am-u-md-12">
+                            <span class="title">4n!o</span>
+                            </h1>
+                            <div class="subtitle am-u-md-8 am-u-end">{{randWelcome()}}</div>
                         </div>
-                     </form> -->
-
-                  </div>
-               </div>
+                    </div>
+                </div>
+                </div>
             </div>
-         </div>
-         <div class="home-search-bar am-cf">
-            <div class="am-container">
-               <search class="am-g"></search>
+            <div class="home-search-bar am-cf">
+                <div class="am-container">
+                    <search class="am-g"></search>
+                </div>
             </div>
-         </div>
-         <div id="home-hot-house-bar">
-            <div class="am-container">
-               <hot></hot>
+            <div id="home-hot-house-bar">
+                <div class="am-container">
+                    <hot @loadinged="startRender"></hot>
+                </div>
             </div>
-         </div>
-      </div>
-      <top></top>
-   </div>
+        </div>
+        <homefooter ></homefooter>
+        <!-- <top></top> -->
+    </div>
 </template>
 
 <script>
-import navTop from '@/components/NavTop'
+
+/**
+ *  components
+ */
+import navTop from '@/components/nav/search-nav'
 import search from '@/components/home/homeSearchBar'
 import hot from '@/components/home/homeHotBar'
 import top from '@/components/ToPageTop'
+import homefooter from '@/components/Footer'
+import alert from '@/components/utils/alert'
 
+/**
+ *  ajax
+ */
 import sender from '@/Sender.js'
 
+/**
+ *  mixins
+ */
+import user from '@/mixin/user'
+
+
+/**
+ *  model
+ */
 export default {
-   name:'Home',
-   components:{
-      navTop,
-      hot,
-      search,
-      top
-   },
-   mounted: function() {
-      setTimeout(res=>{
-         this.unreadMessage();
-      },1000);
-   },
-   data:function(){
-      return {
-         keyword:'',
-         result:null,
-         searchStart:false,
-         welcome:['让你在繁华的闹市中，有一间属于自己的庇护所','与家人一起，在新居中迎接新年','随波逐流的你也需要休息','好几个星期了，我都想着她','最后已事过境迁 长街风景已变','千万不要因为走得太久，而忘记了我们为什么出发']
-      }
-   },
-   methods:{
-      search(){
-         if(!this.searchValidator())
-            return;
-         sender('/api/house/titleSearch',{keyword:this.keyword}).then(res=>{
-            this.result = res.data;
-         })
-      },
-      searchValidator(){
-         if(this.searchStart == false)
-            this.searchStart = true;
-         if(this.keyword == ''){
-            this.result = [];
-            return false;
-         }
-         return true;
-      },
-      randWelcome(){
-         let lth = this.welcome.length;
-         let r = Math.floor(Math.random()*lth);
-         console.log(r);
-         return this.welcome[r];
-      },
-      unreadMessage(){
+    name:'Home',
+    mixins:[user],
+    components:{
+        navTop,
+        hot,
+        search,
+        top,
+        homefooter,
+        alert
+    },
+    mounted: function() {
 
-         let u = this.$store.getters['message/userMessageCount'],
-             s = this.$store.getters['message/webMessageCount'],
-             msg = '';
+    },
+    data:function(){
+        return {
+            result:null,
+            searchStart:false,
+            welcome:['让你在繁华的闹市中，有一间属于自己的庇护所','与家人一起，在新居中迎接新年','随波逐流的你也需要休息','好几个星期了，我都想着她','最后已事过境迁 长街风景已变','千万不要因为走得太久，而忘记了我们为什么出发'],
+            start:false,
+            message:'',
+            alertShow:false,
+        }
+    },
+    methods:{
+        startRender(){
+            this.start = true;
+        },
+        randWelcome(){
+            let lth = this.welcome.length;
+            let r = Math.floor(Math.random()*lth);
 
-         if(u==0 && s==0)
-            return;
-         else if(u >0 && s>0)
-            msg = `你有${u}条私信和${s}条系统通知未阅读,<router-link to="/user/message/system" class="am-link">去查看</router-link>`;
-         else if(u>0)
-            msg = `你有${u}条私信未阅读,<router-link to="/user/message/user" class="am-link">去查看</router-link>`;
-         else if(s > 0)
-            msg = `你有${s}条系统通知未阅读,<router-link to="/user/message/system" class="am-link">去查看</router-link>`;
+            return this.welcome[r];
+        },
+        alertClose(){
+            this.alertShow = false;
+        }
+    },
+    computed:{
 
-         this.$message({
-              title: '通知',
-              message: msg,
-              placement: 'right-bottom',
-              closeable:true,
-              delay:5000,
-          })
+    },
+    watch:{
+        _unreadSystemCount(val){
+            if(!val || val == false){
+                this.alertShow = false;
+                return;
+            }
 
-      }
-   },
-   computed:{
-      getLocation(){
-         this.$store.getters['getIpCity'];
-      }
-   }
+            this.message = '你有' + val + '条未读通知,<a class="am-link" href="#/user/message/system">请前往查看<a> ';
+
+            this.alertShow = true;
+        }
+    }
 }
 
 
@@ -172,6 +167,10 @@ export default {
 }
 #home-search-input:focus{
    opacity:1;
+}
+#head >>> .search-nav{
+    border-bottom: 1px solid #e1e1e1;
+    box-shadow: 0 2px 2px #f1f1f1;
 }
 
 </style>

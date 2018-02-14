@@ -869,24 +869,25 @@ export default {
    methods:{
       init(){
 
-         if(this.getSotrage())
-            this.getLnt();
-         else this.getC();
+         // if(this.getSotrage())
+         //    this.getLnt();
+         // else
+            this.getC();
 
          this.start = true;
          this.page = 1;
 
       },
       setIntervalSave(){
-         this.saveInterval = setInterval(res=>{
-            this.$message({
-               title:'保存一下',
-               message:'我们每个一段时间都会为您保存一下',
-               customClass:'am-hide-sm',
-               placement: 'left-bottom'
-            })
-            this.setSotrage();
-         },15000)
+         // this.saveInterval = setInterval(res=>{
+         //    this.$message({
+         //       title:'保存一下',
+         //       message:'我们每个一段时间都会为您保存一下',
+         //       customClass:'am-hide-sm',
+         //       placement: 'left-bottom'
+         //    })
+         //    this.setSotrage();
+         // },15000)
       },
       setSotrage(){
          this.storage.set('temporaryHouse',this.formData);
@@ -920,15 +921,19 @@ export default {
                message:'并没有找到你输入的小区',
                type:'warning',
             })
-            this.formData.location = '没有找到，请重新输入或手动选择';
-         }else this.formData.location = location.regeocode.formatted_address ;
+            this.formData.location = '';
+         }else {
 
+            this.formData.location = location.regeocode.formatted_address ;
+            this.getlnglat();
+         }
       },
       parseLocation(data){
          this.location = data;
          let arr =data.geocodes[0].location.split(',');
          this.lng = parseFloat(arr[0]);
          this.lat = parseFloat(arr[1]);
+         this.saveLocation(data.geocodes[0],this.lat,this.lng);
       },
       getLnt(){
 
@@ -939,13 +944,27 @@ export default {
 
          this.to = setTimeout(res=>{
             $.get(`http://restapi.amap.com/v3/geocode/geo?city=${this.formData.city}&address=${this.formData.community}&output=json&key=bf5b356d3ffaab642c974983267b1ce8`).then(res=>{
-               console.log(res.geocodes !=false);
+
                if(!res.geocodes || res.geocodes !=false)
                   this.parseLocation(res);
                else this.getLoaction();
             })
          },1000)
 
+      },
+      getlnglat(){
+         $.get(`http://restapi.amap.com/v3/geocode/geo?city=${this.formData.city}&address=${this.formData.location}&output=json&key=bf5b356d3ffaab642c974983267b1ce8`).then(res=>{
+
+               let arr =res.geocodes[0].location.split(',');
+               this.saveLocation(res.geocodes[0],arr[0],arr[1]);
+
+         })
+      },
+      saveLocation(location,lng,lat){
+         this.formData.location_info = location;
+         this.formData.location_info.lng = lng;
+         this.formData.location_info.lat = lat;
+         console.log(this.formData.location_info);
       },
       getHouse(){
          sender('/api/commissioned/readId',{id:this.id}).then(res=>{
@@ -1162,15 +1181,14 @@ export default {
          return this.formData.agree;
       },
       submitFormData(){
-
          if(this.submit)
             return;
 
          this.submit = true;
          sender('/api/house/addData',this.formData).then(res=>{
             this.page++;
-            clearInterval(this.saveInterval);
-            $.AMUI.store.remove('temporaryHouse');
+
+
          },res=>{
             this.submit = false;
 
@@ -1331,7 +1349,7 @@ export default {
    padding: 95px 18px;
 }
 .map-bar{
-   margin-top: 100px;
+   margin-top: 78px;
 }
 
 .am-form-group select,

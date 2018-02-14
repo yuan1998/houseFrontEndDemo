@@ -89,7 +89,9 @@
  .am-topbar-nav > li > a {
     position: relative;
     line-height: 64px;
-    padding: 0 10px;
+    height: 66px;
+
+    padding: 0 15px;
  }
 .am-topbar-nav > li:not(.am-active) > a:hover,
 .am-topbar-nav > li.am-active{

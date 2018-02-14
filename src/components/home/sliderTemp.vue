@@ -10,7 +10,6 @@
                            <button @click="close" class="close-btn">
                               <svg width="30" height="30" xmlns="http://www.w3.org/2000/svg">
                                <!-- Created with Method Draw - http://github.com/duopixel/Method-Draw/ -->
-
                                   <g>
                                       <line stroke="#f0f0f0"  stroke-linecap="undefined" stroke-linejoin="undefined" id="svg_2" y2="0" x2="30" y1="30" x1="0" stroke-opacity="null" stroke-width="2.5" fill="none"/>
                                       <line stroke="#f0f0f0" stroke-linecap="undefined" stroke-linejoin="undefined" id="svg_4" y2="30" x2="30" y1="0" x1="0" fill-opacity="null" stroke-opacity="null" stroke-width="2.5" fill="none"/>
@@ -30,8 +29,11 @@
                               <div class="wrap">
                                  <div class="max">
                                     <div class="photo-bar" @click="numAdd">
-                                       <span class="center-img" :style="'background-image:url(' +data[imgIndex] + ')' ">
-                                       </span>
+                                      <transition name="fade">
+                                        <span class="center-img" :style="'background-image:url(' +data[imgIndex] + ')' ">
+                                        </span>
+                                      </transition>
+
                                     </div>
                                  </div>
                               </div>
@@ -64,6 +66,8 @@
       data(){
          return {
             num:1,
+            fade:true,
+
          }
       },
       mounted(){
@@ -71,12 +75,19 @@
       },
       methods:{
          numAdd(){
+          let img = document.querySelector('.center-img');
+          console.log(img);
+          img.style.animationName = "fade";
+          img.style.animationDuration = "0.3s";
+
+
             if(this.num == this.data.length)
                this.num = 1;
             else this.num++;
 
          },
          numLess(){
+            this.fade = !this.fade;
             if(this.num == 1)
                this.num = this.data.length;
             else this.num--;
@@ -97,11 +108,11 @@
    #silider{
       display: none;
       direction: ltr;
-      unicode-bidi: isolate;
+
    }
 
    .back-max{
-      z-index: 5 !important;
+      z-index: 999 !important;
       position: fixed !important;
       overflow-y: auto !important;
       left: 0;bottom: 0;top: 0;right: 0;
