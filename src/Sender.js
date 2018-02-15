@@ -1,11 +1,16 @@
+
 import cfg from '@/../cfg'
+
+
 
 export default (url,data)=>{
 
+   url = cfg.api_base_url + url
+
    data = data || {};
 
-  return $.ajax({
-      url:cfg.api_base_url+url,
+   return $.ajax({
+      url: url,
       method:'post',
       data:data,
       headers: {
