@@ -15,13 +15,13 @@ export default (url,data)=>{
       data:data,
       headers: {
          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
-         's_token':$.AMUI.utils.cookie.get('s_token')
+         'STOKEN':$.AMUI.utils.cookie.get('STOKEN')
       }
    }).then((res,textStatus,response)=>{
-      let token =response.getResponseHeader('s_token');
+      let token =response.getResponseHeader('STOKEN');
 
       if(token)
-         $.AMUI.utils.cookie.set('s_token',token);
+         $.AMUI.utils.cookie.set('STOKEN',token);
       return res;
 
    })
