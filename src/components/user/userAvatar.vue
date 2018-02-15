@@ -37,11 +37,11 @@ import sender from '@/Sender.js'
       computed:{
          getAvatar(){
             if(this.newAvatar[0])
-               return this.newAvatar[0];
+               return this.newAvatar[0].get;
             else if(this.getUser.avatar_url != false && 'name' in (this.getUser.avatar_url||{})) {
                return this.getUser.avatar_url.get;
             }
-            return require('@/../storage/notAvatar.png');
+            return require('../../../storage/notAvatar.png');
          },
          getUser(){
             return this.$store.getters['user/user'];
@@ -54,6 +54,15 @@ import sender from '@/Sender.js'
 
             if(!files.length)
                return;
+
+            let callBack = event=>{
+               let result = e.target.result;
+               sender('/api/img/save',{file:result})
+                  .then(res=>{
+                     arr.push(res.data);
+                  })
+            }
+
 
             this.$store.dispatch('readerFile',{file:files[0],arr});
          },
