@@ -55,7 +55,7 @@ import sender from '@/Sender.js'
             if(!files.length)
                return;
 
-            let callBack = event=>{
+            let callback = event=>{
                let result = e.target.result;
                sender('/api/img/save',{file:result})
                   .then(res=>{
@@ -64,7 +64,7 @@ import sender from '@/Sender.js'
             }
 
 
-            this.$store.dispatch('readerFile',{file:files[0],arr});
+            this.$store.dispatch('readerFile',{file:files[0],callback});
          },
          clickInput(){
             document.querySelector('.upload-input').click();
