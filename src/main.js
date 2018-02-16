@@ -43,7 +43,7 @@ new Vue({
   created:function(){
    // this.$store.dispatch('set_headers');
    this.$store.dispatch('getIpInfo');
-   this.$store.dispatch('isLogin',{want:['username','email','tel','id','permission','avatar_url']});
+   this.$store.dispatch('isLogin');
   },
   mounted:function(){
    this.$store.dispatch('scrollEvent');

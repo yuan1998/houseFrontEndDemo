@@ -34,9 +34,11 @@ import sender from '@/Sender.js'
          // sender('/api/envelope/getUnreadCount').then(res=>{
          //    state.commit('saveUserCount',res.data)
          // })
+
          sender('/api/adminMessage/getUnreadCount').then(res=>{
             state.commit('saveWebCount',res.data)
          })
+
       },
       less({commit},type){
          type ? commit('userMessageLess') :commit('systemMessageLess');

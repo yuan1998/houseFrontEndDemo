@@ -5,7 +5,7 @@ export default{
    methods:{
       _logout(){
         sender('/api/user/logout').then(res=>{
-           this.$store.dispatch('user/saveUser',null);
+           this.$store.dispatch('logout');
            this.$router.push({path:'/'});
         })
       },

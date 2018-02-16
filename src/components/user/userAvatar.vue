@@ -56,7 +56,7 @@ import sender from '@/Sender.js'
                return;
 
             let callback = event=>{
-               let result = e.target.result;
+               let result = event.target.result;
                sender('/api/img/save',{file:result})
                   .then(res=>{
                      arr.push(res.data);

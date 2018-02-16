@@ -34,8 +34,8 @@
             </div>
             <div class="nav-wrap am-fr am-vertical-align-middle">
                 <ul class="nav-list">
-                    <router-link tag="li" to="/"><a >首页</a></router-link>
-                    <router-link tag="li" to="/yezhu/maifang"><a >发布房源</a></router-link>
+                    <router-link tag="li" to="/">首页</router-link>
+                    <router-link tag="li" to="/yezhu/maifang">发布房源</router-link>
                     <template v-if="_isLogin">
                         <li class="user-message"
                         @mouseenter="messageBar = true"
@@ -76,8 +76,8 @@
                         </li>
                     </template>
                     <template v-else>
-                        <router-link tag="li" to="/login"><a >登录</a></router-link>
-                        <router-link tag="li" to="/sign"><a >注册</a></router-link>
+                        <router-link tag="li" to="/login">登录</router-link>
+                        <router-link tag="li" to="/signup">注册</router-link>
                     </template>
                 </ul>
             </div>
@@ -104,8 +104,8 @@
                             <li><hr></li>
                             <router-link tag="li" to="/yezhu/maifang"><a href="#">发布房源</a></router-link>
                             <template v-if="!_isLogin">
-                                <router-link tag="li" to="/login"><a href="#">注册</a></router-link>
-                                <router-link tag="li" to="/sign"><a href="#">登录</a></router-link>
+                                <router-link tag="li" to="/login"><a href="#">登录</a></router-link>
+                                <router-link tag="li" to="/signup"><a href="#">注册</a></router-link>
                             </template>
                             <template v-else>
                                 <router-link tag="li" to="/user/home"><a href="#">个人主页</a></router-link>
@@ -202,6 +202,7 @@ export default {
 
 <style scoped>
 .search-nav{
+    user-select: none;
     top: 0;
     left: 0;
     right: 0;
@@ -262,6 +263,8 @@ export default {
     padding-right: 8px;
     margin-right: 8px;
     cursor:pointer;
+    color:#666;
+
 }
 .nav-list > li:hover{
     border-bottom:3px solid #999;
@@ -482,7 +485,7 @@ li a {
     border-bottom: 1px solid #919191;
 }
 .user-message-bar{
-    max-width: 366px !important;
+    min-width: 366px !important;
     padding-left: 5px;
     padding-right: 5px;
 }

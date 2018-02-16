@@ -32,17 +32,17 @@
                                     没有账号啊，快去注册.
                                  </router-link>
                               </div>
-                              <div>
+                              <div class="remenber-me">
                                  <input class='' id="remenber-checkbox" type="checkbox" v-model="loginFormData.remenber">
                                  <label for="remenber-checkbox">
-                                    <span style="font-weight: 500;font-size: 16px;-webkit-user-select: none;">
+                                    <span >
                                        记住我一万年.
                                     </span>
                                  </label>
                               </div>
                               <div class="am-form-group">
                                  <div class="am-u-sm-6 am-u-sm-centered">
-                                    <button class="am-btn am-radius am-btn-primary am-btn-block" type="submit">登录</button>
+                                    <button class="login-btn am-btn am-radius am-btn-primary am-btn-block" type="submit">登录</button>
                                  </div>
                               </div>
                            </form>
@@ -76,9 +76,10 @@ export default{
    },
    methods:{
       loginEvent(){
+
          sender('/api/user/login',this.loginFormData).then(res=>{
             if(res.success){
-               this.$store.dispatch('isLogin',{want:['username','email','tel','id','permission']});
+               this.$store.dispatch('isLogin');
                this.$router.push({path:'/'});
             }
          },res=>{
@@ -112,6 +113,41 @@ export default{
 .login-bar .am-form-group:first-child{
    padding-top: 20px;
 }
+
+.login-bar .am-panel{
+   border-radius:5px !important;
+   box-shadow: 1px 2px 4px #616161;
+}
+
+.am-form-group input:not([type=checkbox]){
+   height: 42px;
+   line-height: 33px;
+   font-size: 17px;
+   color:#666;
+   border-radius: 5px !important;
+}
+.remenber-me{
+   padding-left: 2px;
+}
+.remenber-me span{
+   padding-top: 2px;
+   font-weight: 400 !important;
+   font-size: 14px;
+   line-height: 20px;
+   color:#666;
+}
+.remenber-me input{
+   font-size: 50px;
+}
+
+.login-btn{
+   font-size: 16px;
+   line-height: 25px;
+   border-radius: 5px;
+   background-color: #ff5a5f;
+   border-color: #ff5a5f;
+}
+
 .content >>> #nav-top-2 .am-topbar-btn{
    color:#666;
 }

@@ -19,6 +19,7 @@ export default new Vuex.Store({
       ipInfo:{},
       scrollTop:0,
       windowWidth:null,
+      messageInterval:false,
    },
    mutations:{
       setMsgTitle(state,text){
@@ -41,47 +42,45 @@ export default new Vuex.Store({
       progress(state,type){
          $.AMUI.progress[type]();
       },
-      _alert(state,msg){
+      _alert({commit},msg){
          if(msg){
             if(typeof(msg) == 'object'){
-               state.commit('setMsgTitle',msg.title);
-               state.commit('setMsgContent',msg.content);
-            }else state.commit('setMsgContent',msg);
+               commit('setMsgTitle',msg.title);
+               commit('setMsgContent',msg.content);
+            }else commit('setMsgContent',msg);
          }
          document.querySelector('#alertBtn').click();
       },
-      isLogin(state,data){
+      isLogin({state,dispatch},data){
+
+         data = data || {want:['username','email','tel','id','permission','avatar_url']};
+
          sender('/api/user/is_login',data).then((res,textStatus,response)=>{
 
             if(res.success){
-               state.dispatch('user/saveUser',res.data);
-               state.dispatch('message/getUserMessage');
-               setInterval(res=>{
-                  state.dispatch('message/getUserMessage');
-               },10000)
+               dispatch('user/saveUser',res.data);
+               dispatch('message/getUserMessage');
+
+               state.messageInterval = setInterval(res=>{
+                  dispatch('message/getUserMessage');
+               },10000);
+
+
             }
          })
       },
-      set_headers(){
-         $.ajaxSetup({
-            headers: {
-               'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
-               's_token':$.AMUI.utils.cookie.get('s_token')
-            }
-         });
-      },
-      set_token(state,token){
-         $.AMUI.utils.cookie.set('s_token',token);
-         state.dispatch('set_headers');
+      logout({state,dispatch}){
+
+
+         clearInterval(state.messageInterval);
+
+         dispatch('user/saveUser',null);
       },
       getIpInfo(state){
          $.getScript('http://int.dpool.sina.com.cn/iplookup/iplookup.php?format=js').then(res=>{
 
             state.commit('saveIpInfo',remote_ip_info);
          })
-      },
-      add({commit}){
-         commit('add');
       },
       readerFile(state,{file,callback}){
          let reader = new FileReader(),result;
@@ -118,9 +117,6 @@ export default new Vuex.Store({
       getIpCity(state){
          return '西安';
          return state.ipInfo.city || null;
-      },
-      msg(state){
-         return state.alertMsg;
       },
       getScrollTop(state){
          return state.scrollTop;
