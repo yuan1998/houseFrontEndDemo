@@ -60,7 +60,7 @@ import m_user from '@/mixin/user.js';
 
   width: 42px;
   height: 42px;
-  box-shadow: rgba(0, 0, 0, 0.4) 0px 0px 1px;
+  border:2px solid #f1f1f1;
   border-radius: 42px;
   margin: 11px;
  }
@@ -82,13 +82,15 @@ import m_user from '@/mixin/user.js';
     border-style: solid;
     border-color: #f0f0f0;
     color: #666;
+    z-index: 5;
  }
- .am-topbar-nav > li > img,
+  .am-topbar-nav > li{
+    height: 68px;
+  }
  .am-topbar-nav > li > a {
     position: relative;
-    line-height: 64px;
-    height: 66px;
-
+    line-height: 68px;
+    height: 100% !important;
     padding: 0 15px;
  }
 .am-topbar-nav > li:not(.am-active) > a:hover,
@@ -107,8 +109,8 @@ import m_user from '@/mixin/user.js';
   padding-left: 0.625rem;
   float: left;
   font-size: 18px;
-  height: 64px;
-  line-height: 64px;
+  height: 68px;
+  line-height: 68px;
 }
 .am-nav > li {
     position: relative;

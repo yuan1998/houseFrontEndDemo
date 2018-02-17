@@ -1,14 +1,15 @@
 // The Vue build version to load with the `import` command
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
-import store from '@/store/index'
+import store from '@/store'
 import router from './router'
 import App from './App'
 import 'jquery'
 import 'amazeui/dist/css/amazeui.css'
 import 'amazeui/dist/js/amazeui.js'
 
-import AmazeVue from 'amaze-vue';
+import Notify from 'amaze-vue/dist/amaze-vue.js';
+import Loading from 'amaze-vue/dist/amaze-vue.js';
 import 'amaze-vue/dist/amaze-vue.css';
 
 
@@ -16,9 +17,19 @@ import sender from './Sender.js'
 
 import VueAMap from 'vue-amap';
 
-Vue.use(AmazeVue);
+
+
+Vue.use(Notify);
+Vue.use(Loading);
+
+
 Vue.use(VueAMap);
 
+
+/**
+ *  Amap
+ * @type {String}
+ */
 VueAMap.initAMapApiLoader({
   key: 'bf5b356d3ffaab642c974983267b1ce8',
   plugin: ['AMap.Scale', 'AMap.OverView', 'AMap.ToolBar', 'AMap.MapType']

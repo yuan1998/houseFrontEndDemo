@@ -535,28 +535,61 @@
                                              <div>
                                                 <div class="am-u-md-11 am-u-lg-10 am-u-sm-centered">
                                                    <div class="am-panel am-g">
-                                                      <div class="am-panel-bd am-text-center am-g thumbnail-bar am-cf cover-bar" v-if="formData.house_img.cover != false">
-                                                         <div class="am-g center-img am-radius" :style="'background-image:url('+formData.house_img.cover[0].get+')'" @mouseenter="closeBtnOn" @mouseleave="closeBtnOff">
-                                                            <!-- <img class="am-radius am-img-responsive" style="" :src="formData.house_img.cover[0]"> -->
-                                                            <span class="close">
-                                                               <button @click="removeIndex(formData.house_img.cover,0)" type="button" class="am-btn">删除图片</button>
-                                                            </span>
+                                                      <div class="am-panel-bd thumbnail-bar"
+                                                         v-show="loading">
+                                                         <div class="loading-bar">
+                                                            <am-loading color="primary"
+                                                               :loading="loading">
+                                                            </am-loading>
                                                          </div>
                                                       </div>
-                                                      <div v-else @dragenter.prevent.stop @dragover.prevent.stop @drop="upload($event,formData.house_img.cover)" class="am-panel-bd upload-bar">
-                                                         <div class="am-text-center">
-                                                            <div class="">
-                                                               <label for="upload-file">
-                                                                  <div class="am-text-center upload-ct">
-                                                                     <div><i class="am-icon-plus am-icon-lg"></i></div>
-                                                                     <div class="">点击上传</div>
-                                                                     <small>或者将文件拖拽至框内</small>
-                                                                  </div>
-                                                                  <input id="upload-file" @change="upload($event,formData.house_img.cover)" accept="image/*" type="file" multiple style="display:  none;">
-                                                               </label>
+                                                      <template v-if="!loading">
+                                                         <div class="am-panel-bd am-text-center am-g thumbnail-bar am-cf cover-bar"
+                                                            v-if="formData.house_img.cover != false">
+                                                            <div class="am-g center-img am-radius"
+                                                               :style="'background-image:url('+formData.house_img.cover[0].get+')'"
+                                                               @mouseenter="closeBtnOn"
+                                                               @mouseleave="closeBtnOff">
+                                                               <span class="close">
+                                                                  <button @click="removeIndex(formData.house_img.cover,0)"
+                                                                     type="button"
+                                                                     class="am-btn">
+                                                                     删除图片
+                                                                  </button>
+                                                               </span>
                                                             </div>
                                                          </div>
-                                                      </div>
+                                                         <div v-else
+                                                            @dragenter.prevent.stop
+                                                            @dragover.prevent.stop
+                                                            @drop="upload($event,formData.house_img.cover)"
+                                                            class="am-panel-bd upload-bar">
+                                                            <div class="am-text-center">
+                                                               <div class="">
+                                                                  <label for="upload-file">
+                                                                     <div class="am-text-center upload-ct">
+                                                                        <div>
+                                                                           <i class="am-icon-plus am-icon-lg">
+                                                                           </i>
+                                                                        </div>
+                                                                        <div class="">
+                                                                           点击上传
+                                                                        </div>
+                                                                        <small>
+                                                                           或者将文件拖拽至框内
+                                                                        </small>
+                                                                     </div>
+                                                                     <input id="upload-file"
+                                                                        @change="upload($event,formData.house_img.cover)"
+                                                                        accept="image/*"
+                                                                        type="file"
+                                                                        multiple
+                                                                        style="display:  none;">
+                                                                  </label>
+                                                               </div>
+                                                            </div>
+                                                         </div>
+                                                      </template>
                                                    </div>
                                                 </div>
                                              </div>
@@ -584,7 +617,7 @@
                                              <div>
                                                 <div class="am-text-center">
                                                    <span class="am-text-xxl am-block">上传一些关于房子的照片</span>
-                                                   <small>最多30张照片，请选择明亮并能表现房间整体构造和装饰的图片</small>
+                                                   <small>最少4张,最多30张照片，请选择明亮并能表现房间整体构造和装饰的图片</small>
                                                 </div>
                                              </div>
                                              <div>
@@ -594,13 +627,18 @@
                                                          <div class="o-thumbnail am-text-center center-img" @mouseenter="closeBtnOn" :style="'background-image:url('+item.get+')'" @mouseleave="closeBtnOff">
                                                             <!-- <img class="am-radius am-inline-block" :src="item"> -->
                                                             <span class="close">
-                                                               <button @click="removeIndex(formData.house_img.house,index)" type="button" class="am-btn">删除图片</button>
+                                                               <button
+                                                                  @click="removeIndex(formData.house_img.house,index)"
+                                                                  type="button"
+                                                                  class="am-btn">
+                                                                  删除图片
+                                                               </button>
                                                             </span>
                                                          </div>
                                                       </div>
                                                       <div class="am-u-lg-3 am-u-md-6" v-show="loading">
                                                          <div class="o-thumbnail am-text-center center-img">
-                                                             <am-loading color="primary" :loading="loading"></am-loading>
+                                                               <am-loading color="primary" :loading="loading"></am-loading>
                                                          </div>
                                                       </div>
                                                       <div v-show="formData.house_img.house.length <30" @dragenter.prevent.stop @dragover.prevent.stop @drop="upload($event,formData.house_img.house)" class="am-u-lg-3 am-u-md-6 am-u-end  ">
@@ -682,28 +720,38 @@
                                                    </div>
                                                 </div>
                                                 <div class="am-panel am-g">
-                                                   <div class="am-panel-bd am-text-center am-g thumbnail-bar am-cf cover-bar" v-if="formData.deed_info != false">
-                                                      <div class="am-g center-img" style="max-height: 500px;position:relative;display:inline-block" @mouseenter="closeBtnOn" @mouseleave="closeBtnOff" :style="'background-image:url('+ formData.deed_info[0].get+ ')'">
-                                                         <!-- <img class="am-radius am-img-responsive" style="" :src="formData.deed_info[0]"> -->
-                                                         <span class="close">
-                                                            <button @click="removeIndex(formData.deed_info,0)" type="button" class="am-btn">删除图片</button>
-                                                         </span>
+                                                   <div class="am-panel-bd thumbnail-bar"
+                                                      v-show="loading">
+                                                      <div class="loading-bar">
+                                                         <am-loading color="primary"
+                                                            :loading="loading">
+                                                         </am-loading>
                                                       </div>
                                                    </div>
-                                                   <div v-else @dragenter.prevent.stop @dragover.prevent.stop @drop="upload($event,formData.deed_info)" class="am-panel-bd upload-bar">
-                                                      <div class="am-text-center">
-                                                         <div class="">
-                                                            <label for="upload-file">
-                                                               <div class="am-text-center upload-ct">
-                                                                  <div><i class="am-icon-plus am-icon-lg"></i></div>
-                                                                  <div class="">点击上传</div>
-                                                                  <small>或者将文件拖拽至框内</small>
-                                                               </div>
-                                                            </label>
-                                                            <input id="upload-file" @change="upload($event,formData.deed_info)" accept="image/*" type="file" multiple style="display:  none;">
+                                                   <template v-if="!loading">
+                                                      <div class="am-panel-bd am-text-center am-g thumbnail-bar am-cf cover-bar" v-if="formData.deed_info != false">
+                                                         <div class="am-g center-img" style="max-height: 500px;position:relative;display:inline-block" @mouseenter="closeBtnOn" @mouseleave="closeBtnOff" :style="'background-image:url('+ formData.deed_info[0].get+ ')'">
+                                                            <!-- <img class="am-radius am-img-responsive" style="" :src="formData.deed_info[0]"> -->
+                                                            <span class="close">
+                                                               <button @click="removeIndex(formData.deed_info,0)" type="button" class="am-btn">删除图片</button>
+                                                            </span>
                                                          </div>
                                                       </div>
-                                                   </div>
+                                                      <div v-else @dragenter.prevent.stop @dragover.prevent.stop @drop="upload($event,formData.deed_info)" class="am-panel-bd upload-bar">
+                                                         <div class="am-text-center">
+                                                            <div class="">
+                                                               <label for="upload-file">
+                                                                  <div class="am-text-center upload-ct">
+                                                                     <div><i class="am-icon-plus am-icon-lg"></i></div>
+                                                                     <div class="">点击上传</div>
+                                                                     <small>或者将文件拖拽至框内</small>
+                                                                  </div>
+                                                               </label>
+                                                               <input id="upload-file" @change="upload($event,formData.deed_info)" accept="image/*" type="file" multiple style="display:  none;">
+                                                            </div>
+                                                         </div>
+                                                      </div>
+                                                   </template>
                                                 </div>
                                              </div>
                                           </div>
@@ -964,7 +1012,7 @@ export default {
          this.formData.location_info = location;
          this.formData.location_info.lng = lng;
          this.formData.location_info.lat = lat;
-         console.log(this.formData.location_info);
+
       },
       getHouse(){
          sender('/api/commissioned/readId',{id:this.id}).then(res=>{
@@ -1001,23 +1049,26 @@ export default {
          let fx = (e)=>{
             let str = e.target.result;
             this.loading = true;
-            sender('/api/img/save',{file:str}).then(res=>{
-               arr.push(res.data);
-               that.loading = false;
-               that.$notify({
-                  message: '上传成功。',
-                  type: 'success'
-               });
-               setTimeout(res=>{
-                  that.$store.dispatch('windowScroll',$(document).height() - $(window).height());
-               },200)
-            },res=>{
-               that.loading = false;
-               that.$notify({
-                    message: '上传失败.',
-                    type: 'error'
-                });
-            })
+            sender('/api/img/save',{file:str}).then(
+               res=>{
+                  arr.push(res.data);
+                  that.loading = false;
+                  that.$notify({
+                     message: '上传成功。',
+                     type: 'success'
+                  });
+                  setTimeout(res=>{
+                     that.$store.dispatch('windowScroll',$(document).height() - $(window).height());
+                  },200)
+               },
+               res=>{
+                  that.loading = false;
+                  that.$notify({
+                     message: '上传失败.',
+                     type: 'error'
+                  });
+               }
+            )
 
          }
 
@@ -1225,7 +1276,7 @@ export default {
 
 <style scoped>
 .addHouseData >>> .am-topbar{
-   min-height: 67px;
+   min-height: 68px;
 }
 .rounds{
     display: inline-block !important;
@@ -1252,14 +1303,17 @@ export default {
 .o-upload-bar,
 .upload-bar{
    border: 3px dashed rgba(0,0,0,0.1);
-
 }
 .o-upload-bar,
 .upload-bar,
 .o-thumbnail,
 .thumbnail-bar{
-   border-radius:5px;
+   border-radius:8px;
    margin-top: 30px;
+}
+.page-5 .am-panel{
+   border-color: transparent !important;
+   box-shadow: none !important;
 }
 
 .o-thumbnail,
@@ -1267,9 +1321,15 @@ export default {
 .upload-bar{
    margin-top: 30px;
 }
+
+.thumbnail-bar{
+   padding: 0 !important;
+   margin-right: 0 !important;
+   margin-left: 0 !important;
+}
+
 .thumbnail-bar div{
-   max-height: 465px !important;
-   height: 500px;
+   height: 465px !important;
    width: 100%;
 }
 .upload-bar{
@@ -1316,6 +1376,11 @@ export default {
 .thumbnail-bar img{
    max-height:500px;
 }
+
+.loading-bar{
+
+}
+
 .o-thumbnail img{
    max-height: 292px;
 }
