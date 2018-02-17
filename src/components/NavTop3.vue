@@ -1,14 +1,14 @@
 <template>
    <transition>
       <div id="NavTop-3" style="min-width: 300px;">
-         <div class="am-topbar" style="margin-bottom: 0px" v-if="getUser">
-            <router-link tag="span" to="/" class="am-topbar-brand">
-               <a class="am-monospace"  >
-                  4n!o
-               </a>
-            </router-link>
+         <div class="am-topbar" style="margin-bottom: 0px" v-if="_isLogin">
+            <div class="am-topbar-brand">
+               <router-link to="/" class="am-monospace"  >
+                  4nn
+               </router-link>
+            </div>
             <button class="am-topbar-btn am-topbar-toggle am-btn am-btn-link am-btn-sm am-show-sm-only" data-am-collapse="{target: '#doc-topbar-collapse'}">
-               <span class="am-sr-only">{{getUser.username}}</span> <span class="am-icon-bars"></span>
+               <span class="am-sr-only">{{_getUsername}}</span> <span class="am-icon-bars"></span>
             </button>
             <div class="am-collapse am-topbar-collapse" id="doc-topbar-collapse">
                <div class="am-topbar-right">
@@ -17,15 +17,15 @@
                         <a >首页</a>
                      </router-link>
                      <router-link tag="li" class="am-active" to="/user"  exact>
-                        <div class="avatar-bar am-hide-sm center-img" :style="'background-image:url('+ getAvatar+');'">
-                          <!-- <img class="avatar-img"  :src="getAvatar"> -->
+                        <div class="avatar-bar am-hide-sm center-img" :style="'background-image:url('+ _getAvatar+');'">
+                          <!-- <img class="avatar-img"  :src="_getAvatar"> -->
                         </div>
                         <a class="am-show-sm-only">
-                           <span class="am-inline-block center-img am-text-middle" :style="'background-image:url('+ getAvatar+');width: 35px;height: 35px;border-radius:35px;'">
+                           <span class="am-inline-block center-img am-text-middle" :style="'background-image:url('+ _getAvatar+');width: 35px;height: 35px;border-radius:35px;'">
                             <!-- <img class="" style="height: 35px;vertical-align: top;" :src="getAvatar"> -->
                           </span>
                           <span class="am-text-middle">
-                            {{getUser.username}}
+                            {{_getUsername}}
                           </span>
                         </a>
                      </router-link>
@@ -38,18 +38,13 @@
 </template>
 
 <script>
+import m_user from '@/mixin/user.js';
+
    export default {
       name:'navTop3',
+      mixins:[m_user],
       computed:{
-         getUser(){
-            return this.$store.getters['user/user'];
-         },
-         getAvatar(){
-            if(this.getUser.avatar_url != false && 'name' in (this.getUser.avatar_url||{})) {
-               return this.getUser.avatar_url.get;
-            }
-            return require('../../storage/notAvatar.png');
-         }
+
       }
    }
 </script>
@@ -57,6 +52,9 @@
 <style scoped>
   *{
     user-select: none;
+  }
+  .am-topbar-brand{
+    z-index: 5 !important;
   }
  .avatar-bar{
 

@@ -39,9 +39,11 @@ export default{
          if(!this._isLogin)
             return;
 
-         return   (!this._getUser.avatar_url || this._getUser.avatar_url ==false)
+         let avatar = this.$store.getters['user/getAvatar'];
+
+         return   (!avatar || avatar ==false)
                   ? require('@/../storage/notAvatar.png')
-                  : this._getUser.avatar_url.get;
+                  : avatar.get;
       },
       _unreadUserCount(){
          if(!this._isLogin)

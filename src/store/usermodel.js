@@ -15,7 +15,9 @@ export default {
          state.userCommissioneds = data;
       },
       saveAvatar(state,data){
+         console.log(state.user.avatar_url);
          state.user.avatar_url = data;
+         console.log(state.user.avatar_url);
       }
    },
    actions:{
@@ -37,6 +39,9 @@ export default {
       },
       getComM(state){
          return state.userCommissioneds;
+      },
+      getAvatar(state){
+         return state.user.avatar_url;
       }
    }
 

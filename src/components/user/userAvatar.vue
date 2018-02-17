@@ -11,9 +11,9 @@
                <input @change="upload" type="file" class="upload-input" style="display:none;">
             </div>
             <div v-show="newAvatar[0] && !upSuccess
-            " class="am-margin-top-lg">
-               <button @click="changeAvatar" class="am-btn am-btn-primary am-radius">保存</button>
-               <button @click="newAvatar = []" class="am-btn am-btn-link am-link-muted">取消</button>
+            " class="avatar-btn-bar">
+               <button @click="changeAvatar" class="save-btn am-btn am-btn-primary am-radius">保存</button>
+               <button @click="newAvatar = []" class="cancel-btn am-btn am-btn-default">取消</button>
             </div>
             <div v-show="upSuccess">
                <span class="am-text-xl">上传成功</span>
@@ -24,10 +24,21 @@
 </template>
 
 <script>
+/**
+ *  ajax
+ */
 import sender from '@/Sender.js'
+
+
+/**
+ *  mixins
+ */
+import m_user from '@/mixin/user.js';
+
 
    export default{
       name:'avatarbar',
+      mixins:[m_user],
       data(){
          return {
             newAvatar:[],
@@ -36,15 +47,13 @@ import sender from '@/Sender.js'
       },
       computed:{
          getAvatar(){
-            if(this.newAvatar[0])
-               return this.newAvatar[0].get;
-            else if(this.getUser.avatar_url != false && 'name' in (this.getUser.avatar_url||{})) {
-               return this.getUser.avatar_url.get;
-            }
-            return require('../../../storage/notAvatar.png');
-         },
-         getUser(){
-            return this.$store.getters['user/user'];
+
+            let n_Avatar = this.newAvatar[0];
+
+            return (!n_Avatar || n_Avatar == false)
+                     ? this._getAvatar
+                     : n_Avatar.get;
+
          },
       },
       methods:{
@@ -62,7 +71,6 @@ import sender from '@/Sender.js'
                      arr.push(res.data);
                   })
             }
-
 
             this.$store.dispatch('readerFile',{file:files[0],callback});
          },
@@ -160,5 +168,33 @@ import sender from '@/Sender.js'
 .avatar-btn:hover,
 .user-avatar img:hover~.avatar-btn{
    opacity:1;
+}
+
+.save-btn,
+.cancel-btn{
+   font-size: 16px !important;
+   border:1px solid transparent;
+   border-radius:5px;
+}
+.save-btn:hover,
+.cancel-btn:hover{
+   filter:drop-shadow(0 0 0 black);
+}
+.save-btn{
+   background-color: #54acff !important;
+   border-color: #44caee;
+   color:#fff;
+   margin-right: 5px;
+}
+.cancel-btn{
+   border-color: #54acff !important;
+   color:#54acff !important;
+   background: #fff !important;
+   margin-left: 5px;
+}
+
+.avatar-btn-bar{
+   margin-top: 20px;
+   margin-bottom: 10px;
 }
 </style>

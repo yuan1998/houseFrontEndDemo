@@ -69,7 +69,7 @@
                             <transition name="drop-down">
                                 <ul class="nav-user-bar"
                                         v-show="userBar">
-                                    <li><router-link to="/user" >编辑个人资料</router-link></li>
+                                    <router-link tag="li" to="/user" >编辑个人资料</router-link>
                                     <li @click="_logout"><a>退出</a></li>
                                 </ul>
                             </transition>
