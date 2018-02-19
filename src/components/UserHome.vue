@@ -5,11 +5,11 @@
                 <div class="user-bar">
                     <div class="user-info">
                         <avatar></avatar>
-                        <div class="am-text-center">
-                            <div>
+                        <div class="am-text-center user-info-bar">
+                            <div class="info-username">
                                 用户名:{{getUser.username}}
                             </div>
-                            <div>
+                            <div class="info-more">
                                 <router-link to="/user/self" class="am-btn info-read-btn">
                                     <span class="am-block">查看详细</span>
                                     <i class="am-icon-angle-down"></i>
@@ -19,12 +19,12 @@
                     </div>
                     <div class="user-commissioneds">
                         <div class="commissioned-header am-text-center">
-                            <span class="am-text-xl">我的委托</span>
+                            <span class="">我的房源</span>
                         </div>
                         <div class="am-panel-group" v-if="houses != false" id="commisioned-bar">
-                            <div class="am-g">
+                            <div class="am-cf">
                                 <template v-for="(item,n) in houses">
-                                    <div class="am-u-sm-12 am-u-md-6 am-g-collapse">
+                                    <div class="am-u-sm-12 am-u-md-6 am-g-collapse commissioned-item">
                                         <tempc v-bind:data="item" v-bind:index="n"></tempc>
                                     </div>
                                 </template>
@@ -41,8 +41,8 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="am-text-center" v-else>
-                            <span class="am-text-xxl">Epmty...</span>
+                        <div class="am-text-center not-houses" v-else>
+                            <span class="">没有发布任何房源</span>
                         </div>
 
                     </div>
@@ -184,6 +184,28 @@ import avatar from '@/components/user/userAvatar'
     .more-text span{
         font-size: 16px;
         line-height: 24px;
+    }
+    .info-more a,
+    .info-username{
+        font-size: 16px;
+    }
+    .info-username{
+        color:#666;
+        padding-bottom: 10px;
+    }
+
+    .commissioned-header span{
+        color:#555;
+    }
+    .commissioned-item{
+        padding-left: 1.2vw !important;
+        padding-right: 1.2vw !important;
+        margin-top: 12px;
+    }
+
+    .not-houses{
+        color:#999;
+        font-size: 22px;
     }
 
 </style>

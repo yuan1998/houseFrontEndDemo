@@ -1,12 +1,26 @@
 <template>
     <div id="app" style="" class="am-cf">
-        <transition class="am-cf" name="fade" mode="out-in">
-            <router-view></router-view>
-        </transition>
+        <router-view></router-view>
     </div>
 </template>
 
 <script>
+// import helpalert from '@/components/help/alert/'
+    export default{
+        name:'app',
+        mounted(){
+
+            if(this.$storage.enabled && !this.$storage.get("_READ_HELP"))
+                this.openHelp();
+        },
+        methods:{
+            openHelp(){
+                setTimeout(res=>{
+                    this.$_alert();
+                },1500)
+            }
+        }
+    }
 </script>
 
 <style>
@@ -33,7 +47,7 @@
     }
 
 
-
+    .help-open,
     .reservation-open,
     .sm-map-open,
     .menu-open,

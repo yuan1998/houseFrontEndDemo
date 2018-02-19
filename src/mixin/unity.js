@@ -9,7 +9,7 @@ export default{
    },
    mounted(){
 
-      this._body = document.querySelector('body');
+      this._body = document.body;
    },
    methods:{
       _scrollToPage(position){

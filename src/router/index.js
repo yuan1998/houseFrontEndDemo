@@ -45,155 +45,264 @@ import searchPage from '@/components/search/search-page'
 Vue.use(Router)
 
 const router = new Router({
-  routes: [
-   {
-      path:'/test',
-      name:'test',
-      component:HelloWorld
-   },
-    {
-      path: '/',
-      name: 'Home',
-      component: Home
-    },
-    {
-      path:'/yezhu/maifang',
-      name:'maifang',
-      component:AddHouseData,
-    },
-    {
-      path:'/login',
-      name:'login',
-      component:Login,
-    },
-    {
-      path:'/login/:status',
-      props:true,
-      name:'pleaseLogin',
-      component:Login,
-      },
-    {
-      path:'/signup',
-      name:'signup',
-      component:Signup
-    },
-    {
-      path:'/yezhu/addData/:id',
-      props:true,
-      name:'AddHouseData',
-      component:HouseAddData,
-    },
-    {
-      path:'/404',
-      name:'404',
-      component:page404
-    },
-    {
-      path:'/user',
-      component:userTemplate,
-      children:[
-         {
-            path:'',
-            name:'userHome',
-            name:'user',
-            component:userHome
-         },
-         {
-            path:'self',
-            name:'selfInfo',
-            component:selfInfo
-         },
-         {
-            path:'commissioneds',
-            name:'UserCommissioneds',
-            component:userCommissioned
-         },
-         {
-            path:'transactionLog',
-            name:'UserTransactionLog',
-            component:transactionLog
-         },
-         {
-            path:'message/system',
-            name:'SystemMessage',
-            component:SystemMessage
-         },
-         {
-            path:'message/user',
-            name:'UserMessage',
-            component:UserMessage
-         }
-      ]
-    },
-    {
-      path:'/house/:id',
-      component:houseInfo,
-      props:true
-    },
-    {
-      path:'/admin',
-      component:adminTemplate,
-      children:[
-         {
-            path:'',
-            name:'adminHome',
-            component:adminHome,
-         },
-         {
-            path:'user/list',
-            name:'adminUserList',
-            component:adminUserList,adminUserInfo
-         },
-         {
-            path:'user/info/:id',
+    routes: [
+        {
+            path:'/test',
+            name:'test',
+            meta:{
+                title:'首页 - xxx'
+            },
+            component:HelloWorld
+        },
+        {
+            path: '/',
+            name: 'home',
+            meta:{
+                title:'首页 - xxx'
+            },
+            component: Home
+        },
+        {
+            path:'/yezhu/maifang',
+            name:'maifang',
+            meta:{
+                title:'发布房源 - xxx'
+            },
+            component:AddHouseData,
+        },
+        {
+            path:'/login',
+            name:'login',
+            meta:{
+                title:'登录 - xxx'
+            },
+            component:Login,
+        },
+        {
+            path:'/login/:status',
             props:true,
-            name:'adminUserInfo',
-            component:adminUserInfo
-         },
-         {
-            path:'user/add',
-            name:'adminUserAdd',
-            component:adminUserAdd
-         },
-         {
-            path:'house/:status',
+            name:'pleaseLogin',
+            meta:{
+                title:'登录 - xxx'
+            },
+            component:Login,
+        },
+        {
+            path:'/signup',
+            name:'signup',
+            meta:{
+                title:'注册 - xxx'
+            },
+            component:Signup
+        },
+        {
+            path:'/yezhu/addData/:id',
             props:true,
-            name:'adminHouse',
-            component:adminHouseList,
-         },
-         {
-            path:'addhouse',
-            name:'adminAddHouse',
-            component:adminHouseAdd,
-         },
-         {
-            path:'house/info/:id',
-            props:true,
-            name:'adminHouseInfo',
-            component:adminHouseInfo
-         },
-      ]
-    },
-    {
-      path:'/search',
-      component:searchPage,
-      props:true
-    },
-  ]
+            name:'addHouseData',
+            meta:{
+                title:'补充资料 - xxx'
+            },
+            component:HouseAddData,
+        },
+        {
+            path:'/404',
+            name:'404',
+            meta:{
+                title:''
+            },
+            component:page404
+        },
+        {
+            path:'/user',
+            component:userTemplate,
+            children:[
+                {
+                    path:'',
+                    name:'userHome',
+                    meta:{
+                        title:'个人主页 - xxx'
+                    },
+                    name:'user',
+                    meta:{
+                        title:''
+                    },
+                    component:userHome
+                },
+                {
+                    path:'self',
+                    name:'selfInfo',
+                    meta:{
+                        title:'编辑个人资料 - xxx'
+                    },
+                    component:selfInfo
+                },
+                {
+                    path:'commissioneds',
+                    name:'UserCommissioneds',
+                    meta:{
+                        title:'我的房源 - xxx'
+                    },
+                    component:userCommissioned
+                },
+                {
+                    path:'transactionLog',
+                    name:'UserTransactionLog',
+                    meta:{
+                        title:'交易记录 - xxx'
+                    },
+                    component:transactionLog
+                },
+                {
+                    path:'message/system',
+                    name:'SystemMessage',
+                    meta:{
+                        title:'系统通知 - xxx'
+                    },
+                    component:SystemMessage
+                },
+                {
+                    path:'message/user',
+                    name:'UserMessage',
+                    meta:{
+                        title:'私信 - xxx'
+                    },
+                    component:UserMessage
+                }
+            ]
+        },
+        {
+            path:'/house/:id',
+            name:'houseInfo',
+            meta:{
+                title:'看房 - xxx'
+            },
+            component:houseInfo,
+            props:true
+        },
+        {
+            path:'/admin',
+            component:adminTemplate,
+            children:[
+                    {
+                        path:'',
+                        name:'adminHome',
+                        meta:{
+                            title:'后台管理 - xxx'
+                        },
+                        component:adminHome,
+                    },
+                    {
+                        path:'user/list',
+                        name:'adminUserList',
+                        meta:{
+                            title:'用户列表 - xxx'
+                        },
+                        component:adminUserList,adminUserInfo
+                    },
+                    {
+                        path:'user/info/:id',
+                        props:true,
+                        name:'adminUserInfo',
+                        meta:{
+                            title:'用户资料 - xxx'
+                        },
+                        component:adminUserInfo
+                    },
+                    {
+                        path:'user/add',
+                        name:'adminUserAdd',
+                        meta:{
+                            title:'添加用户 - xxx'
+                        },
+                        component:adminUserAdd
+                    },
+                    {
+                        path:'house/:status',
+                        props:true,
+                        name:'adminHouse',
+                        meta:{
+                            title:'房屋列表 - xxx'
+                        },
+                        component:adminHouseList,
+                    },
+                    {
+                        path:'addhouse',
+                        name:'adminAddHouse',
+                        meta:{
+                            title:'添加房屋 - xxx'
+                        },
+                        component:adminHouseAdd,
+                    },
+                    {
+                        path:'house/info/:id',
+                        props:true,
+                        name:'adminHouseInfo',
+                        meta:{
+                            title:'房屋信息 - xxx'
+                        },
+                        component:adminHouseInfo
+                    },
+                ]
+        },
+        {
+            path:'/search',
+            name:'searchResult',
+            meta:{
+                title:'搜索结果 - xxx'
+            },
+            component:searchPage,
+            props:true
+        },
+        {
+            path:'*',
+            name:'errorPage',
+            meta:{
+                title:'404 - xxx'
+            },
+            component:page404,
+        }
+    ]
 })
+
 router.afterEach((to, from) => {
+    let {dispatch} = router.app.$store;
 
-   router.app.$store.dispatch('progress','done');
+    dispatch('progress','done');
 
 })
-router.beforeEach((to, from, next) => {
-   router.app.$store.dispatch('progress','start');
 
-   // let path = to.path;
-   // if(!$v.user && !(path == '/' || path == '/login' || path  == '/signup' || path =='/pleaseLogin' || path=='/readHouses')){
-   //       return next('/pleaseLogin');
-   // }
-   return next();
+router.beforeEach(async (to, from, next) => {
+    let {dispatch,getters} = router.app.$store;
+
+    dispatch('progress','start');
+
+    document.body.classList.remove('help-open','reservation-open','sm-map-open','menu-open','search-open','slider-open');
+
+    let name = to.name;
+    if(!name)
+        next();
+
+    if(!getters['isLoginStatus']){
+        await dispatch('isLogin');
+    }
+
+    router.app.$setDocumentTitle(to.meta.title);
+
+    let user = getters['user/user'];// 获取用户
+
+    let result = ['home','houseInfo','errorPage','searchResult','login','signup','pleaseLogin','404'].includes(name);
+
+    if(!user && !result)
+        return next('/login/aa');
+    else next();
+
+
+
+    // let path = to.path;
+    // if(!$v.user && !(path == '/' || path == '/login' || path  == '/signup' || path =='/pleaseLogin' || path=='/readHouses')){
+    //       return next('/pleaseLogin');
+    // }
+    // return next();
 })
 
 export default router

@@ -279,7 +279,7 @@ export default {
       cursor:pointer;
 
       user-select: none;
-      box-shadow: 0 0 2px #f1f1f1;
+      box-shadow: 2px 3px 10px #919191 !important;
       transition:all 0.2s ease-out;
    }
    .map-wrap:hover .md-openMap{
@@ -311,6 +311,7 @@ export default {
    @media only screen and (min-width: 641px){
       .map-open-house-bar{
          width: 409px !important;
+         padding-left: 0;
          padding-right: 0;
       }
       .map-open >>> .cover{

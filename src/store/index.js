@@ -20,6 +20,7 @@ export default new Vuex.Store({
       scrollTop:0,
       windowWidth:null,
       messageInterval:false,
+      isloginStatu:false
    },
    mutations:{
       setMsgTitle(state,text){
@@ -52,11 +53,10 @@ export default new Vuex.Store({
          document.querySelector('#alertBtn').click();
       },
       isLogin({state,dispatch},data){
-
+         state.isloginStatu = true;
          data = data || {want:['username','email','tel','id','permission','avatar_url']};
 
-         sender('/api/user/is_login',data).then((res,textStatus,response)=>{
-
+         return sender('/api/user/is_login',data).then((res,textStatus,response)=>{
             if(res.success){
                dispatch('user/saveUser',res.data);
                dispatch('message/getUserMessage');
@@ -64,9 +64,8 @@ export default new Vuex.Store({
                state.messageInterval = setInterval(res=>{
                   dispatch('message/getUserMessage');
                },10000);
-
-
             }
+
          })
       },
       logout({state,dispatch}){
@@ -123,6 +122,9 @@ export default new Vuex.Store({
       },
       getWindowWidth(state){
          return state.windowWidth;
+      },
+      isLoginStatus(state){
+         return state.isloginStatu;
       }
    }
 })

@@ -25,10 +25,11 @@
                </div>
             </div>
          </div>
-         <div v-else>
+         <div class="not-commissioned" v-else>
             <div class="am-text-center">
-               <div><i class="am-icon-sticky-note-o am-text-xxxxl"></i></div>
-               <div><span class="am-text-xxl">空</span></div>
+               <div><i class="am-icon-sticky-note-o"></i></div>
+               <div><span class="">空</span></div>
+               <div class="description">你没有发布过任何房源</div>
             </div>
          </div>
       </div>
@@ -90,5 +91,23 @@ import sender from '@/Sender.js'
    }
    .content{
       margin-bottom: 50px;
+   }
+   .not-commissioned{
+      margin-top: 45px !important;
+   }
+   .not-commissioned span{
+      font-size: 32px !important;
+      line-height: 35px !important;
+      color:#555 !important;
+   }
+   .not-commissioned i{
+      font-size: 50px !important;
+      line-height: 63px !important;
+      color:#333 !important;
+   }
+   .not-commissioned .description{
+      font-size: 16px !important;
+      color:#777 !important;
+      line-height: 28px !important;
    }
 </style>

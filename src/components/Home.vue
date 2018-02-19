@@ -34,7 +34,8 @@
             </div>
         </div>
         <homefooter ></homefooter>
-        <!-- <top></top> -->
+
+        <!--  alert  -->
     </div>
 </template>
 
@@ -73,7 +74,7 @@ export default {
         search,
         top,
         homefooter,
-        alert
+        alert,
     },
     mounted: function() {
 

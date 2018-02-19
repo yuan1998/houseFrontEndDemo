@@ -66,7 +66,7 @@ export default{
    },
    props:['status'],
    mounted:function(){
-      console.log(this.$route.params);
+
    },
    data:function(){
       return {
@@ -80,7 +80,7 @@ export default{
          sender('/api/user/login',this.loginFormData).then(res=>{
             if(res.success){
                this.$store.dispatch('isLogin');
-               this.$router.push({path:'/'});
+               this.$router.go(-1);
             }
          },res=>{
             this.loginFormData.password='';

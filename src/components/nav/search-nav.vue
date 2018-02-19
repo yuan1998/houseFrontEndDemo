@@ -43,10 +43,10 @@
                             <a >消息 <sub v-show="_unreadSystemCount >0"></sub></a>
                             <transition name="drop-down">
                                 <ul class="user-message-bar" v-show="messageBar">
-                                    <li class="message-title">
+                                    <router-link tag="li" to="/user/message/system" class="message-title">
                                         通知({{_unreadSystemCount}})
                                         <span class="am-fr">查看全部</span>
-                                    </li>
+                                    </router-link>
                                     <template v-if="messageData != false"
                                         v-for="item in messageData">
                                         <li class="item am-text-truncate">
@@ -58,7 +58,7 @@
                             </transition>
                         </li>
                     </template>
-                    <router-link tag="li" to="/help"><a >帮助</a></router-link>
+                    <li @click="$_alert()" ><a >帮助</a></li>
                     <template v-if="_isLogin">
                         <li class="nav-avatar-bar"
                         @mouseenter="userBar = true"
@@ -108,8 +108,8 @@
                                 <router-link tag="li" to="/signup"><a href="#">注册</a></router-link>
                             </template>
                             <template v-else>
-                                <router-link tag="li" to="/user/home"><a href="#">个人主页</a></router-link>
-                                <router-link tag="li" to="/user/info"><a href="#">个人资料</a></router-link>
+                                <router-link tag="li" to="/user/"><a href="#">个人主页</a></router-link>
+                                <router-link tag="li" to="/user/self"><a href="#">个人资料</a></router-link>
                                 <router-link tag="li" to="/user/commissioned"><a href="#">个人委托</a></router-link>
                                 <li><hr></li>
                                 <router-link tag="li" to="/user/message/system"><a href="#">系统通知</a></router-link>
@@ -172,7 +172,6 @@ export default {
         },
         menuStatu(){
             this.menuOpen = !this.menuOpen;
-            $('body').toggleClass('menu-open');
         },
         search(){
             if(!this.keyword || this.keyword == false)
@@ -189,6 +188,11 @@ export default {
           }
      },
      watch:{
+        menuOpen(val){
+            val
+            ? this._bodyAddClass('menu-open')
+            : this._bodyRemoveClass('menu-open');
+        },
         _unreadSystemCount(val){
             sender('/api/adminMessage/unreadTitle',{page:1})
             .then(res=>{

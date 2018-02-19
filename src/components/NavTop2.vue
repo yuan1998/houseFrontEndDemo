@@ -2,9 +2,7 @@
    <div id="nav-top-2">
       <div class="am-topbar" style="margin-bottom: 0px">
          <router-link tag="span" to="/" class="am-topbar-brand">
-            <a class="am-monospace">
                4n!o
-            </a>
          </router-link>
 
          <button class="am-topbar-btn am-topbar-toggle am-btn am-btn-link am-btn-sm am-show-sm-only" data-am-collapse="{target: '#doc-topbar-collapse'}">
@@ -42,8 +40,16 @@
   box-shadow: 0px 2px 5px rgba(0,0,0,0.2);
 
 }
+
 #nav-top-2 li:not(.am-active) a:hover{
    background: rgba(255,255,255,0.2);
 }
 
+.am-topbar-brand{
+   z-index: 5;
+   color:#f1f1f1;
+   font-size: 18px;
+   font-weight: 400;
+   cursor:pointer;
+}
 </style>

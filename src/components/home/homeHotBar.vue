@@ -76,10 +76,8 @@ import sender from '@/Sender.js'
       methods:{
          getData(){
             sender('/api/house/getHotHouse').then(res=>{
-               // this.data = res.data.data;
-               do{
-                  this.data.push(res.data.data[0])
-               }while(this.data.length != 6)
+               this.data = res.data.data;
+
 
                this.$emit('loadinged')
             })

@@ -23,11 +23,11 @@
                </div>
                <div class="main-info am-cf">
                   <div class="am-g">
-                     <nav class="scrollspy-nav am-cf " :style="navFixed? navStyle : ''">
+                     <nav class="scrollspy-nav am-cf " :style="navFixed? navStyle : 'position:relative'">
                         <div class="am-container am-g-collapse">
                            <div class="am-u-lg-8 am-u-md-10 am-u-md-centered am-u-lg-uncentered ">
                               <ul class="">
-                                 <li ><a :class="{'am-active':navActive == 'about'}" @click="scrollTo(navTop)">详细</a></li>
+                                 <li ><a :class="{'am-active':navActive == 'about'}" @click="scrollTo(aboutTop)">详细</a></li>
                                  <li><span>·</span></li>
                                  <li ><a :class="{'am-active':navActive == 'comment'}" @click="scrollTo(commentTop - 100)">评论</a></li>
                                  <li><span>·</span></li>
@@ -496,6 +496,7 @@ import mUser from '@/mixin/user.js'
             sender('/api/house/sellingHouseInfo',{id:this.id}).then(res=>{
                this.data = res.data;
                this.start = true;
+               this.$setDocumentTitle('看房 - ' +this.data.title);
                this.filterImg(res.data.house_img);
                this.getLngLat();
                this.checkIsReservation();
@@ -564,6 +565,7 @@ import mUser from '@/mixin/user.js'
             let nowDay = new Date(nowTemp.getFullYear(), nowTemp.getMonth(), nowTemp.getDate(), 0, 0, 0, 0).valueOf();
             let nowMoth = new Date(nowTemp.getFullYear(), nowTemp.getMonth(), 1, 0, 0, 0, 0).valueOf();
             let nowYear = new Date(nowTemp.getFullYear(), 0, 1, 0, 0, 0, 0).valueOf();
+            let reservationDate = this.data.has_reservation;
 
             $('.date-btn').datepicker({
                onRender:(date,viewMode)=>{
@@ -580,8 +582,11 @@ import mUser from '@/mixin/user.js'
                         break;
                   }
 
+                  let a = reservationDate.find(item =>{
+                     return date.valueOf() == parseInt(item.date);
+                  });
 
-                  return date.valueOf() < viewDate ? 'am-disabled' : '';
+                  return (date.valueOf() < viewDate || a) ? 'am-disabled' : '';
                }
             })
             .on('changeDate.datepicker.amui',e=>{
@@ -590,8 +595,7 @@ import mUser from '@/mixin/user.js'
          },
          openDatePicker(e){
 
-            $(e.target).datepicker('open')
-            ;
+            $(e.target).datepicker('open');
          },
          parseDate(val){
             let dateTime = parseInt(val || this.reservation);
@@ -602,6 +606,8 @@ import mUser from '@/mixin/user.js'
          reservationHouse(){
 
             if(!this._isLogin)
+               return;
+            if(this._getUser.id == this.data.id)
                return;
 
             let date = this.reservation;
@@ -618,7 +624,6 @@ import mUser from '@/mixin/user.js'
          checkIsReservation(){
             if(!this._isLogin)
                return;
-
 
             sender('/api/reservation/check',{hid:this.id})
                .then(res=>{

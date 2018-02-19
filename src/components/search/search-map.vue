@@ -12,7 +12,7 @@
                :keyboardEnable="false"
                :resizeEnable="true">
                <template v-for="item in houseLL">
-                  <el-amap-marker :offset="[-47,-36]" :data-position="item.center" :data-hid="item.id" :events="clickEvents" :position="item.center" >
+                  <el-amap-marker :offset="[-47,-36]" :zIndex="hover == item.id ? 9000 : 100" :data-position="item.center" :data-hid="item.id" :events="clickEvents" :position="item.center" >
                      <map-marker :hover="hover" :item="item"></map-marker>
                   </el-amap-marker>
                </template>
@@ -97,7 +97,7 @@ import { AMapManager } from 'vue-amap';
          },
          emitCenter(){
             let center = this.$refs.map.$$getInstance().getCenter();
-            console.log(center);
+
             this.current = 0;
             this.$emit('getHouses',center);
          },

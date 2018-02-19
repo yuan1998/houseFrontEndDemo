@@ -67,7 +67,7 @@
                                     <router-link to="/admin/house">后台管理</router-link>
                                  </li>
                                  <li>
-                                    <a v-on:click="logoutEvent" href="#">登出</a>
+                                    <a v-on:click="_logout" href="#">登出</a>
                                  </li>
                               </ul>
                            </li>
@@ -121,7 +121,7 @@
                                  <span v-show="getUserMessage >0" class="am-badge am-badge-secondary am-round am-fr am-margin-right am-text-middle">{{getUserMessage}}</span>
                               </a>
                            </router-link>
-                           <li @click.native="sideBarHide,logoutEvent">
+                           <li @click.native="sideBarHide,_logout">
                               <a>
                                  登出
                               </a>
@@ -153,9 +153,12 @@
 
 import sender from '@/Sender.js'
 
+import m_user from '@/mixin/user.js';
+
 
 export default {
   name: 'navtop',
+  mixins:[m_user],
   data(){
      return {
        user:null,

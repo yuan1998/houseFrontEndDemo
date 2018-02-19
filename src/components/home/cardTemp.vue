@@ -81,7 +81,9 @@
       color:#666;
       font-weight: 700;
        padding-top: 7px;
-      overflow: hidden;
+      overflow: hidden !important;
+      text-overflow: ellipsis !important;
+      white-space: nowrap !important;
    }
    .title .location{
        word-wrap: break-word !important;

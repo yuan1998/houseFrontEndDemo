@@ -144,7 +144,7 @@ import m_user from '@/mixin/user.js';
    top: 50%;
    left: 50%;
    transform:translate(-50%,-50%);
-   color:rgba(255,255,255,0.9);
+   color:rgba(255,255,255,0.9) !important;
    font-weight: 600;
    display: block;
 }
