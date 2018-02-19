@@ -2,7 +2,7 @@
    <transition>
       <div class="house-info-page" v-if="start === true">
          <div class="am-cf">
-            <navtop class="am-cf"></navtop>
+            <navTop position="absolute" input="home"></navTop>
             <div class="content">
                <div class="thumbnail-bar am-cf">
                   <span>
@@ -27,16 +27,16 @@
                         <div class="am-container am-g-collapse">
                            <div class="am-u-lg-8 am-u-md-10 am-u-md-centered am-u-lg-uncentered ">
                               <ul class="">
-                                 <li ><a :class="{'am-active':navActive == 'about'}" @click="scrollTo(aboutTop)">详细</a></li>
+                                 <li ><a :class="{'am-active':navActive == 'about'}" @click="scrollTo(aboutTop - 100,'aboutTop')">详细</a></li>
                                  <li><span>·</span></li>
-                                 <li ><a :class="{'am-active':navActive == 'comment'}" @click="scrollTo(commentTop - 100)">评论</a></li>
+                                 <li ><a :class="{'am-active':navActive == 'comment'}" @click="scrollTo(commentTop - 100,'commentTop')">评论</a></li>
                                  <li><span>·</span></li>
-                                 <li><a :class="{'am-active':navActive == 'location'}" @click="scrollTo(locationTop - 100)">位置</a></li>
+                                 <li><a :class="{'am-active':navActive == 'location'}" @click="scrollTo(locationTop - 100,'locationTop')">位置</a></li>
                              </ul>
                           </div>
                         </div>
                      </nav>
-                     <div class="bottom-bar am-u-sm-12 am-hide-lg-only">
+                     <div class="bottom-bar am-u-sm-12" v-show="!mdWidth">
                         <div class="am-container">
                            <div class="am-g">
                               <div class="am-u-sm-6 am-text-left">
@@ -320,7 +320,7 @@
                               </div>
                            </div>
                         </div>
-                        <div class="am-u-lg-4 am-show-lg" >
+                        <div class="am-u-lg-4" v-show="mdWidth" >
                            <div :style="sideFixed ? sideStyle : ''">
                               <div class="side-bar  side-bar-s" >
                                  <div class="am-panel am-panel-default">
@@ -427,10 +427,12 @@
 
 <script>
 import sender from '@/Sender.js'
-import navtop from '@/components/NavTop'
+// import navtop from '@/components/NavTop'
 import mapa from '@/components/user/map'
 import slider from '@/components/home/sliderTemp'
 import homefooter from '@/components/Footer'
+import navTop from '@/components/nav/search-nav'
+
 
 import utils from '@/mixin/unity'
 import mUser from '@/mixin/user.js'
@@ -440,7 +442,7 @@ import mUser from '@/mixin/user.js'
       props:['id'],
       mixins:[utils,mUser],
       components:{
-         navtop,
+         navTop,
          mapa,
          slider,
          homefooter
@@ -471,7 +473,7 @@ import mUser from '@/mixin/user.js'
                // right:'1px',
             },
             navTop:0,
-            sideTop:0,
+            sideTop:607,
             aboutTop:0,
             commentTop:0,
             locationTop:0,
@@ -486,7 +488,10 @@ import mUser from '@/mixin/user.js'
       mounted(){
          setTimeout(res=>{
             this.init();
-         },300);
+         },0);
+         // this.$nextTick(res=>{
+         //    this.getTop();
+         // })
       },
       methods:{
          init(){
@@ -500,7 +505,7 @@ import mUser from '@/mixin/user.js'
                this.filterImg(res.data.house_img);
                this.getLngLat();
                this.checkIsReservation();
-            })
+             })
          },
          filterImg(imgs){
             for(let key in imgs){
@@ -544,11 +549,11 @@ import mUser from '@/mixin/user.js'
          },
          getTop(){
 
-            this.sideTop = this._elToTopHeight('.side-bar-s');
             this.navTop = this._elToTopHeight('.scrollspy-nav');
             this.aboutTop = this._elToTopHeight('#about');
             this.commentTop = this._elToTopHeight('#comment');
             this.locationTop = this._elToTopHeight('#location');
+
          },
          navA(val){
             if(val+ 250 >this.locationTop )
@@ -557,7 +562,12 @@ import mUser from '@/mixin/user.js'
                this.navActive = 'comment';
             else this.navActive = 'about';
          },
-         scrollTo(val){
+         scrollTo(val,type){
+            if(!val || val == false || val < 0){
+               this.getTop();
+               val = this[type] - 100;
+               console.log(val);
+            }
             this._scrollToPage(val);
          },
          datePickerInit(){
@@ -645,19 +655,27 @@ import mUser from '@/mixin/user.js'
 
             if(result && this.reservationOpen)
                this.reservationOpen = false;
-            console.log(result);
+
+            // if(result && this.sideTop == 0)
+               // this.getTop();
 
             return result;
          }
       },
       watch:{
+         mdWidth(val){
+            this.getTop();
+         },
          getScrollTop(val){
 
             if(!this.start)
                return;
 
-            if(this.navTop == 0 || this.sideTop == 0 || !this.aboutTop || !this.commentTop ||!this.locationTop)
-               this.getTop(val);
+
+            if(this.navTop == 0 || !this.aboutTop || !this.commentTop ||!this.locationTop)
+               this.getTop();
+
+
 
             this.navA(val);
 
@@ -675,7 +693,9 @@ import mUser from '@/mixin/user.js'
 </script>
 
 <style scoped>
-
+   .content{
+      margin-top: 73px !important;
+   }
    .thumbnail-bar{
       width: 100%;
    }
@@ -700,8 +720,8 @@ import mUser from '@/mixin/user.js'
        animation-timing-function: ease-out !important;
    }
 
-   .col-5:not(.col-5:first-child){
-      margin-left: 9px;
+   .col-5:not(:first-child){
+      margin-left: 3px;
    }
 
    @media only screen and (min-width: 1025px){
@@ -919,6 +939,7 @@ import mUser from '@/mixin/user.js'
   .scrollspy-nav li {
     display: inline-block;
     list-style: none;
+    cursor:pointer;
   }
 
   .scrollspy-nav a {

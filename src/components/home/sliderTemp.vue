@@ -5,7 +5,7 @@
             <div class="table">
                <div class="cell">
                   <div class="content">
-                     <div>
+                     <div class="" style="height: 100%;width: 100%;">
                         <div class="close-bar">
                            <button @click="close" class="close-btn">
                               <svg width="30" height="30" xmlns="http://www.w3.org/2000/svg">
@@ -30,7 +30,7 @@
                                  <div class="max">
                                     <div class="photo-bar" @click="numAdd">
                                       <transition name="fade">
-                                        <span class="center-img" :style="'background-image:url(' +data[imgIndex] + ')' ">
+                                        <span class="center-img height-max-img" :style="'background-image:url(' +data[imgIndex] + ')' ">
                                         </span>
                                       </transition>
 
@@ -194,8 +194,12 @@
    .pre-btn i,
    .next-btn i{
       font-size: 60px;
+      text-shadow:0 0 5px #ff5a5f;
       color:#fff;
    }
+    .main-bar{
+      padding-top: 8vh;
+    }
 
    @media only screen and (min-width: 1025px){
       .next-btn,
@@ -203,9 +207,10 @@
          width: 75px;
       }
       .pre-btn i,
-       .next-btn i{
+      .next-btn i{
          font-size: 100px;
-       }
+      }
+
    }
 
    .img-bar{
@@ -250,5 +255,8 @@
       color:#f0f0f0;
       font-size: 16px;
       line-height: 25px;
+   }
+   .main-bar{
+
    }
 </style>

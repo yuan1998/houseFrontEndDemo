@@ -4,80 +4,80 @@
         <div class="am-panel-hd cover">
             <div class="cover-wrap" >
                 <div class="cover-bar">
-                    <div class="cover-img center-img" :style="'background-image:url('+ data.house_img.cover[0].get + ')' ">
-                    </div>
+                    <cardSlider :hover="true" :link="_link" :arr="allImg" ></cardSlider>
                 </div>
             </div>
         </div>
         <div class="wrap">
             <div style="position:absolute;top: 0;right: 0;left: 0;bottom: 0;">
-                <div style="height:100%;width: 100%;">
+                <div  class="body">
+                    <transition name="liner-up">
+                        <div class="block" v-show="!open"></div>
+                    </transition>
                     <div class="am-text-left hd-text">
                         <span>{{data.city}} {{data.community}} {{data.building_number}}号楼 {{data.unit_number}}单元 {{data.house_number}}号</span>
                         <a v-if="getStatus != false" class="am-badge am-badge-secondary am-radius">{{getStatus[data.status]}}</a>
                     </div>
-                    <transition name="liner-up">
-                        <div class="content-wrap" v-show="open">
-                            <div class="am-panel-bd am-scroll-vertical" style="height:100%;">
-                                        <div>
-                                            提交日期：{{data.created_at}}
-                                        </div>
-                                        <div>
-                                            联系人 ：{{data.contact}}  联系人电话：{{data.tel}}
-                                        </div>
-                                        <div>
-                                            地址：{{data.location}}
-                                        </div>
-                                        <div>
-                                            小区：{{data.community}}
-                                        </div>
-                                        <div>
-                                            户型 ：
-                                            <span v-if="data.room_count.hall >0"> {{data.room_count.hall}}厅 </span>
-                                            <span v-if="data.room_count.bedroom >0"> {{data.room_count.bedroom}}室 </span>
-                                            <span v-if="data.room_count.bathroom >0"> {{data.room_count.bathroom}}卫     </span>
-                                            <span v-if="data.room_count.belcony >0"> {{data.room_count.belcony}}阳台 </span>
-                                            <span v-if="data.room_count.kitchen >0"> {{data.room_count.kitchen}}厨房 </span>
-                                        </div>
-                                        <div>
-                                            <span>
-                                                装修：{{data.Decoration}}
-                                            </span>
-                                            <span class="am-margin-horizontal-sm">
-                                                暖气：{{data.supply_heating}}
-                                            </span>
-                                            <span class="am-margin-horizontal-sm">
-                                                电梯：{{data.elevator}}
-                                            </span>
-                                            <span class="am-margin-horizontal-sm">
-                                                朝向：{{data.direction}}
-                                            </span>
-                                        </div>
-                                        <div>
+                    <div class="content-wrap am-cf">
+                        <div class="am-panel-bd am-cf am-block" style="height:100%;">
+                            <div>
+                                提交日期：{{data.created_at}}
+                            </div>
+                            <div>
+                                联系人 ：{{data.contact}}  联系人电话：{{data.tel}}
+                            </div>
+                            <div>
+                                地址：{{data.location}}
+                            </div>
+                            <div>
+                                小区：{{data.community}}
+                            </div>
+                            <div>
+                                户型 ：
+                                <span v-if="data.room_count.hall >0"> {{data.room_count.hall}}厅 </span>
+                                <span v-if="data.room_count.bedroom >0"> {{data.room_count.bedroom}}室 </span>
+                                <span v-if="data.room_count.bathroom >0"> {{data.room_count.bathroom}}卫     </span>
+                                <span v-if="data.room_count.belcony >0"> {{data.room_count.belcony}}阳台 </span>
+                                <span v-if="data.room_count.kitchen >0"> {{data.room_count.kitchen}}厨房 </span>
+                            </div>
+                            <div>
+                                <span>
+                                    装修：{{data.Decoration}}
+                                </span>
+                                <span class="am-margin-horizontal-sm">
+                                    暖气：{{data.supply_heating}}
+                                </span>
+                                <span class="am-margin-horizontal-sm">
+                                    电梯：{{data.elevator}}
+                                </span>
+                                <span class="am-margin-horizontal-sm">
+                                    朝向：{{data.direction}}
+                                </span>
+                            </div>
+                            <div>
 
-                                        </div>
-                                        <div v-if="data.status == 'audit'" class="status-tip am-text-center">
-                                            请耐心等待审核,这将不会需要太久.
-                                        </div>
-                                        <div v-else-if="data.status == 'pass'" class="status-tip am-text-center">
-                                            <router-link to="">
-                                                请前往补充资料。
-                                            </router-link>
-                                        </div>
-                                        <div v-else-if="data.status == 'sell'" class="status-tip am-text-center">
-                                            <router-link :to="'/house/'+data.id">
-                                                去看一看.
-                                            </router-link>
-                                        </div>
+                            </div>
+                            <div v-if="data.status == 'audit'" class="status-tip am-text-center">
+                                请耐心等待审核,这将不会需要太久.
+                            </div>
+                            <div v-else-if="data.status == 'pass'" class="status-tip am-text-center">
+                                <router-link to="">
+                                    请前往补充资料。
+                                </router-link>
+                            </div>
+                            <div v-else-if="data.status == 'sell'" class="status-tip am-text-center">
+                                <router-link :to="'/house/'+data.id">
+                                    去看一看.
+                                </router-link>
                             </div>
                         </div>
-                    </transition>
+                    </div>
                 </div>
             </div>
         </div>
         <div class="am-panel-hd pft am-text-center">
             <span class="am-panel-title am-collapsed" @click="open = !open">
-                 <i :class="open ? 'am-icon-angle-up' : 'am-icon-angle-down'"></i>
+                 <i :class="!open ? 'am-icon-angle-up' : 'am-icon-angle-down'"></i>
             </span>
         </div>
     </div>
@@ -85,22 +85,23 @@
 </template>
 
 <script>
+import cardSlider from '@/components/utils/card-slider'
     export default {
         name:'temp-commissioned',
         props:['data','index'],
+        components:{
+            cardSlider
+        },
         data(){
             return {
                 open:false,
                 el:null,
+                imgArr:[],
+                num:1,
             }
         },
         mounted(){
-            this.el = $('#amdoc-'+this.index);
-            this.el.on('open.collapse.amui', (e)=> {
-                this.open = true;
-            }).on('close.collapse.amui', ()=> {
-                this.open = false;
-            });
+
         },
         methods:{
 
@@ -108,6 +109,26 @@
         computed:{
             getStatus(){
                 return this.$store.getters['house/getStatus'];
+            },
+            allImg(){
+                for(let key in this.data.house_img){
+                    let item = this.data.house_img[key];
+
+                    for(let i of item){
+                         this.imgArr.push(i.get);
+                    }
+                }
+                return this.imgArr;
+            },
+            _link(){
+                let status = this.data.status;
+                let id = this.data.id;
+                if(status == 'pass')
+                    return '/yehzu/addData/' + id;
+                else if(status == 'sell')
+                    return '/house/'+id;
+
+                return false;
             }
         }
     }
@@ -118,17 +139,23 @@
         padding-top: 70%;
         vertical-align: bottom;
         display: block;
+        overflow: hidden;
+
     }
 
     .am-panel-default > .am-panel-hd{
 
         background: #fff;
     }
-    .am-panel-hd,
+
     .am-panel-bd,
     .am-panel-default{
-        border-color: #5085ff5e;
-        border-radius:6px;
+        border-color: #5085ff5e !important;
+        border-radius:9px !important;
+        overflow: hidden;
+    }
+    .am-panel-hd{
+
     }
     .am-panel-hd{
         padding-top: 0 !important;
@@ -150,18 +177,30 @@
     .am-panel-bd{
         border-top: 1px solid #5085ff1e !important;
         background: #ffffff;
+        overflow-y: scroll;
+    }
+    .am-panel-bd::-webkit-scrollbar{
+        width: 3px;
+        height: 8px;
+        cursor:pointer;
+
+    }
+    .am-panel-bd::-webkit-scrollbar-thumb{
+        background: #5085ff8e;
+        border-radius:5px;
     }
     .am-panel-hd.pft span:hover .am-icon-angle-up:after,
     .am-panel-hd.pft span:hover .am-icon-angle-down:after{
-
         color: #5085FF;
         padding-left: 5px;
     }
     .am-panel-hd.pft span:hover .am-icon-angle-down:after{
-        content:"显示详细";
+        content:"隐藏";
+
     }
     .am-panel-hd.pft span:hover .am-icon-angle-up:after{
-        content:"隐藏";
+        content:"显示详细";
+
     }
 
     .am-panel-hd.pft{
@@ -190,21 +229,15 @@
         left: 0;
     }
     .hd-text{
-
+        border-top: 1px solid #5085ff1f;
         padding-left: 10px;
         padding-top: 3px;
-        background: #000;
-        height: 30px;
+        background: rgba(255,255,255,0.75);
+        height: 30px !important;
         font-size: 16px !important;
-        /*line-height: 24px;*/
+        line-height: 24px;
         color:#333;
-        z-index: 5;
-       /* position: absolute;
-        bottom: 0;
-        right: 0;
-        left: 0;*/
-
-        vertical-align: bottom;
+        z-index: 2 !important;
     }
     .hd-text a{
         position:absolute;
@@ -217,14 +250,40 @@
         padding-top: 10px;
     }
     .content-wrap{
+        background: rgba(255,255,255,0.75);
         width: 100%;
         height: calc(100% - 30px);
+        z-index: 2 !important;
     }
     .cover{
-        position:absolute;
+        position:absolute !important;
         top: 0;
-        bottom: 250px;
+        bottom: 60px !important;
         right: 0;
         left: 0;
+        padding-bottom: 0 !important;
+    }
+    .block{
+
+        height: calc(100% - 29px);
+        border-bottom: 1px solid #5085ff1f !important;
+        z-index: -1 !important;
+    }
+    .body{
+        height:100%;width: 100%;overflow: hidden;
+    }
+    .liner-up-enter-to{
+        height: calc(100% - 29px) !important;
+    }
+    .liner-up-enter{
+        height: 0px ;
+    }
+
+    .liner-up-leave-to{
+        height: 0px !important;
+    }
+    .liner-up-enter-active,
+    .liner-up-leave-active{
+        transition:height 0.3s ease-out;
     }
 </style>

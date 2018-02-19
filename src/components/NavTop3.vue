@@ -119,4 +119,9 @@ import m_user from '@/mixin/user.js';
 .am-topbar-btn {
     margin-top: 16px;
 }
+.am-topbar-brand a:hvoer,
+.am-topbar-brand a:active,
+.am-topbar-brand a:focus{
+  color:#ff5a5f;
+}
 </style>

@@ -194,7 +194,7 @@ export default {
    bottom: 80px;
    right: 20px;
    cursor:pointer;
-
+  z-index: 10;
 }
 .user-menu-btn a{
    background: #fff;

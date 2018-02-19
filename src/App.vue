@@ -70,6 +70,11 @@
         display: inline-block;
         background-repeat: no-repeat;
     }
+
+    .height-max-img{
+        background-size:auto 100% !important;
+    }
+
     .width-img{
         background-size: 100% 100%;
         background-position: center;
