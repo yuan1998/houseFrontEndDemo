@@ -4,7 +4,7 @@
         <div class="am-panel-hd cover">
             <div class="cover-wrap" >
                 <div class="cover-bar">
-                    <cardSlider :hover="true" :link="_link" :arr="allImg" ></cardSlider>
+                    <cardSlider :hover="true" :link="_link" :images="data.house_img" ></cardSlider>
                 </div>
             </div>
         </div>
@@ -109,16 +109,6 @@ import cardSlider from '@/components/utils/card-slider'
         computed:{
             getStatus(){
                 return this.$store.getters['house/getStatus'];
-            },
-            allImg(){
-                for(let key in this.data.house_img){
-                    let item = this.data.house_img[key];
-
-                    for(let i of item){
-                         this.imgArr.push(i.get);
-                    }
-                }
-                return this.imgArr;
             },
             _link(){
                 let status = this.data.status;

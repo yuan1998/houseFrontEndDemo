@@ -271,7 +271,7 @@ export default {
 
 }
 .nav-list > li:hover{
-    border-bottom:3px solid #999;
+    border-bottom:1.5px solid #999;
 }
 .am-icon-search{
     font-size: 16px;

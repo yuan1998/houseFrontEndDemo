@@ -7,29 +7,33 @@
                <div class="houses-wrap am-u-sm-12 am-u-md-8"
                   :class="{'map-open-house-bar':openMap}">
                   <div class="houses-bar am-cf">
-                     <div class="" v-if="data == false">
-                        <div class="am-text-center not-search-house">
-                           <div class="text">没有找到房子....</div>
-                           <div class="icon">
-                              <i class="am-icon-home"></i>
+                     <div class="" v-if="$data._list == false">
+                        <div class="not-search-house">
+                           <div class="text">
+                              <ul>
+                                 试着调整您的搜索。以下是一些建议：
+                                 <li>更改日期筛选条件</li>
+                                 <li>缩小地图</li>
+                                 <li>搜索具体的城市、地址或地标</li>
+                              </ul>
                            </div>
                         </div>
                      </div>
                      <div class="am-g am-g-collapse am-cf" v-else>
-                        <template v-for="item in data">
+                        <template v-for="item in $data._list">
                            <div class="am-u-sm-12 am-u-end"
                                  @mouseenter="setHoverId(item.id)"
                                  @mouseleave="resetHoverId"
                                  :class="openMap? 'map-open' :'am-u-md-6 am-u-lg-4'">
-                              <card :data="item"></card>
+                              <card :slider="true" :data="item"></card>
                            </div>
                         </template>
                         <div class="am-u-sm-12">
-                           <div class="count am-text-center">{{((page-1)*18) + 1}} - {{((page-1)*18)+ data.length}} 共{{total}}个房源 </div>
+                           <div class="count am-text-center">{{(($data._page-1)*18) + 1}} - {{(($data._page-1)*18)+ $data._list.length}} 共{{$data._total}}个房源 </div>
                         </div>
                         <div class="am-u-sm-12">
-                           <div class="paginate" v-show="last >1">
-                              <paginate :current="page" :last="last" @onpagechange="changePage"></paginate>
+                           <div class="paginate" v-show="$data._lastPage >1">
+                              <paginate :current="$data._page" :last="$data._lastPage" @onpagechange="_changePage"></paginate>
                            </div>
                         </div>
                         <div class="am-u-sm-12">
@@ -41,15 +45,17 @@
                   </div>
                </div>
                <div class="map-wrap am-u-sm-12 am-u-md-4"
-                  :style="{width: openMap && smSize ? mapWidth : ''}"
-                  v-show="openMap || smSize">
-                  <div class="map-bar">
-                     <amap :center="[lng,lat]"
-                        :hover="hoverId"
-                        :houses="data"
-                        @getHouses="saveLngLat">
-                     </amap>
-                  </div>
+                  :style="{width: openMap && smSize ? mapWidth : ''}">
+                  <transition name="scale-up">
+                     <div class="map-bar" v-show="openMap || smSize">
+                        <amap :keyword="$route.query.address"
+                           :hover="hoverId"
+                           :houses="$data._list"
+                           @started="renderStart"
+                           @getData="saveData">
+                        </amap>
+                     </div>
+                  </transition>
                   <div @click="openMap = !openMap"
                      class="md-openMap am-hide-sm-only"
                      :style="{
@@ -87,7 +93,6 @@
       </div>
    </transition>
 </template>
-
 <script>
 import sender from '@/Sender.js'
 
@@ -99,104 +104,78 @@ import searchNav from '@/components/nav/search-nav'
 
 
 import unity from '@/mixin/unity'
+import paegList from '@/mixin/paginate'
 
 
 export default {
-  name:'searchPage',
-  mixins:[unity],
-  components:{
-   searchNav,
-   card,
-   amap,
-   paginate
-  },
+   name:'searchPage',
+   mixins:[unity,paegList],
+   components:{
+      searchNav,
+      card,
+      amap,
+      paginate
+   },
   data(){
       return {
-          data:[],
-          page:1,
-          last:0,
-          total:0,
-          lat:0,
-          lng:0,
           start:false,
           hoverId:0,
           overlayOpen:false,
           openMap:false,
+          _map:false,
       }
   },
   mounted(){
 
-      this.getLngLat();
-      console.log(this.$data);
+
   },
   methods:{
-      saveLngLat(center){
-         this.lng = center.lng;
-         this.lat = center.lat;
-
-      },
-      getKeywordHouse(){
-         this.overlayOpen = true;
-        sender('/api/house/getLngLat?lng='+this.lng+ '&lat='+this.lat,{page:this.page})
-        .then(res=>{
-            this.data = res.data.data;
-
-            this.last = res.data.last_page;
-            this.total = res.data.total;
-            this.start = true;
-            this.overlayOpen = false;
-        })
-      },
-      getLngLat(){
-
-         let city  = this.$route.query.address;
-
-         $.get(`http://restapi.amap.com/v3/geocode/geo?city=${this._getCity}&address=${city}&output=json&key=bf5b356d3ffaab642c974983267b1ce8`).then(res=>{
-            let location = res.geocodes[0];
-
-            if(!location || location == false){
-               this.data = [];
-               this.start = true;
-               return;
-            }
-
-            let arr =location.location.split(',');
-            // this.cen = arr;
-            this.lng = parseFloat(arr[0]);
-            this.lat = parseFloat(arr[1]);
-         })
-      },
       setHoverId(id){
          this.hoverId = id;
       },
       resetHoverId(){
          this.hoverId = 0;
       },
-      changePage(n){
-         this.page = n;
-         this._scrollToPage(0);
-         this.getKeywordHouse();
+      async saveData({url,bounds}){
+         this.overlayOpen = true;
+         this._changePage(1);
+         bounds = JSON.parse(JSON.stringify(bounds));
+
+         let params = (bounds.northeast.M == 0 && bounds.southwest.M == 0 )
+                     ? {}
+                     :{
+                        max:{lng:bounds.northeast.M,lat:bounds.northeast.O},
+                        min:{lng:bounds.southwest.M,lat:bounds.southwest.O}
+                      };
+
+
+         await this._getPageData(url,{bounds:params});
+
+         this.overlayOpen = false;
+      },
+      renderStart(){
+         this.$data._list = [];
+         this.start = true;
       }
   },
   computed:{
-      getCity(){
-          return this.$store.getters['getIpCity'];
-      },
       smSize(){
-         let result =(this.$store.getters['getWindowWidth'] > 640);
+         let result = (this.$store.getters['getWindowWidth'] > 640);
          return result;
       },
       mapWidth(){
-
          return (this.$store.getters['getWindowWidth'] - 415) + 'px';
       }
-  },
-  watch:{
-      lng(){
-         this.getKeywordHouse();
-      },
+   },
+   watch:{
       ['$route.query.address'](val){
          this.getLngLat()
+      },
+      smSize(val){
+         if(!val && this.openMap)
+            this._bodyAddClass('sm-map-open');
+         else if(val && !this.openMap)
+            this._bodyRemoveClass('sm-map-open');
       },
       openMap(val){
          if(val && !this.smSize)
@@ -210,19 +189,27 @@ export default {
 <style scoped>
 
    .search-page >>> .search-nav{
-      border-bottom: 1px solid #e1e1e1;
-
+      border-bottom: 1px solid #e8e8e8;
    }
 
    .wrapper{
-      padding-top: 20px;
+
       margin-top: 73px;
+
    }
 
-   .houses-wrap{
-      /*border-right:1px solid #e1e1e1;*/
+
+   .houses-wrap:before{
+      content:'';
+      position:absolute !important;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      width: 1px !important;
+      background: #e8e8e8;
    }
    .map-wrap{
+      border-left: 1px solid #e8e8e8;
       position:fixed;
       top: 70px;
       bottom: 0;
@@ -249,12 +236,20 @@ export default {
       background: rgba(255,255,255,0.8);
       z-index: 3;
    }
-
    .not-search-house .text{
-      font-size: 28px;
+      margin-top: 125px !important;
+      margin-bottom: 80px !important;
+   }
+   .not-search-house .text ul{
+      font-size: 20px;
       line-height: 32px;
-      font-weight: 300;
+      font-weight: 400;
       display: inline-block;
+      color:#555;
+   }
+   .not-search-house .text li{
+      font-size: 17px;
+      font-weight: 400;
    }
 
    .not-search-house{
@@ -310,9 +305,14 @@ export default {
 
    @media only screen and (min-width: 641px){
       .map-open-house-bar{
-         width: 409px !important;
+         width: 415px !important;
          padding-left: 0;
          padding-right: 0;
+      }
+      .houses-wrap{
+         padding-bottom: 30px !important;
+         border-right: 15px solid #fbfbfb !important;
+         /*border-right:1px solid #e1e1e1;*/
       }
       .map-open >>> .cover{
          display: inline-block;
@@ -341,12 +341,21 @@ export default {
    }
 
    .control-btn button{
-      background: #fff;
-      padding: 5px 10px;
-      height: 30px;
-      border-radius: 30px;
-      border: 1px solid #666;
-      box-shadow: 0 0 2px #f1f1f1;
+      background: #f1f1f1;
+      color:#555 ;
+      font-size: 14px !important;
+      padding: 5px 10px  !important;
+      line-height: 20px !important;
+      height: 30px !important;
+      font-weight: 500 !important;
+      border-radius: 30px !important;
+      border: 1px solid #d8d8d8 !important;
+      box-shadow: 0 2px 5px #e8e8e8 !important;
+      transition:color 0.2s ease-out,background 0.2s ease-out;
+   }
+   .control-btn button:hover{
+      background: #888 !important;
+      color:#f1f1f1 !important;
    }
 
    .dividing-line{
@@ -357,12 +366,33 @@ export default {
 
 
    }
+   .houses-bar{
+
+      /*border-bottom: 1px solid #d8d8d8 !important;*/
+   }
 
    .houses-bar .count{
       color:#616161;
       font-size: 14px;
       padding-top: 10px;
    }
+
+   .sale-up-leave-to,
+    .sale-up-enter{
+        transform:scale(0);
+
+    }
+
+    .sale-up-leave,
+    .sale-up-enter-to{
+
+        transition:scale(25);
+    }
+    .sale-up-leave-active,
+    .sale-up-enter-active{
+        transition: transform 0.4s ease-out;
+        /*transition-delay: 0.5s*/
+    }
 
 
 </style>

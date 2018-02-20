@@ -26,23 +26,34 @@
 <script>
     export default{
         name:'cardImgBar',
-        props:['arr','link','hover'],
+        props:['link','hover','images'],
         data(){
             return {
                 num:1,
+                arr:[]
             }
+        },
+        mounted(){
+
+            setTimeout(res=>{
+                this.allImg();
+            },0)
+
         },
         methods:{
             numAdd(){
                 if(this.num == this.arr.length)
-                   this.num = 1;
+                    this.num = 1;
                 else this.num++;
             },
             numLess(){
 
                 if(this.num == 1)
-                   this.num = this.arr.length;
+
+                    this.num = this.arr.length;
+
                 else this.num--;
+
             },
             linkEvent(){
                 let link = this.link;
@@ -50,11 +61,20 @@
                     return;
 
                 this.$router.push({path:link});
-            }
+            },
+            allImg(){
+                for(let key in this.images){
+                    let item = this.images[key];
+
+                    for(let i of item){
+                         this.arr.push(i.get);
+                    }
+                }
+            },
         },
         computed:{
             getImg(){
-                console.log()
+
                 return this.arr[this.num - 1];
             }
         }

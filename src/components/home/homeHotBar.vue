@@ -12,7 +12,7 @@
                <div class="horizontal-container">
                   <div class="horizontal-warp" :style="{transform:transformOff ? 'translateX('+ ar +'%)':'' }">
                      <div class="col-5 " v-for="item in data">
-                        <card v-bind:data="item"></card>
+                        <card :data="item"></card>
                      </div>
                   </div>
                </div>

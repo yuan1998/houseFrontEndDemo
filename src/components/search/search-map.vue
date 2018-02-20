@@ -12,19 +12,19 @@
                :keyboardEnable="false"
                :resizeEnable="true">
                <template v-for="item in houseLL">
-                  <el-amap-marker :offset="[-47,-36]" :zIndex="hover == item.id ? 9000 : 100" :data-position="item.center" :data-hid="item.id" :events="clickEvents" :position="item.center" >
+                  <el-amap-marker :offset="[-47,-36]" :zIndex="hover == item.id ? 9000 : 100"   :data-position="item.center" :data-hid="item.id" :events="clickEvents"   :position="item.center">
                      <map-marker :hover="hover" :item="item"></map-marker>
                   </el-amap-marker>
                </template>
                <template v-if="current > 0" >
                   <el-amap-info-window data-v-tag :offset="[-15,-18]" :position="currentPosition">
-                     <card :data="findHouse"></card>
+                     <card :slider="true" :data="findHouse"></card>
                  </el-amap-info-window>
                </template>
             </el-amap>
             <div class="zoom-bar">
-               <button :disabled="(zoom >= 18)" class="am-block" @click="zoom++">+</button>
-               <button :disabled="(zoom <= 3)" class="am-block" @click="zoom--">-</button>
+               <button :disabled="(zoom >= 18)" class="am-block" @click="_zoom('+')">+</button>
+               <button :disabled="(zoom <= 3)" class="am-block" @click="_zoom('-')">-</button>
             </div>
             <div class="move-search">
                <label>
@@ -43,16 +43,18 @@
 <script>
 import card from '@/components/home/cardTemp'
 import mapMarker from './map-marker-template'
+import unity from '@/mixin/unity'
 
 import { AMapManager } from 'vue-amap';
 
    export default {
       name:'search-page-map',
-      props:['center','houses','hover'],
+      props:['keyword','houses','hover'],
       components:{
          card,
          mapMarker
       },
+      mixins:[unity],
       data(){
          let that = this;
          return {
@@ -60,6 +62,9 @@ import { AMapManager } from 'vue-amap';
             current:0,
             moveSearch:true,
             clickSearch:false,
+            lng:108.940174,
+            lat:34.341568,
+            center:[0,0],
             events:{
                click:(e)=>{
                   that.current = 0;
@@ -72,6 +77,14 @@ import { AMapManager } from 'vue-amap';
                   }
 
                   that.emitCenter();
+               },
+               zoomchange:(e)=>{
+                  that.getNWHouse();
+               },
+               complete:(e)=>{
+                  setTimeout(res=>{
+                     that.getLngLat();
+                  },0);
                }
             },
             clickEvents:{
@@ -90,22 +103,40 @@ import { AMapManager } from 'vue-amap';
             }
          }
       },
+      mounted(){
+
+
+
+      },
       methods:{
+         _zoom(type){
+
+            if(type == '+')
+               this.$refs.map.$$getInstance().zoomIn();
+            else this.$refs.map.$$getInstance().zoomOut();
+
+
+
+         },
          parsePosition(str){
             let strArr = str.split(',');
             return [parseFloat(strArr[0]),parseFloat(strArr[1])];
          },
          emitCenter(){
-            let center = this.$refs.map.$$getInstance().getCenter();
+            let {lng,lat} = this.$refs.map.$$getInstance().getCenter();
 
             this.current = 0;
-            this.$emit('getHouses',center);
+
+            this.saveCenter(lng,lat);
+
+            this.getNWHouse();
          },
          search(){
             this.clickSearch=false;
             this.emitCenter();
          },
          saveLog(hid){
+
             let str = this.$storage;
             if(!str.enabled)
                return;
@@ -116,11 +147,38 @@ import { AMapManager } from 'vue-amap';
                logs.push(hid);
                str.set('_TTMD_HOUSES_LOG',logs);
             }
-
          },
+         getNWHouse(){
+            let url = '/api/house/getLngLat?lng='+this.lng+ '&lat='+this.lat;
+            let bounds = this.$refs.map.$$getInstance().getBounds();
+
+            this.$emit('getData',{url,bounds});
+         },
+         getLngLat(){
+            let city  = this.keyword;
+            $.get(`http://restapi.amap.com/v3/geocode/geo?city=${this._getCity}&address=${city}&output=json&key=bf5b356d3ffaab642c974983267b1ce8`).then(res=>{
+               let location = res.geocodes[0];
+
+               this.$emit('started');
+
+               if(!location || location == false){
+                  return;
+               }
+
+               let arr =location.location.split(',');
+               // this.cen = arr;
+               this.saveCenter(arr[0],arr[1]);
+               this.getNWHouse();
+            })
+         },
+         saveCenter(lng,lat){
+            this.lng = parseFloat(lng);
+            this.lat = parseFloat(lat);
+            this.center= [this.lng,this.lat];
+         }
+
       },
       computed:{
-
          houseLL(){
             let arr = [];
 
@@ -142,6 +200,11 @@ import { AMapManager } from 'vue-amap';
             if(!this.current)
                return;
             return this.houses.find(e=>e.id == this.current);
+         }
+      },
+      watch:{
+         keyword(){
+            this.getLngLat();
          }
       }
    }

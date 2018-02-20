@@ -3,20 +3,20 @@
       <div class="page-bar">
          <div class="am-u-sm-12 ">
             <ul class="am-pagination am-pagination-centered">
-              <li class="addLess" @click="lessPage" v-show="current>1" ><a href="#"><i class="am-icon-angle-left"></i></a></li>
+              <li class="addLess" @click="lessPage" v-show="current>1" ><a ><i class="am-icon-angle-left"></i></a></li>
               <template v-if="last >3 && current>2">
-                 <li><a href="#" @click="changePage(1)">1</a></li>
-                 <li class="omitted"><a href="#">...</a></li>
+                 <li><a  @click="changePage(1)">1</a></li>
+                 <li class="omitted"><a >...</a></li>
               </template>
               <li v-for="n in renderPage()" @click="changePage(n)" :class="{'am-active':current == n}">
-                 <a href="#">{{n}}</a>
+                 <a >{{n}}</a>
               </li>
               <template v-if="last >3 && (last - current)>1 ">
-                 <li class="omitted"><a href="#">...</a></li>
-                 <li><a href="#" @click="changePage(last)">{{last}}</a></li>
+                 <li class="omitted"><a >...</a></li>
+                 <li><a  @click="changePage(last)">{{last}}</a></li>
               </template>
               <li class="addLess" v-show="current < last" @click="addPage">
-                <a href="#"><i class="am-icon-angle-right"></i></a>
+                <a ><i class="am-icon-angle-right"></i></a>
               </li>
             </ul>
          </div>
@@ -96,6 +96,8 @@
   .am-pagination li{
     height: 37px !important;
     width: 37px !important;
+    user-select: none;
+
   }
   .am-pagination li a{
     padding: 0 !important;
@@ -104,6 +106,7 @@
     font-size: 14px;
     line-height: 34px;
     margin-bottom: 0;
+    user-select: none;
   }
   .am-pagination li.addLess a,
   .am-pagination li.am-active a{

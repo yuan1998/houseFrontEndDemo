@@ -1,15 +1,18 @@
 <template>
    <transition>
       <div class="card-item" v-show="data != false">
-         <router-link tag="div" :to="'/house/'+data.id" class="card-link">
             <div class="am-cf cover">
                <div class="img-wrap">
                   <div class="img-bar">
-                     <div class="cover-bar center-img" :style="'background-image:url('+data.house_img.cover[0].get+')'"></div>
+                    <cardSlider :hover="slider"
+                      :link="'/house/'+data.id"
+                      :images="data.house_img">
+                    </cardSlider>
                   </div>
                </div>
-
             </div>
+         <router-link tag="div" :to="'/house/'+data.id" class="card-link">
+
             <div class="text am-cf">
                <div class="price">
                   ¥{{data.price}}万元
@@ -33,9 +36,22 @@
 </template>
 
 <script>
+import cardSlider from '@/components/utils/card-slider'
+
    export default{
       name:'cardTemp',
-      props:['data'],
+      props:{
+        data:{
+
+        },
+        slider:{
+          Type:Boolean,
+          default:false
+        }
+      },
+      components:{
+        cardSlider
+      },
       methods:{
 
       }

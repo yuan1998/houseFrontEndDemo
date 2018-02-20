@@ -1,14 +1,14 @@
 <template>
    <transition>
       <div class="content am-cf">
-         <div class="am-u-sm-12" v-if="data !=false">
+         <div class="am-u-sm-12" v-if="$data._list !=false">
             <div style="min-height: 430px;">
                <div>
-                  <div class="am-panel-group" v-if="data !=false" id="commisioned-bar">
+                  <div class="am-panel-group" v-if="$data._list !=false" id="commisioned-bar">
                      <div class="am-g">
-                        <template v-for="(item,n) in data">
+                        <template v-for="(item,n) in $data._list">
                            <div class="am-i-sm-12 am-u-md-6 am-g-collapse am-u-end">
-                              <commissioned v-bind:data="item" v-bind:index="n"></commissioned>
+                              <commissioned :data="item" :index="n"></commissioned>
                            </div>
                         </template>
                      </div>
@@ -16,8 +16,11 @@
                   </div>
                </div>
             </div>
-            <div v-if="maxPage > 1">
-               <page v-bind:current="current" v-bind:last="maxPage" @onpagechange="pageChange"></page>
+            <div v-if="$data._lastPage > 1">
+               <page v-bind:current="$data._page"
+                  v-bind:last="$data._lastPage"
+                  @onpagechange="_changePage">
+               </page>
             </div>
             <div v-else>
                <div class="am-text-center b-text">
@@ -41,35 +44,33 @@ import commissioned from '@/components/user/homeCommissioned'
 import page from '@/components/paginate/page'
 import sender from '@/Sender.js'
 
+import paginate from '@/mixin/paginate'
+import util from '@/mixin/unity'
+
 
    export default {
       name:'commissioneds',
+      mixins:[paginate,util],
       components:{
          commissioned,
          page
       },
       data(){
          return {
-            count:0,
-            current:1,
-            data:[],
-            maxPage:0,
          }
       },
       mounted(){
-         this.getPage();
+
+         setTimeout(res=>{
+            this.getData();
+         },0);
 
       },
       methods:{
-         getPage(){
-            sender('/api/house/getUserHouse',{page:this.current}).then(res=>{
-               this.data = res.data.data;
-               this.maxPage = res.data.last_page;
-            })
-         },
-         pageChange(page){
-            this.current = page;
-            this.getPage();
+         getData(){
+            let url = '/api/house/getUserHouse';
+
+            this._getPageData(url);
          }
       },
       computed:{
