@@ -12,7 +12,6 @@
                </div>
             </div>
          <router-link tag="div" :to="'/house/'+data.id" class="card-link">
-
             <div class="text am-cf">
                <div class="price">
                   ¥{{data.price}}万元

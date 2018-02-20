@@ -32,6 +32,9 @@
                     <hot @loadinged="startRender"></hot>
                 </div>
             </div>
+            <div id="home-info-bar">
+                <middleInfo></middleInfo>
+            </div>
         </div>
         <homefooter ></homefooter>
 
@@ -50,6 +53,7 @@ import hot from '@/components/home/homeHotBar'
 import top from '@/components/ToPageTop'
 import homefooter from '@/components/Footer'
 import alert from '@/components/utils/alert'
+import middleInfo from '@/components/home/why-sell-house'
 
 /**
  *  ajax
@@ -75,8 +79,9 @@ export default {
         top,
         homefooter,
         alert,
+        middleInfo
     },
-    mounted: function() {
+    mounted(){
 
     },
     data:function(){

@@ -75,6 +75,11 @@
         background-size:auto 100% !important;
     }
 
+    .contain-img{
+        -webkit-background-size: contain !important;
+        background-size: contain !important;
+    }
+
     .width-img{
         background-size: 100% 100%;
         background-position: center;
