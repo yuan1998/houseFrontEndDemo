@@ -21,9 +21,9 @@
                   <div class="text">
                      <div class="title">房源</div>
                      <div class="item-list">
-                        <div class="item">
+                        <router-link tag='div' to="/yezhu/maifang" class="item">
                            发布房源
-                        </div>
+                        </router-link>
                         <div class="item">
                            查找房源
                         </div>
@@ -54,7 +54,6 @@
                <div class="am-u-sm-12 am-u-md-4 am-text-center">
                   <div class="icon">
                      <div class="icon-info center-img contain-img">
-
                      </div>
                   </div>
                   <div class="text">
@@ -71,7 +70,6 @@
                      </div>
                   </div>
                </div>
-
             </div>
          </div>
       </div>
@@ -81,6 +79,11 @@
 <script>
    export default{
       name:'whySellHouse',
+      methods:{
+         searchHouse(){
+            document.querySelector('')
+         }
+      }
    }
 </script>
 
