@@ -291,8 +291,11 @@ router.beforeEach(async (to, from, next) => {
     let user = getters['user/user'];// 获取用户
 
     let result = ['home','houseInfo','errorPage','searchResult','login','signup','pleaseLogin','404'].includes(name);
+    let LS = ['login','signup','pleaseLogin'].includes(name);
 
-    if(!user && !result)
+    if(user && LS)
+        return next('/');
+    else if(!user && !result)
         return next('/login/aa');
     else next();
 

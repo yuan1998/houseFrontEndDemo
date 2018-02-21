@@ -67,6 +67,7 @@ export default{
    props:['status'],
    mounted:function(){
 
+
    },
    data:function(){
       return {
@@ -77,9 +78,9 @@ export default{
    methods:{
       loginEvent(){
 
-         sender('/api/user/login',this.loginFormData).then(res=>{
+         sender('/api/user/login',this.loginFormData).then(async res=>{
             if(res.success){
-               this.$store.dispatch('isLogin');
+               await this.$store.dispatch('isLogin');
                this.$router.go(-1);
             }
          },res=>{
