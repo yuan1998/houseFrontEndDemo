@@ -27,16 +27,19 @@
     [v-cloak]{
         display: none;
     }
+
     *{
         position:relative;
         font-family: Circular,-apple-system,BlinkMacSystemFont,Roboto,Helvetica Neue,sans-serif !important;
     }
+
     img {
-        box-sizing: border-box;
-        border: 0;
+        box-sizing: border-box !important;
+        border: 0 !important;
     }
+
     textarea{
-        resize: none;
+        resize: none !important;
     }
 
     input,
@@ -67,10 +70,10 @@
 }*/
 
     .center-img{
-        background-size: cover;
-        background-position: center;
-        display: inline-block;
-        background-repeat: no-repeat;
+        background-size: cover ;
+        background-position: center !important;
+        display: inline-block !important;
+        background-repeat: no-repeat !important;
     }
 
     .height-max-img{
@@ -83,7 +86,7 @@
     }
 
     .width-img{
-        background-size: 100% 100%;
+        background-size: 100% 100% ;
         background-position: center;
         display: inline-block;
         background-repeat: no-repeat;

@@ -22,7 +22,7 @@
                                                     <p>(项目仍在开发中)</p>
                                                     <p>该项目为前后端分离.</p>
                                                     <p>该项目以 Mobile First 为理念,从小屏逐步扩展到大屏.</p>
-                                                    <p>管理员用户:liubibi 密码:123456 (后台开发未完成,管理员功能不大.)</p>
+                                                    <p>管理员用户:liubibi 密码:3322123 (后台开发未完成,管理员功能不大.)</p>
                                                 </div>
                                             </div>
                                             <div class="content-item">
@@ -32,7 +32,7 @@
                                                 <div class="post">
                                                     <p>前端使用 <a href="https://cn.vuejs.org/v2/guide/index.html" class="am-link">Vue</a>和<a href="http://www.amazeui.org/" class="am-link">amazeui</a></p>
                                                     <p>组件:<a href="https://elemefe.github.io/vue-amap/#/">amap</a> </p>
-                                                    <p>github地址: <a href="https://github.com/yuan1998/houseFrontEndDemo">https://github.com/yuan1998/houseFrontEndDemo</a></p>
+                                                    <!-- <p>github地址: <a href="https://github.com/yuan1998/houseFrontEndDemo">https://github.com/yuan1998/houseFrontEndDemo</a></p> -->
                                                 </div>
                                             </div>
                                             <div class="content-item">
@@ -41,7 +41,7 @@
                                                 </div>
                                                 <div class="post">
                                                     <p>后端使用<a href="https://laravel.com/">laravel</a> 开发</p>
-                                                    <p>github地址: <a href="https://github.com/yuan1998/housesDemo">https://github.com/yuan1998/housesDemo</a></p>
+                                                    <!-- <p>github地址: <a href="https://github.com/yuan1998/housesDemo">https://github.com/yuan1998/housesDemo</a></p> -->
                                                 </div>
                                             </div>
                                             <div class="content-item">

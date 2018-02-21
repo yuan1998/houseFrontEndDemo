@@ -114,8 +114,6 @@ import { AMapManager } from 'vue-amap';
       },
       mounted(){
 
-
-
       },
       methods:{
          _zoom(type){

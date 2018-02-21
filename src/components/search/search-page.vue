@@ -6,9 +6,7 @@
             <div class="am-g">
                <div class="houses-wrap am-u-sm-12 am-u-md-8"
                   :class="{'map-open-house-bar':openMap}">
-
                   <div class="houses-bar am-cf">
-
                      <div class="" v-if="$data._list == false">
                         <div class="not-search-house">
                            <div class="text">
@@ -48,10 +46,11 @@
                   <div class="overlay" v-show="overlayOpen">
                   </div>
                </div>
-               <div class="map-wrap am-u-sm-12 am-u-md-4"
+               <div class="map-wrap am-u-sm-12 am-u-md-4 "
+                  v-show="openMap || smSize"
                   :style="{width: openMap && smSize ? mapWidth : ''}">
                   <transition name="scale-up">
-                     <div class="map-bar" v-show="openMap || smSize">
+                     <div class="map-bar" >
                         <amap :keyword="$route.query.address"
                            :hover="hoverId"
                            :houses="$data._list"
@@ -345,8 +344,8 @@ export default {
    }
 
    .control-btn button{
-      background: #f1f1f1;
-      color:#555 ;
+      background: #f1f1f1 !important;
+      color:#555 !important;
       font-size: 14px !important;
       padding: 5px 10px  !important;
       line-height: 20px !important;
@@ -354,12 +353,8 @@ export default {
       font-weight: 500 !important;
       border-radius: 30px !important;
       border: 1px solid #d8d8d8 !important;
-      box-shadow: 0 2px 5px #e8e8e8 !important;
+      box-shadow: 0px 0px 1px rgba(255,255,255,0.3) !important;
       transition:color 0.2s ease-out,background 0.2s ease-out;
-   }
-   .control-btn button:hover{
-      background: #888 !important;
-      color:#f1f1f1 !important;
    }
 
    .dividing-line{
@@ -371,7 +366,7 @@ export default {
 
    }
    .houses-bar{
-
+      /*z-index: 1;*/
       /*border-bottom: 1px solid #d8d8d8 !important;*/
    }
 

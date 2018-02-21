@@ -1,7 +1,7 @@
 <template>
     <div class="card-img-bar">
         <div class="cover-img center-img"
-            :class="{hover:hover}"
+            :class="[(hover && !$IsMobile.isMobile) ? 'hover' : 'is-mobile']  "
             :style="{
                 'background-image':'url('+ getImg + ')',
                 cursor: link ? 'pointer' : 'auto'
@@ -83,7 +83,7 @@
                     }
                 }
                 return arr[this.num - 1];
-            }
+            },
         }
     }
 </script>
@@ -159,4 +159,12 @@
     .hover:hover .pre{
         opacity: 1;
     }
+
+    .is-mobile .index,
+    .is-mobile .next,
+    .is-mobile .pre{
+        opacity: 1;
+
+    }
+
 </style>

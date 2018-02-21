@@ -107,9 +107,9 @@ import unity from '@/mixin/unity'
    }
    .search-btn{
       margin-top: 26px;
-      background: #ff5a5f;
+      background: #ff5a5f !important;
       border-radius:7px;
-      color:#f0f0f0;
+      color:#f0f0f0 !important;
       font-size: 19px;
       line-height: 15px;
       padding: 0.8em 1em;
