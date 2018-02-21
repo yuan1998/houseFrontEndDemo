@@ -1,6 +1,6 @@
 <template>
    <transition>
-      <div class="content">
+      <div class="content sm-map">
          <div class="am-g">
             <div class="am-panel am-panel-default">
                <div class="am-panel-bd">
@@ -119,3 +119,10 @@ import { AMapManager } from 'vue-amap';
       }
    }
 </script>
+
+<style scoped>
+  .sm-map >>> .amap-icon[title=拖拽修改半径]~.amap-marker-label,
+  .sm-map >>> .amap-icon[title=拖拽修改半径]{
+    display: none !important;
+  }
+</style>
