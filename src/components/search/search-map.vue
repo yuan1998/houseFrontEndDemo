@@ -75,19 +75,16 @@ import { AMapManager } from 'vue-amap';
                      that.clickSearch = true;
                      return;
                   }
-
                   that.emitCenter();
                },
                zoomchange:(e)=>{
-
                   that.getNWHouse();
                },
                complete:(e)=>{
-
                   setTimeout(res=>{
                      that.getLngLat();
                   },0);
-               }
+               },
             },
             clickEvents:{
                click:(e)=>{
@@ -100,7 +97,15 @@ import { AMapManager } from 'vue-amap';
                   that.currentPosition = this.parsePosition(position);
 
                   this.saveLog(hid);
-
+               },
+               touchstart:(e)=>{
+                  alert(e);
+               },
+               touchmove:(e)=>{
+                  alert(e);
+               },
+               touchend:(e)=>{
+                  alert(e);
                }
             }
          }

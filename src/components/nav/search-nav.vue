@@ -243,6 +243,7 @@ export default {
     height: 40px;
     width: 100%;
     font-size: 16px;
+    background: #fff !important;
     color:#666;
     border:1px solid #e0e0e0;
     border-radius:5px;
