@@ -274,7 +274,9 @@ router.afterEach((to, from) => {
 router.beforeEach(async (to, from, next) => {
     let {dispatch,getters} = router.app.$store;
 
-    dispatch('progress','start');
+
+    if(from.name && from.name != false)
+        dispatch('progress','start');
 
     document.body.classList.remove('help-open','reservation-open','sm-map-open','menu-open','search-open','slider-open');
 
