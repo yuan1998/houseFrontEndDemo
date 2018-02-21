@@ -616,7 +616,8 @@ import mUser from '@/mixin/user.js'
          reservationHouse(){
 
             if(!this._isLogin)
-               return;
+               this.$router.push('/login/aa');
+
             if(this._getUser.id == this.data.id)
                return;
 
