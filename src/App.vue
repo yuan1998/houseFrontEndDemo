@@ -44,6 +44,7 @@
     button,
     button:focus{
         outline:none !important;
+        box-shadow: none !important;
     }
 
 
