@@ -901,10 +901,10 @@ export default {
 
 
       $('.back-btn').sticky({
-         top:7,
+         top:0,
       });
       $('.am-progress-xs').sticky({
-         top:0,
+         top:60,
       })
 
 
@@ -1457,5 +1457,18 @@ export default {
    color:#484848;
    top: 25%;
    user-select: none
+}
+.am-progress.am-sticky{
+   z-index: 49 !important;
+}
+.back-btn{
+   z-index: 50 !important;
+}
+.back-btn.am-sticky{
+   width: auto !important;
+   left: 0 !important;
+   right: 0 !important;
+   box-shadow: 0px 2px 5px #f0f0f0 !important;
+
 }
 </style>
