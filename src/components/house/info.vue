@@ -566,7 +566,6 @@ import mUser from '@/mixin/user.js'
             if(!val || val == false || val < 0){
                this.getTop();
                val = this[type] - 100;
-               console.log(val);
             }
             this._scrollToPage(val);
          },

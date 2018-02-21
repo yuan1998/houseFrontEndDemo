@@ -69,7 +69,6 @@ import sender from '@/Sender.js'
          this.$nextTick(res=> {
             window.addEventListener('resize', e=> {
               this.windowWidth = window.innerWidth;
-              console.log('width',this.windowWidth)
             });
           })
       },

@@ -64,7 +64,6 @@ import { AMapManager } from 'vue-amap';
          },
          getLocation(lng,lat){
             $.get(`http://restapi.amap.com/v3/geocode/regeo?output=json&location=${lng},${lat}&key=bf5b356d3ffaab642c974983267b1ce8`).then(res=>{
-               console.log(3);
                this.$emit('location',res);
             })
          },

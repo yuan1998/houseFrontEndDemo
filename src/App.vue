@@ -54,7 +54,8 @@
     .menu-open,
     .search-open,
     .slider-open{
-        overflow: hidden;
+        overflow: hidden !important;
+        height: 100% !important;
     }
 /*#appHome{
   background-image: url('https://farm4.staticflickr.com/3854/32764887833_7c91946505_k.jpg');
