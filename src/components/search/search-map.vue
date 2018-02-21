@@ -85,13 +85,7 @@ import { AMapManager } from 'vue-amap';
                      that.getLngLat();
                   },0);
                },
-               touchend:(e)=>{
-                  if(!that.moveSearch){
-                     that.clickSearch = true;
-                     return;
-                  }
-                  that.emitCenter();
-               }
+
             },
             clickEvents:{
                click:(e)=>{
