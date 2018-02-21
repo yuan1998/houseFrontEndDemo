@@ -85,6 +85,13 @@ import { AMapManager } from 'vue-amap';
                      that.getLngLat();
                   },0);
                },
+               touchend:(e)=>{
+                  if(!that.moveSearch){
+                     that.clickSearch = true;
+                     return;
+                  }
+                  that.emitCenter();
+               }
             },
             clickEvents:{
                click:(e)=>{
@@ -99,13 +106,18 @@ import { AMapManager } from 'vue-amap';
                   this.saveLog(hid);
                },
                touchstart:(e)=>{
-                  alert(e);
-               },
-               touchmove:(e)=>{
-                  alert(e);
+
                },
                touchend:(e)=>{
-                  alert(e);
+                  let data = e.target.G.content.dataset;
+                  let hid = data.hid;
+                  let position = data.position;
+
+                  that.current = hid;
+
+                  that.currentPosition = this.parsePosition(position);
+
+                  this.saveLog(hid);
                }
             }
          }
