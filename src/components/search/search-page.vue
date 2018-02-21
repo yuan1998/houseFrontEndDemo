@@ -6,7 +6,9 @@
             <div class="am-g">
                <div class="houses-wrap am-u-sm-12 am-u-md-8"
                   :class="{'map-open-house-bar':openMap}">
+
                   <div class="houses-bar am-cf">
+
                      <div class="" v-if="$data._list == false">
                         <div class="not-search-house">
                            <div class="text">
@@ -22,9 +24,11 @@
                      <div class="am-g am-g-collapse am-cf" v-else>
                         <template v-for="item in $data._list">
                            <div class="am-u-sm-12 am-u-end"
+
                                  @mouseenter="setHoverId(item.id)"
                                  @mouseleave="resetHoverId"
                                  :class="openMap? 'map-open' :'am-u-md-6 am-u-lg-4'">
+
                               <card :slider="true" :data="item"></card>
                            </div>
                         </template>
@@ -170,6 +174,9 @@ export default {
    watch:{
       ['$route.query.address'](val){
          this.getLngLat()
+      },
+      ['$data._list'](val){
+         console.log(val)
       },
       smSize(val){
          if(!val && this.openMap)

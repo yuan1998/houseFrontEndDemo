@@ -276,8 +276,6 @@ router.beforeEach(async (to, from, next) => {
 
     dispatch('progress','start');
 
-    console.log(to);
-
     document.body.classList.remove('help-open','reservation-open','sm-map-open','menu-open','search-open','slider-open');
 
     let name = to.name;

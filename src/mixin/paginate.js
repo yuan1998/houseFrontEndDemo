@@ -26,6 +26,8 @@ export default{
             if(!this.$data._url)
                 return;
 
+            console.log('send');
+
             return sender(this.$data._url,this.$data._params).then(res=>{
 
                 this.$data._list = res.data.data;
@@ -45,8 +47,11 @@ export default{
         }
     },
     computed:{
-        __getPage(){
+        _getPage(){
             return this.$data._page;
+        },
+        _getListData(){
+            return this.$data._list;
         }
     }
 }

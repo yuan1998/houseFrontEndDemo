@@ -46,7 +46,7 @@
                                             </div>
                                             <div class="content-item">
                                                 <div class="title">
-                                                    2.搜索
+                                                    2.功能
                                                 </div>
                                                 <div class="post">
                                                     <p>只有西安的数据,故只能搜索西安地区.</p>
@@ -54,10 +54,18 @@
                                             </div>
                                             <div class="content-item">
                                                 <div class="title">
-                                                    3.切换城市
+                                                    2-1.切换城市
                                                 </div>
                                                 <div class="post">
                                                     <p>开发阶段,城市固定为西安,无法切换...</p>
+                                                </div>
+                                            </div>
+                                            <div class="content-item">
+                                                <div class="title">
+                                                    2-2.发布房源
+                                                </div>
+                                                <div class="post">
+                                                    <p>发布房源后会自动调用通过审核接口，原因为后端未完成，为了方便测试省事</p>
                                                 </div>
                                             </div>
                                         </div>

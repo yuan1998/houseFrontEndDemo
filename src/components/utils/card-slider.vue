@@ -70,12 +70,19 @@
                          this.arr.push(i.get);
                     }
                 }
-            },
+            }
         },
         computed:{
             getImg(){
+                let arr=[];
+                for(let key in this.images){
+                    let item = this.images[key];
 
-                return this.arr[this.num - 1];
+                    for(let i of item){
+                         arr.push(i.get);
+                    }
+                }
+                return arr[this.num - 1];
             }
         }
     }

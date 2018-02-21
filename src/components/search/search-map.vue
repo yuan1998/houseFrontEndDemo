@@ -75,13 +75,15 @@ import { AMapManager } from 'vue-amap';
                      that.clickSearch = true;
                      return;
                   }
-
+                  console.log('dragend');
                   that.emitCenter();
                },
                zoomchange:(e)=>{
+                  console.log('zoom');
                   that.getNWHouse();
                },
                complete:(e)=>{
+                  console.log('complete');
                   setTimeout(res=>{
                      that.getLngLat();
                   },0);
@@ -149,7 +151,7 @@ import { AMapManager } from 'vue-amap';
             }
          },
          getNWHouse(){
-            let url = '/api/house/getLngLat?lng='+this.lng+ '&lat='+this.lat;
+            let url = '/api/house/getLngLat?lng='+this.lng+ '&lat='+this.lat + '&rand='+ Math.floor(Math.random() * 100);
             let bounds = this.$refs.map.$$getInstance().getBounds();
 
             this.$emit('getData',{url,bounds});
