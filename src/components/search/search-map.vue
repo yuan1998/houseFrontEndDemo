@@ -75,15 +75,15 @@ import { AMapManager } from 'vue-amap';
                      that.clickSearch = true;
                      return;
                   }
-                  console.log('dragend');
+
                   that.emitCenter();
                },
                zoomchange:(e)=>{
-                  console.log('zoom');
+
                   that.getNWHouse();
                },
                complete:(e)=>{
-                  console.log('complete');
+
                   setTimeout(res=>{
                      that.getLngLat();
                   },0);

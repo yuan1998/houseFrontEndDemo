@@ -82,7 +82,7 @@
                 </ul>
             </div>
             <div class="search-bar">
-                <div class="top am-text-center">
+                <div class="top-d am-text-center">
                     <button @click="closeSearch" type="button" class="am-close">&times;</button>
                     <span>
                         <i class="am-icon-map-marker"></i>
@@ -92,7 +92,7 @@
                 </div>
                 <div class="search-input">
                     <div class="am-u-sm-12">
-                        <input @keydown.enter="search" class="am-block" type="search" v-model="keyword">
+                        <input @keydown.enter="search" @blur="search" class="am-block" type="search" v-model="keyword">
                     </div>
                 </div>
             </div>
@@ -316,7 +316,7 @@ li a {
     border:none;
     background: #fff;
 }
-.search-bar .top span{
+.search-bar .top-d span{
     font-size: 16px;
     margin-top: 10px;
     display: inline-block;

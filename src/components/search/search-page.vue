@@ -175,9 +175,6 @@ export default {
       ['$route.query.address'](val){
          this.getLngLat()
       },
-      ['$data._list'](val){
-         console.log(val)
-      },
       smSize(val){
          if(!val && this.openMap)
             this._bodyAddClass('sm-map-open');

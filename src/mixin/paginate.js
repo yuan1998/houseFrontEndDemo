@@ -26,8 +26,6 @@ export default{
             if(!this.$data._url)
                 return;
 
-            console.log('send');
-
             return sender(this.$data._url,this.$data._params).then(res=>{
 
                 this.$data._list = res.data.data;
