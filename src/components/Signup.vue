@@ -3,7 +3,7 @@
       <div class="content">
          <navTop></navTop>
          <div id="signup-login-bar">
-            <div class="am-container am-animation-fade">
+            <div class="am-container am-animation-fade container">
                <div class="header am-text-center">
                   <span>注册</span>
                </div>
@@ -296,6 +296,7 @@ export default {
    background-repeat: no-repeat;
    transition:background 0.8 ease-out;
 }
+
 .signup-bar{
    opacity:0.95;
 }

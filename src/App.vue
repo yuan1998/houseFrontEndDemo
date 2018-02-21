@@ -105,7 +105,10 @@
         padding-right: 0;
     }
     #signup-login-bar .am-container{
-        padding-top: 200px;
+        position:absolute !important;
+        top: 50% !important;
+        left: 50% !important;
+        transform:translate(-50%,-50%) !important;
     }
     #signup-login-bar .header{
         font-weight: 500;
