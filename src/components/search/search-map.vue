@@ -67,10 +67,12 @@ import { AMapManager } from 'vue-amap';
             center:[0,0],
             events:{
                click:(e)=>{
+                  alert('我是地图click');
+
                   that.current = 0;
                },
                dragend:(e)=>{
-
+                  alert('我是地图drag结束');
                   if(!that.moveSearch){
                      that.clickSearch = true;
                      return;
@@ -78,6 +80,7 @@ import { AMapManager } from 'vue-amap';
                   that.emitCenter();
                },
                zoomchange:(e)=>{
+
                   that.getNWHouse();
                },
                complete:(e)=>{
@@ -85,10 +88,19 @@ import { AMapManager } from 'vue-amap';
                      that.getLngLat();
                   },0);
                },
-
+               touchstart:(e)=>{
+                  alert('我是地图touch开始');
+               },
+               touchmove:(e)=>{
+                  alert('我是地图touch移动');
+               },
+               touchend:(e)=>{
+                  alert('我是地图touch结束');
+               }
             },
             clickEvents:{
                click:(e)=>{
+                  alert('我是标签click事件');
                   let data = e.target.G.content.dataset;
                   let hid = data.hid;
                   let position = data.position;
@@ -100,18 +112,13 @@ import { AMapManager } from 'vue-amap';
                   this.saveLog(hid);
                },
                touchstart:(e)=>{
-
+                  alert('我是标签touch开始');
+               },
+               touchmove:(e)=>{
+                  alert('我是标签touch移动');
                },
                touchend:(e)=>{
-                  let data = e.target.G.content.dataset;
-                  let hid = data.hid;
-                  let position = data.position;
-
-                  that.current = hid;
-
-                  that.currentPosition = this.parsePosition(position);
-
-                  this.saveLog(hid);
+                  alert('我是标签touch结束');
                }
             }
          }
