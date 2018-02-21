@@ -11,7 +11,7 @@
                </div>
             </div>
             <div class="bd">
-               <div class="am-u-sm-12 am-u-md-4 am-text-center">
+               <div class="am-u-sm-12 am-margin-top-md am-u-md-4 am-text-center">
                   <div class="icon">
                      <div class="icon-home center-img contain-img">
 
@@ -51,7 +51,7 @@
                      </div>
                   </div>
                </div>
-               <div class="am-u-sm-12 am-u-md-4 am-text-center">
+               <div class="am-u-sm-12 am-margin-top-md am-u-md-4 am-text-center">
                   <div class="icon">
                      <div class="icon-info center-img contain-img">
                      </div>
@@ -162,6 +162,9 @@
 
    .bd{
       padding-top: 20px;
+   }
+   .am-u-sm-12{
+      margin-top: 20px !important;
    }
 
 
