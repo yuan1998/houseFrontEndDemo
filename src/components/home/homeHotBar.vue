@@ -119,10 +119,16 @@ import sender from '@/Sender.js'
    }
    .horizontal-warp{
 
-       margin-bottom: 0px !important;
+      margin-bottom: 0px !important;
       padding: 0px !important;
 
-      overflow: scroll !important;
+      overflow: scroll;
+      margin-right:-15px !important;
+      margin-bottom: -16px !important;
+      /*overflow: -moz-scrollbars-none;
+      -ms-overflow-style: none;*/
+
+
       transition: -ms-transform 0.5s,-webkit-transform 0.5s,transform 0.5s !important;
       white-space: nowrap !important;
       transform: translateX(0%);
@@ -132,9 +138,13 @@ import sender from '@/Sender.js'
       display: inline-block;
    }
 
-   .horizontal-warp::-webkit-scrollbar{
-      display: none;
-   }
+    .horizontal-warp::-moz-scrollbar{
+      display: none !important;
+
+    }
+    /*.horizontal-warp::-webkit-scrollbar{
+      display: none !important;
+    }*/
 
    @media only screen and (min-width: 1025px){
       .col-5{
@@ -174,6 +184,9 @@ import sender from '@/Sender.js'
    .left-btn i,
    .right-btn i{
     font-size: 60px;
+   }
+   .more-btn{
+    margin-top: 20px !important;
    }
    .more-btn button{
       font-size: 19px;
