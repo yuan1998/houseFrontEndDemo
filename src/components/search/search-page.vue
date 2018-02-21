@@ -341,7 +341,7 @@ export default {
       position: fixed;
       left: 0;
       right: 0;
-      bottom: 30px;z-index: 123;
+      bottom: 30px;z-index: 1 !important;
    }
 
    .control-btn button{

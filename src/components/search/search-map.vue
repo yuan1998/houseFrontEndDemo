@@ -13,7 +13,7 @@
                :resizeEnable="true">
                <template v-for="item in houseLL">
                   <el-amap-marker :offset="[-47,-36]" :zIndex="hover == item.id ? 9000 : 100"   :data-position="item.center" :data-hid="item.id" :events="clickEvents"   :position="item.center">
-                     <map-marker :hover="hover" :item="item"></map-marker>
+                     <map-marker :status="current" :hover="hover" :item="item"></map-marker>
                   </el-amap-marker>
                </template>
                <template v-if="current > 0" >
@@ -65,14 +65,21 @@ import { AMapManager } from 'vue-amap';
             lng:108.940174,
             lat:34.341568,
             center:[0,0],
+            markerClick:false,
+            mapClick:false,
             events:{
                click:(e)=>{
-                  alert('我是地图click');
 
+                  this.mapClick = true;
                   that.current = 0;
                },
                dragend:(e)=>{
-                  alert('我是地图drag结束');
+
+                  if(this.markerClick || this.mapClick){
+                     this.mapClick = this.markerClick = false;
+                     return;
+                  }
+
                   if(!that.moveSearch){
                      that.clickSearch = true;
                      return;
@@ -87,20 +94,10 @@ import { AMapManager } from 'vue-amap';
                   setTimeout(res=>{
                      that.getLngLat();
                   },0);
-               },
-               touchstart:(e)=>{
-                  alert('我是地图touch开始');
-               },
-               touchmove:(e)=>{
-                  alert('我是地图touch移动');
-               },
-               touchend:(e)=>{
-                  alert('我是地图touch结束');
                }
             },
             clickEvents:{
                click:(e)=>{
-                  alert('我是标签click事件');
                   let data = e.target.G.content.dataset;
                   let hid = data.hid;
                   let position = data.position;
@@ -110,15 +107,7 @@ import { AMapManager } from 'vue-amap';
                   that.currentPosition = this.parsePosition(position);
 
                   this.saveLog(hid);
-               },
-               touchstart:(e)=>{
-                  alert('我是标签touch开始');
-               },
-               touchmove:(e)=>{
-                  alert('我是标签touch移动');
-               },
-               touchend:(e)=>{
-                  alert('我是标签touch结束');
+                  this.markerClick = true;
                }
             }
          }

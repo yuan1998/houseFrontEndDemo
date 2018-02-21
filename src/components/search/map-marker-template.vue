@@ -1,7 +1,7 @@
 <template>
     <div class="custom-marker">
         <div>
-            <div class="marker-wrap " :class="{hover:(item.id == hover),readed:isRead}">
+            <div class="marker-wrap " :class="{hover:(item.id == hover),readed:readed}">
                 <div class="marker-content">
                     <div class="white">
                         <span class="am-inline-block current">¥</span>
@@ -19,13 +19,24 @@
 <script>
     export default{
         name:'mapMarkerTemplate',
-        props:['item',"hover"],
-        computed:{
+        props:['item',"hover",'status'],
+        data(){
+            return {
+                readed:false,
+            }
+        },
+        mounted(){
+            this.isRead();
+        },
+        methods:{
             isRead(){
-                let hid = this.item.id;
-                let str = this.$storage;
-                let logs = str.get('_TTMD_HOUSES_LOG') || [];
-                return (logs.findIndex(e=> e == hid) >= 0);
+                let logs = this.$storage.get('_TTMD_HOUSES_LOG') || [];
+                this.readed = (logs.findIndex(e=> e == this.item.id) >= 0);
+            }
+        },
+        watch:{
+            status(){
+                this.isRead();
             }
         }
     }
