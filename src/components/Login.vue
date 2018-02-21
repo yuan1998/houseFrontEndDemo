@@ -3,7 +3,7 @@
       <div class="content">
          <navTop></navTop>
          <div id="signup-login-bar" >
-            <div class="am-container am-animation-fade am-cf">
+            <div class="am-container am-animation-fade am-cf container">
                <div class="header am-text-center">
                   <span>登录</span>
                </div>

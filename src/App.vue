@@ -104,7 +104,7 @@
         padding-left: 0;
         padding-right: 0;
     }
-    #signup-login-bar .am-container{
+    #signup-login-bar .container{
         position:absolute !important;
         top: 50% !important;
         left: 50% !important;
