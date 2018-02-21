@@ -115,7 +115,7 @@
                                 <router-link tag="li" to="/user/message/system"><a href="#">系统通知</a></router-link>
                             </template>
                             <li><hr></li>
-                            <router-link tag="li" to="/help"><a href="#">帮助</a></router-link>
+                            <li  @click="$_alert()" ><a href="#">帮助</a></li>
                             <template v-if="_isLogin">
                                 <li @click="_logout"><a>退出</a></li>
                             </template>

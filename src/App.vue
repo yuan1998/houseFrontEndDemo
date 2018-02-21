@@ -105,6 +105,7 @@
         padding-right: 0;
     }
     #signup-login-bar .container{
+        z-index: 55 !important;
         position:absolute !important;
         top: 50% !important;
         left: 50% !important;
