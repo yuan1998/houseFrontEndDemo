@@ -163,7 +163,7 @@ import { AMapManager } from 'vue-amap';
          },
          getLngLat(){
             let city  = this.keyword;
-            $.get(`http://restapi.amap.com/v3/geocode/geo?city=${this._getCity}&address=${city}&output=json&key=bf5b356d3ffaab642c974983267b1ce8`).then(res=>{
+            $.get(`http://restapi.amap.com/v3/geocode/geo?address=${city}&output=json&key=bf5b356d3ffaab642c974983267b1ce8`).then(res=>{
                let location = res.geocodes[0];
 
                this.$emit('started');
