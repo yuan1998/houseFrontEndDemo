@@ -121,6 +121,10 @@
                             </template>
                         </ul>
                     </div>
+                    <div class="pull am-text-center" @click="menuStatu">
+                        <div><i class="am-icon-angle-up"></i></div>
+                        <div>收起</div>
+                    </div>
                 </div>
             </transition>
 
@@ -558,6 +562,29 @@ li a {
     top: 10px;
     z-index: 10;
     color:#e1e1e1 !important;
+}
+.menu-bar .pull{
+    position:absolute;
+    bottom: 10px;
+    right: 0;
+    left: 0;
+    z-index: 4 !important;
+    cursor: pointer !important;
+}
+
+
+.menu-bar .pull div{
+    font-size: 12px !important;
+    color:#a1a1a1 !important;
+    transition:color 0.2s ease-out;
+
+
+}
+.menu-bar .pull i{
+    font-size: 20px !important;
+}
+.menu-bar .pull:hover div{
+    color:#666 !important;
 }
 </style>
 
