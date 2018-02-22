@@ -197,7 +197,7 @@ const router = new Router({
                         meta:{
                             title:'用户列表 - xxx'
                         },
-                        component:adminUserList,adminUserInfo
+                        component:adminUserList,
                     },
                     {
                         path:'user/info/:id',

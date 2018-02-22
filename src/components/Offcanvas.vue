@@ -21,34 +21,34 @@
                          <router-link class="am-active" @click.native="sideBarHide" active-Class="am-active" tag="li" to="/" exact>
                             <a>首页</a>
                          </router-link>
-                         <router-link @click.native="sideBarHide" active-Class="am-active" tag="li" to="/readHouses" exact>
+                         <router-link @click.native="sideBarHide" active-Class="am-active" tag="li" to="/search?address=西安" exact>
                             <a>看房</a>
                          </router-link>
                          <router-link @click.native="sideBarHide" active-Class="am-active" tag="li" to="/yezhu/maifang" exact>
-                            <a >我要卖房</a>
+                            <a >发布房源</a>
                          </router-link>
                          <template v-if='getUser'>
                             <li class="am-nav-header">用户</li>
-                            <router-link @click.native="sideBarHide" active-Class="am-active" tag="li" to="/user/info" exact>
+                            <router-link @click.native="sideBarHide" active-Class="am-active" tag="li" to="/user/self" exact>
                                <a>我的资料 </a>
                             </router-link>
-                            <router-link @click.native="sideBarHide" active-Class="am-active" tag="li" to="/user/commissioned" exact>
+                            <router-link @click.native="sideBarHide" active-Class="am-active" tag="li" to="/user/commissioneds" exact>
                                 <a >我的委托</a>
                             </router-link>
-                            <router-link @click.native="sideBarHide" active-Class="am-active" tag="li" to="/user/transactionlog" exact>
+                            <router-link @click.native="sideBarHide" active-Class="am-active" tag="li" to="/user/transactionLog" exact>
                                <a>交易记录</a>
                             </router-link>
                             <li class="am-nav-header">消息</li>
-                            <router-link @click.native="sideBarHide" active-Class="am-active" tag="li" to="/message/webMessage" exact>
+                            <router-link @click.native="sideBarHide" active-Class="am-active" tag="li" to="/user/message/system" exact>
                                <a>站内消息
                                   <span v-show="getWebMessage > 0" class="am-badge am-badge-secondary am-fr am-margin-right am-text-middle">{{getWebMessage}}</span>
                                </a>
                             </router-link>
-                            <router-link @click.native="sideBarHide" active-Class="am-active" tag="li" to="/message/userMessage" exact>
+                            <!-- <router-link @click.native="sideBarHide" active-Class="am-active" tag="li" to="/message/userMessage" exact>
                                <a>私信
                                   <span v-show="getUserMessage >0" class="am-badge am-badge-secondary am-fr am-margin-right am-text-middle">{{getUserMessage}}</span>
                                </a>
-                            </router-link>
+                            </router-link> -->
                             <li @click.native="sideBarHide,logoutEvent">
                                <a>
                                  登出
@@ -57,13 +57,10 @@
                             <template v-if="getUser.permission >3">
                                  <li class="am-nav-header">后台</li>
 
-                                <router-link @click.native="sideBarHide" active-Class="am-active" tag="li" to="/user/commissioned" exact>
+                                <router-link @click.native="sideBarHide" active-Class="am-active" tag="li" to="/admin/user/list" exact>
                                     <a >用户管理</a>
                                 </router-link>
-                                <router-link @click.native="sideBarHide" active-Class="am-active" tag="li" to="/user/commissioned" exact>
-                                    <a >委托管理</a>
-                                </router-link>
-                                <router-link @click.native="sideBarHide" active-Class="am-active" tag="li" to="/user/commissioned" exact>
+                                <router-link @click.native="sideBarHide" active-Class="am-active" tag="li" to="/admin/house/all" exact>
                                     <a >房屋管理</a>
                                 </router-link>
                             </template>

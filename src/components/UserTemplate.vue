@@ -75,21 +75,21 @@
                                                     后台管理
                                                 </li>
                                                 <router-link tag="li"
-                                                    to="/admin/user"
+                                                    to="/admin/user/list"
                                                     active-class="side-active"
                                                     exact
                                                     class="side-bar-item">
                                                     <a>用户管理</a>
                                                 </router-link>
-                                                <router-link tag="li"
+<!--                                                 <router-link tag="li"
                                                     to="/admin/commissioneds"
                                                     active-class="side-active"
                                                     exact
                                                     class="side-bar-item">
                                                     <a>委托管理</a>
-                                                </router-link>
+                                                </router-link> -->
                                                 <router-link tag="li"
-                                                    to="/admin/houses"
+                                                    to="/admin/house/all"
                                                     active-class="side-active"
                                                     exact
                                                     class="side-bar-item">

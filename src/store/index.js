@@ -54,7 +54,7 @@ export default new Vuex.Store({
       },
       isLogin({state,dispatch},data){
          state.isloginStatu = true;
-         data = data || {want:['username','email','tel','id','permission','avatar_url']};
+         data = data || {want:['username','email','tel','id','permission','avatar_url','nick_name']};
 
          return sender('/api/user/is_login',data).then((res,textStatus,response)=>{
             if(res.success){

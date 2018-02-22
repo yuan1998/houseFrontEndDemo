@@ -8,22 +8,23 @@
                   <div class="am-u-md-10 am-u-sm-12 am-u-sm-centered">
                      <div class="am-form-group">
                         <label>用户名</label>
-                        <input type="text" v-model="getUser.username" disabled>
+                        <input type="text" v-model="data.username" disabled>
                      </div>
                      <div @keyup="ksave" class="am-form-group">
                         <label>昵称</label>
-                        <input type="text" v-model="getUser.nickname" >
+                        <input type="text" v-model="data.nick_name" >
                      </div>
                      <div @keyup="ksave" class="am-form-group">
                         <label>邮箱</label>
-                        <input type="text" v-model="getUser.email" >
+                        <input type="text" v-model="data.email" >
                      </div>
                      <div @keyup="ksave" class="am-form-group">
                         <label>电话</label>
-                        <input type="text" :value="getUser.tel" >
+                        <input type="text" :value="data.tel" >
                      </div>
                      <div  class="am-text-center" v-if="save">
-                        <button class="am-btn am-btn-primary">保存</button>
+                        <button @click="change" class="am-btn am-btn-primary">保存</button>
+                        <button @click="reset" class="am-btn am-btn-default">取消</button>
                      </div>
                   </div>
                </div>
@@ -51,22 +52,39 @@ import avatar from '@/components/user/userAvatar'
          }
       },
       mounted(){
-         console.log(1);
+         setTimeout(res=>{
+            this.getUserInfo()
+         },0)
       },
       methods:{
          change(){
             sender('/api/user/change',this.data).then(res=>{
                console.log(res);
+
+               this.$notify({
+                  type:'success',
+                  message:'修改成功'
+               })
+               this.save = false;
+            },res=>{
+
             })
+         },
+         reset(){
+            this.getUserInfo();
+            this.save = false;
          },
          ksave(){
             this.save = true;
+         },
+         getUserInfo(){
+            this.data = this.getUser;
          }
       },
       computed:{
          getUser(){
             return this.$store.getters['user/user'];
-         },
+         }
 
       }
 
