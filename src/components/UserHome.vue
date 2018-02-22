@@ -35,9 +35,9 @@
                                     <span style="color:#5085ff">.....</span>
                                 </div>
                                 <div class="am-text-center">
-                                    <button href="#" class="am-btn cimmissioned-read-btn">
-                                        <span class="am-block">查看更多</span>
-                                    </button>
+                                    <div href="#" class="cimmissioned-read-btn">
+                                        <router-link tag="span" to="/user/commissioneds" class="am-block">查看更多</router-link>
+                                    </div>
                                 </div>
                             </div>
                         </div>

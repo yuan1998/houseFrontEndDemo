@@ -35,7 +35,7 @@
                                                 <a>我的委托</a>
                                             </router-link>
                                             <router-link tag="li"
-                                                to="/user/transactionlog"
+                                                to="/user/transactionLog"
                                                 active-class="side-active"
                                                 exact
                                                 class="side-bar-item">
